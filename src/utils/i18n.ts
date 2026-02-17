@@ -25,7 +25,7 @@ export interface Translations {
     close: string
     back: string
   }
-  
+
   // 角色
   roles: {
     admin: string
@@ -34,7 +34,7 @@ export interface Translations {
     coreEnterprise: string
     construction: string
   }
-  
+
   // 导航
   navigation: {
     dashboard: string
@@ -47,7 +47,7 @@ export interface Translations {
     bridge: string
     fundRecovery: string
   }
-  
+
   // 仪表盘
   dashboard: {
     title: string
@@ -68,6 +68,22 @@ export interface Translations {
     receivable: string
     inventory: string
     // 建筑公司专用
+    accumulatedARTotal: string
+    financedAmount: string
+    pendingRepayment: string
+    activeARCount: string
+    pendingItems: string
+    pendingVerification: string
+    pendingConfirmation: string
+    financing: string
+    recentARRequests: string
+    arId: string
+    arStatusDistribution: string
+    financingTrend: string
+    coreEnterprise: string
+    repaid: string
+    viewDetails: string
+
     receivableAssets: string
     inventoryAssets: string
     pendingReceivables: string
@@ -81,7 +97,7 @@ export interface Translations {
     avgMaturity: string
     costAnalysis: string
   }
-  
+
   // 资产发行
   assetIssuance: {
     title: string
@@ -160,7 +176,7 @@ export interface Translations {
       onlyImageFiles: string
     }
   }
-  
+
   // ABS打包
   absPackaging: {
     title: string
@@ -169,7 +185,7 @@ export interface Translations {
     bankDescription: string
     nbfiDescription: string
   }
-  
+
   // 桥接管理
   bridge: {
     title: string
@@ -225,7 +241,7 @@ export interface Translations {
     targetConfirm: string
     finish: string
   }
-  
+
   // 资金回收
   fundRecovery: {
     title: string
@@ -276,7 +292,7 @@ export interface Translations {
     inProgress: string
     failed: string
   }
-  
+
   // 借贷管理
   lending: {
     title: string
@@ -421,7 +437,7 @@ export interface Translations {
     receivable: string
     inventory: string
   }
-  
+
   // 市场交易
   marketTrading: {
     title: string
@@ -483,7 +499,7 @@ export interface Translations {
       pendingCertification: string
     }
   }
-  
+
   // ABS打包
   absPackaging: {
     title: string
@@ -595,14 +611,14 @@ export interface Translations {
     daysRemaining: string
     status: string
   }
-  
+
   // 其他页面标题
   pages: {
     marketTrading: string
     lending: string
     fundRecovery: string
   }
-  
+
   // 角色选择页面
   roleSelection: {
     title: string
@@ -619,6 +635,8 @@ export interface Translations {
     totalAssets: string
     dailyVolume: string
     activeUsers: string
+    activeSMEs: string
+    validatorNodes: string
     bridgeVolume: string
     resetData: string
     exportRecord: string
@@ -630,35 +648,35 @@ export interface Translations {
     lending: string
     bridge: string
     fundRecovery: string
-      confirmReset: string
-      fullDemoDesc: string
-      quickDemoDesc: string
-      freeExploreDesc: string
-      darkTheme: string
-      lightTheme: string
-    }
-    
-    // 通用补充
-    common: {
-      minutes: string
-      normal: string
-      addressBook: string
-      advancedOptions: string
-      slippageProtection: string
-      default: string
-      gasStrategy: string
-      standard: string
-      fast: string
-      custom: string
-      items: string
-      history: string
-      targetChain: string
-      quantity: string
-      value: string
-      chainConfirming: string
-      blocks: string
-    }
+    confirmReset: string
+    fullDemoDesc: string
+    quickDemoDesc: string
+    freeExploreDesc: string
+    darkTheme: string
+    lightTheme: string
   }
+
+  // 通用补充
+  common: {
+    minutes: string
+    normal: string
+    addressBook: string
+    advancedOptions: string
+    slippageProtection: string
+    default: string
+    gasStrategy: string
+    standard: string
+    fast: string
+    custom: string
+    items: string
+    history: string
+    targetChain: string
+    quantity: string
+    value: string
+    chainConfirming: string
+    blocks: string
+  }
+}
 
 const translations: Record<Language, Translations> = {
   zh: {
@@ -693,11 +711,11 @@ const translations: Record<Language, Translations> = {
       description: '说明',
     },
     roles: {
-      admin: '系统管理员',
-      bank: '银行',
-      nbfi: '非银行金融机构',
+      admin: '平台管理员',
+      bank: '验证节点',
+      nbfi: '资本方',
       coreEnterprise: '核心企业',
-      construction: '建筑公司',
+      construction: '中小企业',
     },
     navigation: {
       dashboard: '仪表盘',
@@ -729,6 +747,23 @@ const translations: Record<Language, Translations> = {
       receivable: '应收账款',
       inventory: '库存',
       // 建筑公司专用
+      accumulatedARTotal: '累计提交AR总额',
+      financedAmount: '已融资金额',
+      pendingRepayment: '待回款金额',
+      activeARCount: '活跃AR数量',
+      pendingItems: '待处理事项',
+      pendingVerification: '待验证',
+      pendingConfirmation: '待确权',
+      financing: '融资中',
+      recentARRequests: '最近提交的应收账款',
+      arId: 'AR ID',
+      arStatusDistribution: 'AR状态分布',
+      financingTrend: '融资申请趋势',
+      coreEnterprise: '核心企业',
+      repaid: '已回款',
+      viewDetails: '查看详情',
+
+      // 兼容旧字段
       receivableAssets: '应收账款资产',
       inventoryAssets: '库存资产',
       pendingReceivables: '待收应收账款',
@@ -1363,31 +1398,33 @@ const translations: Record<Language, Translations> = {
       fundRecovery: '资金回收',
     },
     roleSelection: {
-      title: '区块链资产代币化平台',
-      subtitle: 'v1.0 · 五角色协同演示系统',
+      title: 'Lion Rock · 区块链资产代币化平台',
+      subtitle: 'v3.0 · 五角色协同演示系统',
       description: '点击下方角色卡片，体验不同参与方的视角',
       responsibilities: '核心职责',
-      permissions: '权限特点',
+      permissions: '权限特性',
       enterButton: '进入',
       demoMode: '演示模式',
       fullDemo: '完整流程演示',
       quickDemo: '快速功能演示',
       freeExplore: '自由探索模式',
       platformStats: '平台数据概览',
-      totalAssets: '平台总资产',
-      dailyVolume: '今日交易量',
+      totalAssets: '累计上链AR总额',
+      dailyVolume: '今日融资成交额',
       activeUsers: '活跃用户数',
-      bridgeVolume: '跨链桥总量',
+      activeSMEs: '活跃SME数',
+      validatorNodes: '验证节点数',
+      bridgeVolume: '节点累计收益',
       resetData: '重置所有演示数据',
       exportRecord: '导出演示记录',
       switchTheme: '切换到',
       businessFlow: '平台核心业务流程',
-      assetIssuance: '资产发行',
-      marketTrading: '市场交易',
-      absPackaging: 'ABS打包',
-      lending: '借贷管理',
-      bridge: '跨链桥接',
-      fundRecovery: '资金回收',
+      assetIssuance: '应收账款通证化',
+      marketTrading: '资产市场',
+      absPackaging: '资产打包',
+      lending: '投资',
+      bridge: '跨链桥接 (Future)',
+      fundRecovery: '结算与回款',
       confirmReset: '确定要重置所有演示数据吗？',
       fullDemoDesc: '30分钟，按业务流程展示',
       quickDemoDesc: '10分钟，重点功能展示',
@@ -1447,11 +1484,11 @@ const translations: Record<Language, Translations> = {
       description: 'Description',
     },
     roles: {
-      admin: 'Administrator',
-      bank: 'Bank',
-      nbfi: 'NBFI',
+      admin: 'Platform Admin',
+      bank: 'Validator',
+      nbfi: 'Capital Provider',
       coreEnterprise: 'Core Enterprise',
-      construction: 'Construction Company',
+      construction: 'SME',
     },
     navigation: {
       dashboard: 'Dashboard',
@@ -1483,6 +1520,23 @@ const translations: Record<Language, Translations> = {
       receivable: 'Receivable',
       inventory: 'Inventory',
       // Construction Company specific
+      accumulatedARTotal: 'Accumulated AR Total',
+      financedAmount: 'Financed Amount',
+      pendingRepayment: 'Pending Repayment',
+      activeARCount: 'Active AR Count',
+      pendingItems: 'Pending Items',
+      pendingVerification: 'Pending Verification',
+      pendingConfirmation: 'Pending Confirmation',
+      financing: 'Financing',
+      recentARRequests: 'Recent AR Requests',
+      arId: 'AR ID',
+      arStatusDistribution: 'AR Status Distribution',
+      financingTrend: 'Financing Trend',
+      coreEnterprise: 'Core Enterprise',
+      repaid: 'Repaid',
+      viewDetails: 'View Details',
+
+      // Legacy but kept for compatibility
       receivableAssets: 'Receivable Assets',
       inventoryAssets: 'Inventory Assets',
       pendingReceivables: 'Pending Receivables',
@@ -2113,8 +2167,8 @@ const translations: Record<Language, Translations> = {
       fundRecovery: 'Fund Recovery',
     },
     roleSelection: {
-      title: 'Blockchain Asset Tokenization Platform',
-      subtitle: 'v1.0 · Five-Role Collaborative Demo System',
+      title: 'Lion Rock · Blockchain Asset Tokenization Platform',
+      subtitle: 'v3.0 · Five-Role Collaborative Demo System',
       description: 'Click on the role cards below to experience different participant perspectives',
       responsibilities: 'Core Responsibilities',
       permissions: 'Permission Features',
@@ -2124,20 +2178,22 @@ const translations: Record<Language, Translations> = {
       quickDemo: 'Quick Feature Demo',
       freeExplore: 'Free Exploration Mode',
       platformStats: 'Platform Statistics',
-      totalAssets: 'Total Platform Assets',
-      dailyVolume: 'Daily Trading Volume',
+      totalAssets: 'Accumulated On-chain AR Total',
+      dailyVolume: "Today's Financing Volume",
       activeUsers: 'Active Users',
-      bridgeVolume: 'Total Bridge Volume',
+      activeSMEs: 'Active SMEs',
+      validatorNodes: 'Validator Nodes',
+      bridgeVolume: 'Node Accumulated Revenue',
       resetData: 'Reset All Demo Data',
       exportRecord: 'Export Demo Record',
       switchTheme: 'Switch to',
       businessFlow: 'Platform Core Business Flow',
-      assetIssuance: 'Asset Issuance',
-      marketTrading: 'Market Trading',
+      assetIssuance: 'AR Tokenization',
+      marketTrading: 'Marketplace',
       absPackaging: 'ABS Packaging',
-      lending: 'Lending',
-      bridge: 'Cross-Chain Bridge',
-      fundRecovery: 'Fund Recovery',
+      lending: 'Investment',
+      bridge: 'Cross-Chain Bridge (Future)',
+      fundRecovery: 'Settlement & Repayment',
       confirmReset: 'Are you sure you want to reset all demo data?',
       fullDemoDesc: '30 minutes, following business process',
       quickDemoDesc: '10 minutes, key features',
@@ -2174,7 +2230,7 @@ export function getTranslation(lang: Language): Translations {
 export function t(lang: Language, key: string): string {
   const keys = key.split('.')
   let value: any = translations[lang]
-  
+
   for (const k of keys) {
     value = value?.[k]
     if (value === undefined) {
@@ -2186,6 +2242,6 @@ export function t(lang: Language, key: string): string {
       break
     }
   }
-  
+
   return typeof value === 'string' ? value : key
 }

@@ -7,18 +7,7 @@ function DashboardPage() {
   const { currentRole } = useRole()
   const { t, language } = useLanguage()
 
-  // 获取角色名称的翻译键
-  const getRoleTranslationKey = (role: string): string => {
-    const roleMap: Record<string, string> = {
-      admin: 'roles.admin',
-      银行: 'roles.bank',
-      Bank: 'roles.bank',
-      NBFI: 'roles.nbfi',
-      核心企业: 'roles.coreEnterprise',
-      建筑公司: 'roles.construction',
-    }
-    return roleMap[role] || 'roles.coreEnterprise'
-  }
+
 
   // 根据角色显示不同的KPI数据
   const kpiData = useMemo(() => {
@@ -96,13 +85,7 @@ function DashboardPage() {
   return (
     <div className="min-h-[calc(100vh-4rem)] p-6 bg-gray-50">
       <div className="max-w-7xl mx-auto">
-        {/* 页面标题 */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">{t('dashboard.title')}</h1>
-          <p className="text-gray-600 mt-1">
-            {t('dashboard.currentRole')}: <span className="font-semibold text-blue-600">{t(getRoleTranslationKey(currentRole))}</span>
-          </p>
-        </div>
+
 
         {/* KPI 卡片 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-6">
@@ -119,9 +102,8 @@ function DashboardPage() {
                   <i className={`fas ${kpi.icon}`} style={{ color: kpi.iconColor }}></i>
                 </div>
                 <span
-                  className={`text-sm font-medium ${
-                    kpi.change.startsWith('+') ? 'text-green-600' : 'text-red-600'
-                  }`}
+                  className={`text-sm font-medium ${kpi.change.startsWith('+') ? 'text-green-600' : 'text-red-600'
+                    }`}
                 >
                   {kpi.change}
                 </span>
@@ -149,7 +131,7 @@ function DashboardPage() {
                     borderRadius: '8px',
                   }}
                 />
-                <Legend 
+                <Legend
                   formatter={(value) => {
                     const legendMap: Record<string, string> = {
                       buy: t('dashboard.buy'),
@@ -188,7 +170,7 @@ function DashboardPage() {
                   ))}
                 </Pie>
                 <Tooltip
-                  formatter={(value: number, name: string, props: any) => {
+                  formatter={(value: number, _name: string, props: any) => {
                     return [`${value}%`, t(props.payload.nameKey)]
                   }}
                   contentStyle={{
@@ -217,7 +199,7 @@ function DashboardPage() {
                   borderRadius: '8px',
                 }}
               />
-              <Legend 
+              <Legend
                 formatter={(value) => {
                   const legendMap: Record<string, string> = {
                     buy: t('dashboard.buy'),

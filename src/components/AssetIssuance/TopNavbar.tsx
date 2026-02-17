@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
+import { useRole } from '../../hooks/useRole'
 
 interface TopNavbarProps {
   onMenuToggle: () => void
@@ -8,6 +9,17 @@ interface TopNavbarProps {
 function TopNavbar({ onMenuToggle }: TopNavbarProps) {
   const navigate = useNavigate()
   const { language, toggleLanguage, t } = useLanguage()
+  const { currentRole } = useRole()
+
+  const roleNameKeys: Record<string, string> = {
+    'admin': 'roles.admin',
+    '银行': 'roles.bank',
+    'NBFI': 'roles.nbfi',
+    '核心企业': 'roles.coreEnterprise',
+    '建筑公司': 'roles.construction',
+  }
+
+  const roleKey = roleNameKeys[currentRole] || 'roles.coreEnterprise'
 
   return (
     <nav className="bg-white border-b border-gray-200 shadow-sm fixed top-0 left-0 right-0 z-50">
@@ -26,7 +38,7 @@ function TopNavbar({ onMenuToggle }: TopNavbarProps) {
                 <span className="text-white font-bold text-lg">B</span>
               </div>
               <h1 className="text-xl font-bold text-gray-800">
-                {language === 'zh' ? '区块链资产发行平台' : 'Blockchain Asset Platform'}
+                {t('dashboard.currentRole')}: <span className="text-blue-600">{t(roleKey)}</span>
               </h1>
             </div>
           </div>

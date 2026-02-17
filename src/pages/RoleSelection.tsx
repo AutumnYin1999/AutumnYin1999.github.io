@@ -19,9 +19,28 @@ function RoleSelection() {
   const navigate = useNavigate()
   const { language, t, toggleLanguage } = useLanguage()
   const [selectedRole, setSelectedRole] = useState<string | null>(null)
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
-  
+  const [theme] = useState<'light' | 'dark'>('light')
+
   const roles: Role[] = [
+    {
+      id: '建筑公司',
+      nameKey: 'roles.construction',
+      englishName: 'SME',
+      icon: 'fa-hammer',
+      color: '#0F766E',
+      bgGradient: 'from-teal-800 to-teal-900',
+      responsibilities: language === 'zh'
+        ? ['上传应收账款', '发起融资申请', '查看资产状态']
+        : ['Upload accounts receivable', 'Initiate financing applications', 'View asset status'],
+      permissions: [
+        { textKey: language === 'zh' ? '提交AR' : 'Submit AR', allowed: true },
+        { textKey: language === 'zh' ? '查看融资历史' : 'View financing history', allowed: true },
+        { textKey: language === 'zh' ? '跟踪资产状态' : 'Track asset status', allowed: true },
+        { textKey: language === 'zh' ? '无验证权限' : 'No verification permission', allowed: false },
+      ],
+      buttonTextKey: language === 'zh' ? '进入中小企业工作台' : 'Enter SME Workspace',
+      descriptionKey: language === 'zh' ? '应收账款上传与融资申请' : 'AR Upload & Financing Applications',
+    },
     {
       id: '核心企业',
       nameKey: 'roles.coreEnterprise',
@@ -30,111 +49,94 @@ function RoleSelection() {
       color: '#EA580C',
       bgGradient: 'from-orange-600 to-orange-800',
       responsibilities: language === 'zh'
-        ? ['应收账款代币发行', '供应链融资管理', '投资者关系维护']
-        : ['Accounts Receivable Token Issuance', 'Supply Chain Financing Management', 'Investor Relations Maintenance'],
+        ? ['确权应收账款', '确认付款义务', '查看供应链数据']
+        : ['Confirm accounts receivable', 'Confirm payment obligations', 'View supply chain data'],
       permissions: [
-        { textKey: language === 'zh' ? '创建应收账款代币' : 'Create Receivable Tokens', allowed: true },
-        { textKey: language === 'zh' ? '查看融资成本分析' : 'View Financing Cost Analysis', allowed: true },
-        { textKey: language === 'zh' ? '监控资产流动性' : 'Monitor Asset Liquidity', allowed: true },
-        { textKey: language === 'zh' ? '无ABS打包权限' : 'No ABS Packaging Permission', allowed: false },
+        { textKey: language === 'zh' ? '确认/拒绝AR' : 'Confirm/reject AR', allowed: true },
+        { textKey: language === 'zh' ? '查看确权记录' : 'View confirmation records', allowed: true },
+        { textKey: language === 'zh' ? '监控供应链融资' : 'Monitor supply chain financing', allowed: true },
+        { textKey: language === 'zh' ? '无资产打包权限' : 'No asset packaging permission', allowed: false },
       ],
       buttonTextKey: language === 'zh' ? '进入企业工作台' : 'Enter Enterprise Workspace',
-      descriptionKey: language === 'zh' ? '应收账款代币化与融资' : 'Receivable Tokenization & Financing',
-    },
-    {
-      id: '建筑公司',
-      nameKey: 'roles.construction',
-      englishName: 'Construction Company',
-      icon: 'fa-hammer',
-      color: '#0D9488',
-      bgGradient: 'from-teal-600 to-teal-800',
-      responsibilities: language === 'zh'
-        ? ['库存代币发行', '库存融资管理', '市场需求分析']
-        : ['Inventory Token Issuance', 'Inventory Financing Management', 'Market Demand Analysis'],
-      permissions: [
-        { textKey: language === 'zh' ? '创建库存代币' : 'Create Inventory Tokens', allowed: true },
-        { textKey: language === 'zh' ? '库存估值更新' : 'Inventory Valuation Update', allowed: true },
-        { textKey: language === 'zh' ? '融资历史查询' : 'Financing History Query', allowed: true },
-        { textKey: language === 'zh' ? '无桥接权限' : 'No Bridge Permission', allowed: false },
-      ],
-      buttonTextKey: language === 'zh' ? '进入库存工作台' : 'Enter Inventory Workspace',
-      descriptionKey: language === 'zh' ? '库存代币化与融资管理' : 'Inventory Tokenization & Financing Management',
+      descriptionKey: language === 'zh' ? '确权与供应链融资' : 'Confirmation & Supply Chain Financing',
     },
     {
       id: '银行',
       nameKey: 'roles.bank',
-      englishName: 'Bank',
+      englishName: 'Validator',
       icon: 'fa-building-columns',
       color: '#1E40AF',
       bgGradient: 'from-blue-700 to-blue-900',
       responsibilities: language === 'zh'
-        ? ['ABS打包与发行', '提供流动性', '风险管理']
-        : ['ABS Packaging & Issuance', 'Liquidity Provision', 'Risk Management'],
+        ? ['执行 KYC/AML', '验证 AR 真实性', '提供合规数据']
+        : ['Perform KYC/AML', 'Verify AR authenticity', 'Provide compliance data'],
       permissions: [
-        { textKey: language === 'zh' ? '创建ABS产品' : 'Create ABS Products', allowed: true },
-        { textKey: language === 'zh' ? '直接Circle兑换' : 'Direct Circle Exchange', allowed: true },
-        { textKey: language === 'zh' ? '外汇池流动性提供' : 'Forex Pool Liquidity Provision', allowed: true },
-        { textKey: language === 'zh' ? '向NBFI放贷' : 'Lend to NBFI', allowed: true },
+        { textKey: language === 'zh' ? '审核 SME' : 'Review SME', allowed: true },
+        { textKey: language === 'zh' ? '验证AR' : 'Validate AR', allowed: true },
+        { textKey: language === 'zh' ? '查看节点收益' : 'View node earnings', allowed: true },
+        { textKey: language === 'zh' ? '参与网络治理' : 'Participate in network governance', allowed: true },
       ],
-      buttonTextKey: language === 'zh' ? '进入银行工作台' : 'Enter Bank Workspace',
-      descriptionKey: language === 'zh' ? 'ABS产品创建与流动性管理' : 'ABS Product Creation & Liquidity Management',
+      buttonTextKey: language === 'zh' ? '进入验证节点工作台' : 'Enter Validator Workspace',
+      descriptionKey: language === 'zh' ? 'KYC/AML 与 AR 验证' : 'KYC/AML & AR Verification',
     },
     {
       id: 'NBFI',
       nameKey: 'roles.nbfi',
-      englishName: 'NBFI',
+      englishName: 'Capital Provider',
       icon: 'fa-chart-line',
       color: '#059669',
       bgGradient: 'from-emerald-600 to-emerald-800',
       responsibilities: language === 'zh'
-        ? ['投资代币资产', '抵押借贷操作', '跨链收益获取']
-        : ['Invest in Token Assets', 'Collateralized Lending Operations', 'Cross-Chain Yield Acquisition'],
+        ? ['投资应收账款', '购买资产包', '管理投资组合']
+        : ['Invest in accounts receivable', 'Purchase asset packages', 'Manage investment portfolios'],
       permissions: [
-        { textKey: language === 'zh' ? '购买ABS代币' : 'Purchase ABS Tokens', allowed: true },
-        { textKey: language === 'zh' ? '抵押借款功能' : 'Collateralized Borrowing', allowed: true },
-        { textKey: language === 'zh' ? '跨链桥接权限' : 'Cross-Chain Bridge Permission', allowed: true },
-        { textKey: language === 'zh' ? '外汇池兑换' : 'Forex Pool Exchange', allowed: true },
+        { textKey: language === 'zh' ? '浏览资产池' : 'Browse asset pool', allowed: true },
+        { textKey: language === 'zh' ? '投资/竞标' : 'Invest/bid', allowed: true },
+        { textKey: language === 'zh' ? '查看持仓' : 'View holdings', allowed: true },
+        { textKey: language === 'zh' ? '无验证权限' : 'No verification permission', allowed: false },
       ],
-      buttonTextKey: language === 'zh' ? '进入投资工作台' : 'Enter Investment Workspace',
-      descriptionKey: language === 'zh' ? '资产投资与跨链操作' : 'Asset Investment & Cross-Chain Operations',
+      buttonTextKey: language === 'zh' ? '进入资本方工作台' : 'Enter Capital Provider Workspace',
+      descriptionKey: language === 'zh' ? '资产投资与组合管理' : 'Asset Investment & Portfolio Management',
     },
     {
       id: 'admin',
       nameKey: 'roles.admin',
-      englishName: 'Administrator',
+      englishName: 'Platform Admin',
       icon: 'fa-crown',
       color: '#7C3AED',
       bgGradient: 'from-purple-600 to-purple-800',
-      responsibilities: language === 'zh' 
-        ? ['平台监控与配置', '用户管理与审核', '全局数据洞察']
-        : ['Platform Monitoring & Configuration', 'User Management & Review', 'Global Data Insights'],
+      responsibilities: language === 'zh'
+        ? ['监控平台', '管理节点', '配置系统', '查看收益分账']
+        : ['Monitor platform', 'Manage nodes', 'Configure system', 'View revenue distribution'],
       permissions: [
-        { textKey: language === 'zh' ? '访问所有功能' : 'Access All Features', allowed: true },
-        { textKey: language === 'zh' ? '系统参数配置' : 'System Parameter Configuration', allowed: true },
-        { textKey: language === 'zh' ? '审计日志查看' : 'Audit Log Viewing', allowed: true },
-        { textKey: language === 'zh' ? '风险监控干预' : 'Risk Monitoring Intervention', allowed: true },
+        { textKey: language === 'zh' ? '访问所有数据' : 'Access all data', allowed: true },
+        { textKey: language === 'zh' ? '节点管理' : 'Node management', allowed: true },
+        { textKey: language === 'zh' ? '分账管理' : 'Ledger management', allowed: true },
+        { textKey: language === 'zh' ? '风险监控' : 'Risk monitoring', allowed: true },
       ],
-      buttonTextKey: language === 'zh' ? '进入管理控制台' : 'Enter Admin Console',
-      descriptionKey: language === 'zh' ? '全面掌控平台运营与配置' : 'Full Control of Platform Operations & Configuration',
+      buttonTextKey: language === 'zh' ? '进入平台管理控制台' : 'Enter Platform Admin Console',
+      descriptionKey: language === 'zh' ? '平台监控与节点配置' : 'Platform Monitoring & Node Configuration',
     },
   ]
 
-  // 模拟平台数据
+  // 模拟平台数据（港元，与文档一致）
   const [platformStats, setPlatformStats] = useState({
-    totalAssets: 2.8,
-    dailyVolume: 325,
-    activeUsers: 142,
-    bridgeVolume: 890,
+    onChainARTotal: 28,       // 累计上链AR总额，单位：亿
+    dailyFinancingVolume: 328, // 今日融资成交额，单位：百万
+    activeSMEs: 65,
+    validatorNodes: 8,
+    nodeRevenue: 889,         // 节点累计收益，单位：百万
   })
 
   // 模拟数据更新
   useEffect(() => {
     const interval = setInterval(() => {
       setPlatformStats((prev) => ({
-        totalAssets: prev.totalAssets + (Math.random() - 0.5) * 0.1,
-        dailyVolume: prev.dailyVolume + (Math.random() - 0.5) * 5,
-        activeUsers: prev.activeUsers + Math.floor((Math.random() - 0.5) * 2),
-        bridgeVolume: prev.bridgeVolume + (Math.random() - 0.5) * 2,
+        onChainARTotal: Math.max(20, Math.round((prev.onChainARTotal + (Math.random() - 0.5) * 1) * 10) / 10),
+        dailyFinancingVolume: Math.max(200, prev.dailyFinancingVolume + (Math.random() - 0.5) * 10),
+        activeSMEs: Math.max(60, prev.activeSMEs + Math.floor((Math.random() - 0.5) * 2)),
+        validatorNodes: prev.validatorNodes,
+        nodeRevenue: Math.max(800, prev.nodeRevenue + (Math.random() - 0.5) * 5),
       }))
     }, 5000)
 
@@ -146,7 +148,7 @@ function RoleSelection() {
     localStorage.setItem('userRole', roleId)
     // 触发角色变更事件
     window.dispatchEvent(new CustomEvent('userRoleChanged', { detail: roleId }))
-    
+
     // 根据角色跳转到不同页面
     setTimeout(() => {
       navigate('/app/dashboard')
@@ -205,11 +207,10 @@ function RoleSelection() {
         <div className="absolute top-6 right-6">
           <button
             onClick={toggleLanguage}
-            className={`px-4 py-2 rounded-lg shadow-md border font-semibold transition-colors ${
-              theme === 'dark'
-                ? 'bg-gray-800 border-gray-700 text-white hover:bg-gray-700'
-                : 'bg-white border-gray-200 text-gray-800 hover:bg-gray-100'
-            }`}
+            className={`px-4 py-2 rounded-lg shadow-md border font-semibold text-base transition-colors ${theme === 'dark'
+              ? 'bg-gray-800 border-gray-700 text-white hover:bg-gray-700'
+              : 'bg-white border-gray-200 text-gray-800 hover:bg-gray-100'
+              }`}
           >
             {language === 'zh' ? '切换到 English' : 'Switch to 中文'}
           </button>
@@ -222,59 +223,57 @@ function RoleSelection() {
               <i className="fas fa-cube text-white text-5xl"></i>
             </div>
           </div>
-          <h1 className={`text-5xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+          <h1 className={`text-6xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
             {t('roleSelection.title')}
           </h1>
-          <p className={`text-2xl mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+          <p className={`text-3xl mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
             {t('roleSelection.subtitle')}
           </p>
-          <p className={`text-lg ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+          <p className={`text-xl ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
             {t('roleSelection.description')}
           </p>
         </header>
 
         <div className="max-w-7xl mx-auto px-4 pb-12">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* 区域B：中央角色选择面板 */}
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-2">
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {roles.map((role, index) => (
+                {roles.map((role) => (
                   <div
                     key={role.id}
-                    className={`relative group cursor-pointer transform transition-all duration-300 hover:scale-105 ${
-                      selectedRole === role.id ? 'scale-105' : ''
-                    }`}
+                    className={`relative group cursor-pointer transform transition-all duration-300 hover:scale-105 ${selectedRole === role.id ? 'scale-105' : ''
+                      }`}
                     onClick={() => handleRoleSelect(role.id)}
                   >
                     <div
-                      className={`bg-gradient-to-br ${role.bgGradient} rounded-2xl p-6 shadow-xl border-2 ${
-                        selectedRole === role.id ? 'border-white ring-4 ring-white/50' : 'border-transparent'
-                      } transition-all duration-300`}
+                      className={`bg-gradient-to-br ${role.bgGradient} rounded-2xl p-6 shadow-xl border-2 ${selectedRole === role.id ? 'border-white ring-4 ring-white/50' : 'border-transparent'
+                        } transition-all duration-300 h-full`}
                     >
                       {/* 角色图标 */}
                       <div className="flex items-center justify-between mb-4">
                         <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                          <i className={`fas ${role.icon} text-white text-2xl`}></i>
+                          <i className={`fas ${role.icon} text-white text-3xl`}></i>
                         </div>
                         {selectedRole === role.id && (
-                          <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center animate-pulse">
+                          <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center animate-pulse">
                             <i className="fas fa-check text-purple-600"></i>
                           </div>
                         )}
                       </div>
 
                       {/* 角色名称 */}
-                      <h3 className="text-2xl font-bold text-white mb-1">{t(role.nameKey)}</h3>
-                      <p className="text-white/80 text-sm mb-4">{role.englishName}</p>
+                      <h3 className="text-3xl font-bold text-white mb-1">{t(role.nameKey)}</h3>
+                      <p className="text-white/80 text-base mb-4 min-h-[1.5rem]">{role.englishName}</p>
 
                       {/* 核心职责 */}
                       <div className="mb-4">
-                        <p className="text-white/90 text-sm font-semibold mb-2">{t('roleSelection.responsibilities')}:</p>
+                        <p className="text-white/90 text-base font-semibold mb-2">{t('roleSelection.responsibilities')}:</p>
                         <ul className="space-y-1">
                           {role.responsibilities.map((resp, i) => (
-                            <li key={i} className="text-white/80 text-xs flex items-start">
-                              <i className="fas fa-circle text-white/60 text-[6px] mt-1.5 mr-2"></i>
-                              {resp}
+                            <li key={i} className="text-white/80 text-sm flex items-start">
+                              <i className="fas fa-circle text-white/60 text-[8px] mt-1.5 mr-2 flex-shrink-0"></i>
+                              <span>{resp}</span>
                             </li>
                           ))}
                         </ul>
@@ -282,14 +281,14 @@ function RoleSelection() {
 
                       {/* 权限亮点 */}
                       <div className="mb-4">
-                        <p className="text-white/90 text-sm font-semibold mb-2">{t('roleSelection.permissions')}:</p>
+                        <p className="text-white/90 text-base font-semibold mb-2">{t('roleSelection.permissions')}:</p>
                         <div className="space-y-1">
                           {role.permissions.map((perm, i) => (
-                            <div key={i} className="flex items-center text-xs">
+                            <div key={i} className="flex items-center text-sm">
                               {perm.allowed ? (
-                                <i className="fas fa-check-circle text-green-300 mr-2"></i>
+                                <i className="fas fa-check-circle text-green-300 mr-2 flex-shrink-0"></i>
                               ) : (
-                                <i className="fas fa-times-circle text-red-300 mr-2"></i>
+                                <i className="fas fa-times-circle text-red-300 mr-2 flex-shrink-0"></i>
                               )}
                               <span className={`${perm.allowed ? 'text-white/90' : 'text-white/60'}`}>
                                 {perm.textKey}
@@ -301,7 +300,7 @@ function RoleSelection() {
 
                       {/* 入口按钮 */}
                       <button
-                        className="w-full py-3 px-4 bg-white rounded-lg font-semibold hover:bg-white/90 transition-colors mt-4"
+                        className="w-full py-3 px-4 bg-white rounded-lg font-semibold text-base hover:bg-white/90 transition-colors mt-auto"
                         style={{ color: role.color }}
                         onClick={(e) => {
                           e.stopPropagation()
@@ -320,70 +319,110 @@ function RoleSelection() {
             <div className="lg:col-span-1 space-y-6">
               {/* 平台数据概览 */}
               <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl p-6 shadow-lg border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
-                <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+                <h3 className={`text-xl font-semibold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
                   <i className="fas fa-chart-bar mr-2 text-green-500"></i>
                   {t('roleSelection.platformStats')}
                 </h3>
                 <div className="space-y-4">
-                  {[
-                    { labelKey: 'roleSelection.totalAssets', value: `$${platformStats.totalAssets.toFixed(1)}B`, icon: 'fa-wallet', color: '#3b82f6' },
-                    { labelKey: 'roleSelection.dailyVolume', value: `$${platformStats.dailyVolume.toFixed(0)}M`, icon: 'fa-exchange-alt', color: '#10b981' },
-                    { labelKey: 'roleSelection.activeUsers', value: platformStats.activeUsers.toString(), icon: 'fa-users', color: '#8b5cf6' },
-                    { labelKey: 'roleSelection.bridgeVolume', value: `$${platformStats.bridgeVolume.toFixed(0)}M`, icon: 'fa-bridge', color: '#f97316' },
-                  ].map((stat, i) => (
-                    <div
-                      key={i}
-                      className={`flex items-center justify-between p-3 rounded-lg ${theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-50'}`}
-                    >
-                      <div className="flex items-center">
-                        <i className={`fas ${stat.icon} mr-3`} style={{ color: stat.color }}></i>
-                        <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
-                          {t(stat.labelKey)}
-                        </span>
-                      </div>
-                      <span className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
-                        {stat.value}
+                  {/* Item 1: Chain AR Total */}
+                  <div className={`flex items-center justify-between p-3 rounded-lg ${theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
+                    <div className="flex items-center">
+                      <i className="fas fa-link mr-3" style={{ color: '#3b82f6' }}></i>
+                      <span className={`text-base ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                        {t('roleSelection.totalAssets')}
                       </span>
                     </div>
-                  ))}
+                    <span className={`font-bold text-base ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+                      {language === 'zh' ? `HK$${Number(platformStats.onChainARTotal).toFixed(1)}亿` : `HK$${(platformStats.onChainARTotal / 10).toFixed(1)}B`}
+                    </span>
+                  </div>
+
+                  {/* Item 2: Daily Financing Volume */}
+                  <div className={`flex items-center justify-between p-3 rounded-lg ${theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
+                    <div className="flex items-center">
+                      <i className="fas fa-hand-holding-usd mr-3" style={{ color: '#10b981' }}></i>
+                      <span className={`text-base ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                        {t('roleSelection.dailyVolume')}
+                      </span>
+                    </div>
+                    <span className={`font-bold text-base ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+                      HK${platformStats.dailyFinancingVolume.toFixed(0)}M
+                    </span>
+                  </div>
+
+                  {/* Split Item 3 & 4: Active SMEs / Validator Nodes */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className={`flex flex-col items-center justify-center p-3 rounded-lg ${theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
+                      <div className="flex items-center mb-1">
+                        <i className="fas fa-building mr-2" style={{ color: '#8b5cf6' }}></i>
+                        <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                          {t('roleSelection.activeSMEs')}
+                        </span>
+                      </div>
+                      <span className={`font-bold text-lg ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+                        {platformStats.activeSMEs}+
+                      </span>
+                    </div>
+
+                    <div className={`flex flex-col items-center justify-center p-3 rounded-lg ${theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
+                      <div className="flex items-center mb-1">
+                        <i className="fas fa-server mr-2" style={{ color: '#0d9488' }}></i>
+                        <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                          {t('roleSelection.validatorNodes')}
+                        </span>
+                      </div>
+                      <span className={`font-bold text-lg ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+                        {platformStats.validatorNodes}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Item 5: Node Revenue */}
+                  <div className={`flex items-center justify-between p-3 rounded-lg ${theme === 'dark' ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
+                    <div className="flex items-center">
+                      <i className="fas fa-coins mr-3" style={{ color: '#f97316' }}></i>
+                      <span className={`text-base ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                        {t('roleSelection.bridgeVolume')}
+                      </span>
+                    </div>
+                    <span className={`font-bold text-base ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+                      HK${platformStats.nodeRevenue.toFixed(0)}M
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* 区域D：底部流程图导航 */}
-          <div className={`mt-12 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-xl p-8 shadow-lg border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
-            <h3 className={`text-2xl font-bold mb-6 text-center ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+          {/* 区域D：底部 Core Business Flow - 六张圆角卡片 */}
+          <div className={`mt-12 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-8 shadow-lg border ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
+            <h3 className={`text-3xl font-bold mb-6 text-center ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
               <i className="fas fa-project-diagram mr-2 text-blue-500"></i>
               {t('roleSelection.businessFlow')}
             </h3>
-            <div className="flex flex-wrap items-center justify-center gap-8">
-              {/* 流程节点 */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-6">
               {[
                 { icon: 'fa-coins', labelKey: 'roleSelection.assetIssuance', color: '#3b82f6' },
-                { icon: 'fa-exchange-alt', labelKey: 'roleSelection.marketTrading', color: '#10b981' },
+                { icon: 'fa-store', labelKey: 'roleSelection.marketTrading', color: '#10b981' },
                 { icon: 'fa-box', labelKey: 'roleSelection.absPackaging', color: '#8b5cf6' },
                 { icon: 'fa-hand-holding-usd', labelKey: 'roleSelection.lending', color: '#f97316' },
                 { icon: 'fa-bridge', labelKey: 'roleSelection.bridge', color: '#14b8a6' },
-                { icon: 'fa-recycle', labelKey: 'roleSelection.fundRecovery', color: '#ec4899' },
+                { icon: 'fa-file-invoice-dollar', labelKey: 'roleSelection.fundRecovery', color: '#ec4899' },
               ].map((step, i) => (
-                <div key={i} className="flex items-center">
-                  <div className={`flex flex-col items-center ${i > 0 ? 'ml-8' : ''}`}>
-                    <div 
-                      className="w-16 h-16 rounded-xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform cursor-pointer"
-                      style={{ backgroundColor: step.color }}
-                    >
-                      <i className={`fas ${step.icon} text-white text-xl`}></i>
-                    </div>
-                    <span className={`mt-2 text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
-                      {t(step.labelKey)}
-                    </span>
+                <div
+                  key={i}
+                  className={`flex flex-col items-center justify-center rounded-2xl p-5 shadow-md border transition-transform hover:scale-[1.02] ${theme === 'dark' ? 'bg-gray-700/50 border-gray-600' : 'bg-gray-50 border-gray-200'
+                    }`}
+                >
+                  <div
+                    className="w-14 h-14 rounded-full flex items-center justify-center shadow-md mb-3"
+                    style={{ backgroundColor: step.color }}
+                  >
+                    <i className={`fas ${step.icon} text-white text-lg`}></i>
                   </div>
-                  {i < 5 && (
-                    <div className="ml-8">
-                      <i className="fas fa-arrow-right text-gray-400 text-xl"></i>
-                    </div>
-                  )}
+                  <span className={`text-base font-medium text-center leading-tight ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                    {t(step.labelKey)}
+                  </span>
                 </div>
               ))}
             </div>
