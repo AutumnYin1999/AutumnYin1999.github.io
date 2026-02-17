@@ -115,7 +115,7 @@ function ReceivablesManagementContent() {
       financingProgress: 0
     }
   ])
-  const [historyReceivables, setHistoryReceivables] = useState<Receivable[]>([
+  const [historyReceivables] = useState<Receivable[]>([
     {
       id: 'AR-2025-009',
       issuer: language === 'zh' ? '核心企业C' : 'Core Enterprise C',
