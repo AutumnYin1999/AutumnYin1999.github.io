@@ -96,6 +96,27 @@ export interface Translations {
     activeIssuances: string
     avgMaturity: string
     costAnalysis: string
+    receivableAmount: string
+    status: string
+    operations: string
+    uploadDate: string
+    expectedPaymentDate: string
+    validatorStatus: string
+    audit: string
+    cic: string
+    notStarted: string
+    relatedDocuments: string
+    contract: string
+    invoice: string
+    acceptanceNote: string
+    download: string
+    preview: string
+    financingHistory: string
+    financingDate: string
+    basicInfo: string
+    bank: string
+    completed: string
+    inProgress: string
   }
 
   // 资产发行
@@ -776,6 +797,27 @@ const translations: Record<Language, Translations> = {
       activeIssuances: '活跃发行',
       avgMaturity: '平均到期日',
       costAnalysis: '成本分析',
+      receivableAmount: '应收账款金额',
+      status: '状态',
+      operations: '操作',
+      uploadDate: '上传日期',
+      expectedPaymentDate: '预计回款日',
+      validatorStatus: '验证节点签名状态',
+      audit: '审计',
+      cic: 'CIC产业链信息中心',
+      notStarted: '未开始',
+      relatedDocuments: '相关文件',
+      contract: '合同',
+      invoice: '发票',
+      acceptanceNote: '验收单',
+      download: '下载',
+      preview: '预览',
+      financingHistory: '融资记录',
+      financingDate: '融资日期',
+      basicInfo: '基本信息',
+      bank: '银行',
+      completed: '已完成',
+      inProgress: '进行中',
     },
     assetIssuance: {
       title: '资产发行',
@@ -1549,6 +1591,27 @@ const translations: Record<Language, Translations> = {
       activeIssuances: 'Active Issuances',
       avgMaturity: 'Avg Maturity',
       costAnalysis: 'Cost Analysis',
+      receivableAmount: 'Amount',
+      status: 'Status',
+      operations: 'Operations',
+      uploadDate: 'Upload Date',
+      expectedPaymentDate: 'Expected Payment Date',
+      validatorStatus: 'Validator Status',
+      audit: 'Audit',
+      cic: 'CIC',
+      notStarted: 'Not Started',
+      relatedDocuments: 'Related Documents',
+      contract: 'Contract',
+      invoice: 'Invoice',
+      acceptanceNote: 'Acceptance Note',
+      download: 'Download',
+      preview: 'Preview',
+      financingHistory: 'Financing History',
+      financingDate: 'Financing Date',
+      basicInfo: 'Basic Info',
+      bank: 'Bank',
+      completed: 'Completed',
+      inProgress: 'In Progress',
     },
     assetIssuance: {
       title: 'Asset Issue',

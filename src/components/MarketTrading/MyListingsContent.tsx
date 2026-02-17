@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
 
@@ -13,10 +13,8 @@ interface ListedToken {
   // 应收账款特有
   dueDate?: string
   issuer?: string
-  // 库存特有
-  inventoryType?: string
-  description?: string
-  location?: string
+  financedAmount?: number
+  financingRatio?: number
 }
 
 interface SaleRecord {
@@ -27,12 +25,10 @@ interface SaleRecord {
   commission: number
 }
 
-type TabType = 'receivable' | 'inventory'
 
 function MyListingsContent() {
   const { language } = useLanguage()
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState<TabType>('receivable')
   const [selectedToken, setSelectedToken] = useState<ListedToken | null>(null)
   const [showPriceModal, setShowPriceModal] = useState(false)
   const [newPrice, setNewPrice] = useState('')
@@ -49,6 +45,8 @@ function MyListingsContent() {
       status: 'selling',
       dueDate: '2025-04-10',
       issuer: language === 'zh' ? '核心企业A' : 'Core Enterprise A',
+      financedAmount: 200000,
+      financingRatio: 50
     },
     {
       id: 'AR-2024-100',
@@ -60,24 +58,11 @@ function MyListingsContent() {
       status: 'selling',
       dueDate: '2025-05-20',
       issuer: language === 'zh' ? '核心企业C' : 'Core Enterprise C',
+      financedAmount: 0,
+      financingRatio: 0
     },
   ]
 
-  // 模拟数据：在售的库存代币
-  const inventoryTokens: ListedToken[] = [
-    {
-      id: 'INV-2025-002',
-      type: 'inventory',
-      faceValue: 1200000,
-      listedPrice: 1180000,
-      listedDate: '2025-01-08',
-      inquiryCount: 3,
-      status: 'selling',
-      inventoryType: language === 'zh' ? '在制品' : 'Work in Progress',
-      description: language === 'zh' ? '在建项目-办公楼' : 'Under Construction - Office Building',
-      location: language === 'zh' ? '工地B' : 'Site B',
-    },
-  ]
 
   // 模拟数据：销售记录
   const saleRecords: SaleRecord[] = [
@@ -89,13 +74,6 @@ function MyListingsContent() {
       commission: 1950,
     },
     {
-      tokenId: 'INV-2024-120',
-      buyer: language === 'zh' ? 'NBFI机构B' : 'NBFI Institution B',
-      salePrice: 285000,
-      saleDate: '2024-11-25',
-      commission: 2850,
-    },
-    {
       tokenId: 'AR-2024-045',
       buyer: language === 'zh' ? 'NBFI机构C' : 'NBFI Institution C',
       salePrice: 480000,
@@ -104,22 +82,6 @@ function MyListingsContent() {
     },
   ]
 
-  // 计算销售统计
-  const salesStats = useMemo(() => {
-    const totalSales = saleRecords.reduce((sum, r) => sum + r.salePrice, 0)
-    const totalCommission = saleRecords.reduce((sum, r) => sum + r.commission, 0)
-    const avgDiscount = saleRecords.length > 0
-      ? saleRecords.reduce((sum, r) => {
-          // 假设面值，计算平均折扣率
-          const discount = ((r.salePrice / (r.salePrice + r.commission)) - 1) * 100
-          return sum + Math.abs(discount)
-        }, 0) / saleRecords.length
-      : 0
-
-    return { totalSales, totalCommission, avgDiscount }
-  }, [saleRecords])
-
-  const currentTokens = activeTab === 'receivable' ? receivableTokens : inventoryTokens
 
   const handleModifyPrice = (token: ListedToken) => {
     setSelectedToken(token)
@@ -153,7 +115,7 @@ function MyListingsContent() {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">
-            {language === 'zh' ? '我的在售资产' : 'My Listed Assets'}
+            {language === 'zh' ? '已上架应收账款' : 'My Listed AR'}
           </h2>
           <p className="text-gray-600">
             {language === 'zh' ? '管理已上架待售的代币，查看销售状态' : 'Manage listed tokens for sale and view sales status'}
@@ -161,37 +123,64 @@ function MyListingsContent() {
         </div>
         <div className="flex space-x-3">
           <button
+            onClick={() => navigate('/app/dashboard')}
+            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            <i className="fas fa-home mr-2"></i>
+            {language === 'zh' ? '返回首页' : 'Back to Home'}
+          </button>
+          <button
             onClick={() => navigate('/app/receivables-management')}
             className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
           >
-            <i className="fas fa-arrow-up mr-2"></i>
-            {language === 'zh' ? '快速上架应收账款' : 'Quick List Receivables'}
-          </button>
-          <button
-            onClick={() => navigate('/app/inventory-issuance')}
-            className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
-          >
-            <i className="fas fa-boxes mr-2"></i>
-            {language === 'zh' ? '快速上架库存' : 'Quick List Inventory'}
+            <i className="fas fa-plus mr-2"></i>
+            {language === 'zh' ? '上架新 AR' : 'List New AR'}
           </button>
         </div>
       </div>
 
-      {/* 资金回收提示 */}
-      <div className="bg-gradient-to-r from-teal-50 to-blue-50 border border-teal-200 rounded-lg p-6 mb-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-1">
-              {language === 'zh' ? '资金回收效率' : 'Fund Recovery Efficiency'}
-            </h3>
-            <p className="text-gray-600">
-              {language === 'zh' 
-                ? `通过出售代票，您已提前回笼资金 ${salesStats.totalSales.toLocaleString()} eHKD`
-                : `Through token sales, you have recovered ${salesStats.totalSales.toLocaleString()} eHKD in advance`}
-            </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        {/* Card 1: Financed Amount */}
+        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4">
+          <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0">
+            <i className="fas fa-coins text-xl"></i>
           </div>
-          <div className="text-3xl font-bold text-teal-600">
-            {salesStats.totalSales > 0 ? `$${(salesStats.totalSales / 1000).toFixed(0)}K` : '$0'}
+          <div>
+            <div className="text-sm text-gray-500 mb-1">{language === 'zh' ? '已融资金额' : 'Financed Amount'}</div>
+            <div className="text-xl font-bold text-gray-900">HK$ 960,000</div>
+          </div>
+        </div>
+
+        {/* Card 2: Listed Amount */}
+        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4">
+          <div className="w-12 h-12 rounded-full bg-teal-50 flex items-center justify-center text-teal-600 flex-shrink-0">
+            <i className="fas fa-layer-group text-xl"></i>
+          </div>
+          <div>
+            <div className="text-sm text-gray-500 mb-1">{language === 'zh' ? '上架中总额' : 'Total Listed'}</div>
+            <div className="text-xl font-bold text-gray-900">HK$ 2,450,000</div>
+          </div>
+        </div>
+
+        {/* Card 3: Avg Discount */}
+        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4">
+          <div className="w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center text-orange-600 flex-shrink-0">
+            <i className="fas fa-percentage text-xl"></i>
+          </div>
+          <div>
+            <div className="text-sm text-gray-500 mb-1">{language === 'zh' ? '平均折扣率' : 'Avg. Discount'}</div>
+            <div className="text-xl font-bold text-gray-900">1.2%</div>
+          </div>
+        </div>
+
+        {/* Card 4: Commission */}
+        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4">
+          <div className="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 flex-shrink-0">
+            <i className="fas fa-hand-holding-usd text-xl"></i>
+          </div>
+          <div>
+            <div className="text-sm text-gray-500 mb-1">{language === 'zh' ? '平台累计佣金' : 'Total Commission'}</div>
+            <div className="text-xl font-bold text-gray-900">HK$ 9,600</div>
           </div>
         </div>
       </div>
@@ -200,41 +189,17 @@ function MyListingsContent() {
         {/* 左侧：在售资产列表 */}
         <div className="lg:col-span-2">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            {/* 标签页 */}
-            <div className="flex border-b border-gray-200">
-              <button
-                onClick={() => setActiveTab('receivable')}
-                className={`flex-1 px-6 py-4 font-medium transition-colors ${
-                  activeTab === 'receivable'
-                    ? 'text-teal-600 border-b-2 border-teal-600 bg-teal-50'
-                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-                }`}
-              >
-                <i className="fas fa-file-invoice-dollar mr-2"></i>
-                {language === 'zh' ? '应收账款代币' : 'Receivable Tokens'}
-                <span className="ml-2 px-2 py-0.5 bg-teal-100 text-teal-700 rounded-full text-xs">
-                  {receivableTokens.length}
-                </span>
-              </button>
-              <button
-                onClick={() => setActiveTab('inventory')}
-                className={`flex-1 px-6 py-4 font-medium transition-colors ${
-                  activeTab === 'inventory'
-                    ? 'text-teal-600 border-b-2 border-teal-600 bg-teal-50'
-                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-                }`}
-              >
-                <i className="fas fa-boxes mr-2"></i>
-                {language === 'zh' ? '库存代币' : 'Inventory Tokens'}
-                <span className="ml-2 px-2 py-0.5 bg-teal-100 text-teal-700 rounded-full text-xs">
-                  {inventoryTokens.length}
-                </span>
-              </button>
+            {/* Header for list */}
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h3 className="font-semibold text-gray-800 flex items-center">
+                <i className="fas fa-list mr-2 text-teal-600"></i>
+                {language === 'zh' ? '应收账款列表' : 'Receivables List'}
+              </h3>
             </div>
 
             {/* 列表内容 */}
             <div className="p-6">
-              {currentTokens.length === 0 ? (
+              {receivableTokens.length === 0 ? (
                 <div className="text-center py-12 text-gray-500">
                   <i className="fas fa-inbox text-4xl mb-3 text-gray-300"></i>
                   <p className="text-sm">
@@ -243,101 +208,74 @@ function MyListingsContent() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {currentTokens.map((token) => (
+                  {receivableTokens.map((token) => (
                     <div
                       key={token.id}
-                      className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                      className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
                     >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-2">
-                            <span className="font-semibold text-gray-800">{token.id}</span>
-                            <span className="px-2 py-0.5 bg-green-100 text-green-800 rounded text-xs font-medium">
+                      <div className="flex items-start justify-between mb-6">
+                        <div className="flex-1 space-y-4">
+                          {/* Row 0: ID */}
+                          <div className="flex items-center">
+                            <span className="font-bold text-2xl text-gray-900 mr-4">{token.id}</span>
+                            <span className="px-3 py-1 bg-green-100 text-green-800 rounded text-base font-medium">
                               {language === 'zh' ? '出售中' : 'Selling'}
                             </span>
                           </div>
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-                            <div>
-                              <span className="text-gray-500">
-                                {language === 'zh' ? '面值/估值：' : 'Face Value/Valuation: '}
-                              </span>
-                              <span className="font-medium text-gray-800">
-                                {token.faceValue.toLocaleString()} eHKD
-                              </span>
-                            </div>
-                            <div>
-                              <span className="text-gray-500">
-                                {language === 'zh' ? '上架价格：' : 'Listed Price: '}
-                              </span>
-                              <span className="font-medium text-gray-800">
-                                {token.listedPrice.toLocaleString()} eHKD
-                              </span>
-                            </div>
-                            <div>
-                              <span className="text-gray-500">
-                                {language === 'zh' ? '上架时间：' : 'Listed Date: '}
-                              </span>
-                              <span className="font-medium text-gray-800">{token.listedDate}</span>
-                            </div>
-                            <div>
-                              <span className="text-gray-500">
-                                {language === 'zh' ? '询价次数：' : 'Inquiries: '}
-                              </span>
-                              <span className="font-medium text-gray-800">{token.inquiryCount}</span>
-                            </div>
-                            {token.type === 'receivable' && token.dueDate && (
-                              <div>
-                                <span className="text-gray-500">
-                                  {language === 'zh' ? '到期日：' : 'Due Date: '}
-                                </span>
-                                <span className="font-medium text-gray-800">{token.dueDate}</span>
-                              </div>
-                            )}
-                            {token.type === 'receivable' && token.issuer && (
-                              <div>
-                                <span className="text-gray-500">
-                                  {language === 'zh' ? '发行企业：' : 'Issuer: '}
-                                </span>
-                                <span className="font-medium text-gray-800">{token.issuer}</span>
-                              </div>
-                            )}
-                            {token.type === 'inventory' && token.inventoryType && (
-                              <div>
-                                <span className="text-gray-500">
-                                  {language === 'zh' ? '类型：' : 'Type: '}
-                                </span>
-                                <span className="font-medium text-gray-800">{token.inventoryType}</span>
-                              </div>
-                            )}
-                            {token.type === 'inventory' && token.description && (
-                              <div>
-                                <span className="text-gray-500">
-                                  {language === 'zh' ? '描述：' : 'Description: '}
-                                </span>
-                                <span className="font-medium text-gray-800">{token.description}</span>
+
+                          {/* Row 1: Details */}
+                          <div className="flex items-center text-lg text-gray-600 flex-wrap gap-y-2">
+                            <span className="font-medium text-gray-800">{token.issuer}</span>
+                            <span className="mx-3 text-gray-300">|</span>
+                            <span>{language === 'zh' ? '面值' : 'Face Value'}: <span className="text-gray-900 font-medium">HK${token.faceValue.toLocaleString()}</span></span>
+                            <span className="mx-3 text-gray-300">|</span>
+                            <span>{language === 'zh' ? '挂牌价' : 'Listed'}: <span className="text-gray-900 font-medium">HK${token.listedPrice.toLocaleString()}</span></span>
+                            <span className="mx-3 text-gray-300">|</span>
+                            <span>{language === 'zh' ? '到期' : 'Due'}: <span className="text-gray-900 font-medium">{token.dueDate}</span></span>
+                          </div>
+
+                          {/* Row 2: Listing Details & Financing */}
+                          <div className="flex items-center text-lg text-gray-600 flex-wrap gap-y-2">
+                            <span>{language === 'zh' ? '挂牌' : 'Listed'}: <span className="text-gray-900 font-medium">{token.listedDate}</span></span>
+                            <span className="mx-3 text-gray-300">|</span>
+                            <span>{language === 'zh' ? '询价' : 'Inquiries'}: <span className="text-gray-900 font-medium">{token.inquiryCount}</span></span>
+                            {token.financedAmount !== undefined && (
+                              <div className="flex items-center ml-3">
+                                <span className="mr-2">{language === 'zh' ? '已融资' : 'Financed'}:</span>
+                                <div className="flex items-center">
+                                  <div className="w-24 h-2.5 bg-gray-100 rounded-full overflow-hidden mr-2 border border-gray-200">
+                                    <div
+                                      className="h-full bg-teal-500 rounded-full"
+                                      style={{ width: `${token.financingRatio}%` }}
+                                    ></div>
+                                  </div>
+                                  <span className="text-teal-600 font-medium">
+                                    HK${token.financedAmount.toLocaleString()} ({token.financingRatio}%)
+                                  </span>
+                                </div>
                               </div>
                             )}
                           </div>
                         </div>
                       </div>
-                      <div className="flex space-x-2 mt-3">
+                      <div className="flex space-x-3 mt-4">
                         <button
                           onClick={() => handleModifyPrice(token)}
-                          className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm"
+                          className="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-lg"
                         >
                           <i className="fas fa-edit mr-2"></i>
                           {language === 'zh' ? '修改价格' : 'Modify Price'}
                         </button>
                         <button
                           onClick={() => handleUnlist(token.id)}
-                          className="px-4 py-2 bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors text-sm"
+                          className="px-5 py-2.5 bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors text-lg"
                         >
                           <i className="fas fa-arrow-down mr-2"></i>
                           {language === 'zh' ? '下架' : 'Unlist'}
                         </button>
                         <button
                           onClick={() => handleViewDetail(token)}
-                          className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors text-sm"
+                          className="px-5 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors text-lg"
                         >
                           <i className="fas fa-eye mr-2"></i>
                           {language === 'zh' ? '查看详情' : 'View Details'}
@@ -353,45 +291,13 @@ function MyListingsContent() {
 
         {/* 右侧：销售记录与统计 */}
         <div className="lg:col-span-1 space-y-6">
-          {/* 销售统计 */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              {language === 'zh' ? '销售统计' : 'Sales Statistics'}
-            </h3>
-            <div className="space-y-4">
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div className="text-sm text-gray-600 mb-1">
-                  {language === 'zh' ? '累计成交额' : 'Total Sales'}
-                </div>
-                <div className="text-2xl font-bold text-gray-800">
-                  {salesStats.totalSales.toLocaleString()} eHKD
-                </div>
-              </div>
-              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                <div className="text-sm text-gray-600 mb-1">
-                  {language === 'zh' ? '累计支付佣金' : 'Total Commission Paid'}
-                </div>
-                <div className="text-2xl font-bold text-gray-800">
-                  {salesStats.totalCommission.toLocaleString()} eHKD
-                </div>
-              </div>
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <div className="text-sm text-gray-600 mb-1">
-                  {language === 'zh' ? '平均售出折扣率' : 'Avg. Discount Rate'}
-                </div>
-                <div className="text-2xl font-bold text-gray-800">
-                  {salesStats.avgDiscount.toFixed(2)}%
-                </div>
-              </div>
-            </div>
-          </div>
 
           {/* 近期成交记录 */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">
               {language === 'zh' ? '近期成交记录' : 'Recent Sales'}
             </h3>
-            <div className="space-y-3 max-h-96 overflow-y-auto">
+            <div className="space-y-4 max-h-96 overflow-y-auto">
               {saleRecords.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
                   <i className="fas fa-inbox text-3xl mb-2 text-gray-300"></i>
@@ -399,33 +305,17 @@ function MyListingsContent() {
                 </div>
               ) : (
                 saleRecords.map((record, index) => (
-                  <div key={index} className="border border-gray-200 rounded-lg p-3">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-semibold text-sm text-gray-800">{record.tokenId}</span>
-                      <span className="text-xs text-gray-500">{record.saleDate}</span>
-                    </div>
-                    <div className="space-y-1 text-xs">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">
-                          {language === 'zh' ? '买方：' : 'Buyer: '}
-                        </span>
-                        <span className="font-medium text-gray-800">{record.buyer}</span>
+                  <div key={index} className="border-b border-gray-100 last:border-0 pb-4 last:pb-0">
+                    <div className="font-bold text-gray-800 text-base mb-2">{record.tokenId}</div>
+                    <div className="text-sm text-gray-600 space-y-1">
+                      <div className="flex flex-wrap items-center">
+                        <span className="mr-1">{language === 'zh' ? '买方' : 'Buyer'}:</span>
+                        <span className="font-medium text-gray-800 mr-2">{record.buyer}</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">
-                          {language === 'zh' ? '成交价格：' : 'Sale Price: '}
-                        </span>
-                        <span className="font-medium text-gray-800">
-                          {record.salePrice.toLocaleString()} eHKD
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">
-                          {language === 'zh' ? '平台佣金：' : 'Commission: '}
-                        </span>
-                        <span className="font-medium text-gray-800">
-                          {record.commission.toLocaleString()} eHKD
-                        </span>
+                      <div className="flex items-center text-xs text-gray-500">
+                        <span>{language === 'zh' ? '成交价' : 'Price'}: HK${record.salePrice.toLocaleString()}</span>
+                        <span className="mx-2">|</span>
+                        <span>{language === 'zh' ? '佣金' : 'Comm'}: HK${record.commission.toLocaleString()}</span>
                       </div>
                     </div>
                   </div>
@@ -457,7 +347,7 @@ function MyListingsContent() {
                   {language === 'zh' ? '当前价格' : 'Current Price'}
                 </label>
                 <div className="p-3 bg-gray-50 rounded-lg text-gray-800">
-                  {selectedToken.listedPrice.toLocaleString()} eHKD
+                  HK$ {selectedToken.listedPrice.toLocaleString()}
                 </div>
               </div>
               <div>

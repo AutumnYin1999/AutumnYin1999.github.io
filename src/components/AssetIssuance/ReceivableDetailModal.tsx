@@ -9,6 +9,11 @@ interface Receivable {
   receivedDate?: string
   listedDate?: string
   soldDate?: string
+  verificationProgress?: {
+    bank: boolean
+    audit: boolean
+    cic: boolean
+  }
 }
 
 interface ReceivableDetailModalProps {
@@ -24,188 +29,206 @@ function ReceivableDetailModal({ receivable, onClose }: ReceivableDetailModalPro
   const getStatusLabel = (status: string) => {
     if (language === 'zh') {
       switch (status) {
-        case 'pending': return '待接收'
-        case 'received': return '持有中'
-        case 'listed': return '已上架'
-        case 'sold': return '已售出'
+        case 'pending': return '待验证'
+        case 'received': return '待确权'
+        case 'listed': return '融资中'
+        case 'sold': return '已回款'
         case 'settled': return '已结清'
         default: return status
       }
     } else {
       switch (status) {
-        case 'pending': return 'Pending'
-        case 'received': return 'Holding'
-        case 'listed': return 'Listed'
-        case 'sold': return 'Sold'
+        case 'pending': return 'Pending Verification'
+        case 'received': return 'Pending Confirmation'
+        case 'listed': return 'Financing'
+        case 'sold': return 'Repaid'
         case 'settled': return 'Settled'
         default: return status
       }
     }
   }
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800'
-      case 'received': return 'bg-blue-100 text-blue-800'
-      case 'listed': return 'bg-green-100 text-green-800'
-      case 'sold': return 'bg-purple-100 text-purple-800'
-      case 'settled': return 'bg-gray-100 text-gray-800'
-      default: return 'bg-gray-100 text-gray-800'
-    }
-  }
-
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-        {/* 头部 */}
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl font-bold text-gray-800">
-              {language === 'zh' ? '应收账款详情' : 'Receivable Details'}
-            </h3>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
-            >
-              <i className="fas fa-times text-xl"></i>
-            </button>
-          </div>
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-2xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto flex flex-col [&::-webkit-scrollbar]:hidden"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* 弹窗头部 */}
+        <div className="p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white z-10 rounded-t-2xl">
+          <h3 className="text-2xl font-bold text-gray-800">
+            {language === 'zh' ? '详情' : 'Details'}: {receivable.id}
+          </h3>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <i className="fas fa-times text-2xl"></i>
+          </button>
         </div>
 
-        {/* 内容 */}
-        <div className="p-6 space-y-6">
-          {/* 基本信息 */}
+        <div className="p-6 space-y-8">
+          {/* 基本信息 - 网格布局 */}
           <div>
-            <h4 className="text-lg font-semibold text-gray-800 mb-4">
+            <h4 className="text-base font-semibold text-gray-500 uppercase tracking-wider mb-4">
               {language === 'zh' ? '基本信息' : 'Basic Information'}
             </h4>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="text-gray-600">{language === 'zh' ? '代币ID' : 'Token ID'}:</span>
-                <span className="font-medium text-gray-800">{receivable.id}</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="text-gray-600">{language === 'zh' ? '发行企业' : 'Issuer'}:</span>
-                <span className="font-medium text-gray-800">{receivable.issuer}</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="text-gray-600">{language === 'zh' ? '金额' : 'Amount'}:</span>
-                <span className="font-medium text-gray-800">
-                  {receivable.amount.toLocaleString()} eHKD
+            <div className="grid grid-cols-2 gap-6 bg-gray-50 p-6 rounded-xl">
+              <div>
+                <span className="text-sm text-gray-500 block mb-1">
+                  {language === 'zh' ? '应收金额' : 'Amount'}
+                </span>
+                <span className="text-xl font-bold text-gray-900">
+                  HK$ {receivable.amount.toLocaleString()}
                 </span>
               </div>
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="text-gray-600">{language === 'zh' ? '到期日' : 'Due Date'}:</span>
-                <span className="font-medium text-gray-800">{receivable.dueDate}</span>
+              <div>
+                <span className="text-sm text-gray-500 block mb-1">
+                  {language === 'zh' ? '核心企业' : 'Core Enterprise'}
+                </span>
+                <span className="text-base font-medium text-gray-900">{receivable.issuer}</span>
               </div>
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="text-gray-600">{language === 'zh' ? '状态' : 'Status'}:</span>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(receivable.status)}`}>
+              <div>
+                <span className="text-sm text-gray-500 block mb-1">
+                  {language === 'zh' ? '状态' : 'Status'}
+                </span>
+                <span className={`px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full w-fit ${receivable.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                  receivable.status === 'received' ? 'bg-blue-100 text-blue-800' :
+                    receivable.status === 'listed' ? 'bg-green-100 text-green-800' :
+                      'bg-purple-100 text-purple-800'
+                  }`}>
                   {getStatusLabel(receivable.status)}
                 </span>
               </div>
+              <div>
+                <span className="text-sm text-gray-500 block mb-1">
+                  {language === 'zh' ? '到期日' : 'Due Date'}
+                </span>
+                <span className="text-base text-gray-900">{receivable.dueDate}</span>
+              </div>
+              <div>
+                <span className="text-sm text-gray-500 block mb-1">
+                  {language === 'zh' ? '上传日期' : 'Upload Date'}
+                </span>
+                <span className="text-base text-gray-900">2024-10-15</span>
+              </div>
             </div>
           </div>
 
-          {/* 时间线 */}
+          {/* 验证节点签名状态 */}
           <div>
-            <h4 className="text-lg font-semibold text-gray-800 mb-4">
-              {language === 'zh' ? '时间线' : 'Timeline'}
+            <h4 className="text-base font-semibold text-gray-500 uppercase tracking-wider mb-4">
+              {language === 'zh' ? '验证节点状态' : 'Validator Status'}
             </h4>
-            <div className="space-y-3">
-              {receivable.receivedDate && (
-                <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
-                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white">
-                    <i className="fas fa-check text-sm"></i>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-4 border border-gray-100 rounded-lg">
+                <div className="flex items-center space-x-4">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${receivable.verificationProgress?.bank ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'
+                    }`}>
+                    <i className="fas fa-university text-lg"></i>
                   </div>
-                  <div className="flex-1">
-                    <div className="font-medium text-gray-800">
-                      {language === 'zh' ? '接收日期' : 'Received Date'}
-                    </div>
-                    <div className="text-sm text-gray-600">{receivable.receivedDate}</div>
-                  </div>
+                  <span className="text-base font-medium text-gray-700">
+                    {language === 'zh' ? '银行' : 'Bank'}
+                  </span>
                 </div>
-              )}
-              {receivable.listedDate && (
-                <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
-                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white">
-                    <i className="fas fa-arrow-up text-sm"></i>
+                <span className={`text-sm font-medium px-3 py-1 rounded ${receivable.verificationProgress?.bank
+                  ? 'text-green-600 bg-green-50'
+                  : 'text-yellow-600 bg-yellow-50'
+                  }`}>
+                  {receivable.verificationProgress?.bank
+                    ? (language === 'zh' ? '已完成' : 'Completed')
+                    : (language === 'zh' ? '进行中' : 'In Progress')}
+                </span>
+              </div>
+              <div className="flex items-center justify-between p-4 border border-gray-100 rounded-lg">
+                <div className="flex items-center space-x-4">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${receivable.verificationProgress?.audit ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'
+                    }`}>
+                    <i className="fas fa-file-contract text-lg"></i>
                   </div>
-                  <div className="flex-1">
-                    <div className="font-medium text-gray-800">
-                      {language === 'zh' ? '上架日期' : 'Listed Date'}
-                    </div>
-                    <div className="text-sm text-gray-600">{receivable.listedDate}</div>
-                  </div>
+                  <span className="text-base font-medium text-gray-700">
+                    {language === 'zh' ? '审计' : 'Audit'}
+                  </span>
                 </div>
-              )}
-              {receivable.soldDate && (
-                <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
-                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white">
-                    <i className="fas fa-dollar-sign text-sm"></i>
+                <span className={`text-sm font-medium px-3 py-1 rounded ${receivable.verificationProgress?.audit
+                  ? 'text-green-600 bg-green-50'
+                  : 'text-yellow-600 bg-yellow-50'
+                  }`}>
+                  {receivable.verificationProgress?.audit
+                    ? (language === 'zh' ? '已完成' : 'Completed')
+                    : (language === 'zh' ? '进行中' : 'In Progress')}
+                </span>
+              </div>
+              <div className="flex items-center justify-between p-4 border border-gray-100 rounded-lg">
+                <div className="flex items-center space-x-4">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${receivable.verificationProgress?.cic ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'
+                    }`}>
+                    <i className="fas fa-globe text-lg"></i>
                   </div>
-                  <div className="flex-1">
-                    <div className="font-medium text-gray-800">
-                      {language === 'zh' ? '售出日期' : 'Sold Date'}
-                    </div>
-                    <div className="text-sm text-gray-600">{receivable.soldDate}</div>
-                  </div>
+                  <span className="text-base font-medium text-gray-700">CIC</span>
                 </div>
-              )}
-              {!receivable.receivedDate && !receivable.listedDate && !receivable.soldDate && (
-                <div className="text-center py-4 text-gray-500">
-                  {language === 'zh' ? '暂无时间线记录' : 'No timeline records'}
-                </div>
-              )}
+                <span className={`text-sm font-medium px-3 py-1 rounded ${receivable.verificationProgress?.cic
+                  ? 'text-green-600 bg-green-50'
+                  : 'text-yellow-600 bg-yellow-50'
+                  }`}>
+                  {receivable.verificationProgress?.cic
+                    ? (language === 'zh' ? '已完成' : 'Completed')
+                    : (language === 'zh' ? '进行中' : 'In Progress')}
+                </span>
+              </div>
             </div>
           </div>
 
-          {/* 计算信息 */}
-          {receivable.receivedDate && receivable.dueDate && (
+          {/* 相关文件 */}
+          <div>
+            <h4 className="text-base font-semibold text-gray-500 uppercase tracking-wider mb-4">
+              {language === 'zh' ? '相关文件' : 'Related Documents'}
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[
+                language === 'zh' ? '贸易合同' : 'Contract',
+                language === 'zh' ? '商业发票' : 'Invoice',
+                language === 'zh' ? '验收单' : 'Acceptance Note'
+              ].map((doc, idx) => (
+                <div key={idx} className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors group">
+                  <div className="flex flex-col items-center text-center space-y-3">
+                    <i className="fas fa-file-pdf text-4xl text-red-500 group-hover:scale-110 transition-transform"></i>
+                    <span className="text-sm font-medium text-gray-700 truncate w-full">{doc}.pdf</span>
+                    <div className="flex space-x-3 w-full justify-center">
+                      <button className="text-sm text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1.5 rounded flex-1">
+                        {language === 'zh' ? '预览' : 'Preview'}
+                      </button>
+                      <button className="text-sm text-gray-600 hover:text-gray-800 bg-gray-100 px-3 py-1.5 rounded"><i className="fas fa-download"></i></button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 融资记录 (可选) */}
+          {receivable.status === 'listed' && (
             <div>
-              <h4 className="text-lg font-semibold text-gray-800 mb-4">
-                {language === 'zh' ? '计算信息' : 'Calculation Information'}
+              <h4 className="text-base font-semibold text-gray-500 uppercase tracking-wider mb-4">
+                {language === 'zh' ? '融资记录' : 'Financing History'}
               </h4>
-              <div className="space-y-3">
-                {(() => {
-                  const received = new Date(receivable.receivedDate)
-                  const due = new Date(receivable.dueDate)
-                  const daysUntilDue = Math.ceil((due.getTime() - received.getTime()) / (1000 * 60 * 60 * 24))
-                  const isOverdue = new Date() > due && receivable.status !== 'sold' && receivable.status !== 'settled'
-                  
-                  return (
-                    <>
-                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <span className="text-gray-600">
-                          {language === 'zh' ? '距离到期日' : 'Days Until Due'}:
-                        </span>
-                        <span className={`font-medium ${isOverdue ? 'text-red-600' : 'text-gray-800'}`}>
-                          {daysUntilDue > 0 ? `${daysUntilDue} ${language === 'zh' ? '天' : 'days'}` : language === 'zh' ? '已到期' : 'Overdue'}
-                        </span>
-                      </div>
-                      {isOverdue && (
-                        <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                          <div className="flex items-center space-x-2 text-red-700">
-                            <i className="fas fa-exclamation-triangle"></i>
-                            <span className="text-sm font-medium">
-                              {language === 'zh' ? '此应收账款已过期' : 'This receivable is overdue'}
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  )
-                })()}
+              <div className="bg-gray-50 p-4 rounded-lg text-base text-gray-600 flex justify-between">
+                <span>{language === 'zh' ? '融资日期' : 'Financing Date'}: {receivable.listedDate}</span>
+                <span>{language === 'zh' ? '融资金额' : 'Financed Amount'}: HK$ {(receivable.amount * 0.8).toLocaleString()}</span>
               </div>
             </div>
           )}
         </div>
 
         {/* 底部按钮 */}
-        <div className="p-6 border-t border-gray-200">
+        <div className="p-6 border-t border-gray-100 flex justify-end">
           <button
             onClick={onClose}
-            className="w-full py-3 px-4 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition-colors"
+            className="bg-gray-100 text-gray-700 px-8 py-3 rounded-xl hover:bg-gray-200 font-medium transition-colors text-base"
           >
             {language === 'zh' ? '关闭' : 'Close'}
           </button>

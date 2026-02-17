@@ -15,7 +15,7 @@ function Sidebar({ isOpen }: SidebarProps) {
   // 基础菜单项
   const baseMenuItems = [
     { id: 'dashboard', labelKey: 'navigation.dashboard', icon: 'fa-chart-line', path: '/app/dashboard', permission: 'dashboard' },
-    { id: 'market-trading', labelKey: 'navigation.marketTrading', icon: 'fa-exchange-alt', path: '/app/market-trading', permission: 'marketTrading' },
+    { id: 'market-trading', labelKey: 'My Listed AR', icon: 'fa-exchange-alt', path: '/app/market-trading', permission: 'marketTrading' },
     { id: 'lending', labelKey: 'navigation.lending', icon: 'fa-hand-holding-usd', path: '/app/lending', permission: 'lending' },
     { id: 'abs-packaging', labelKey: 'navigation.absPackaging', icon: 'fa-box', path: '/app/abs-packaging', permission: 'absPackaging' },
     { id: 'bridge', labelKey: 'navigation.bridge', icon: 'fa-bridge', path: '/app/bridge', permission: 'bridge' },
@@ -28,7 +28,6 @@ function Sidebar({ isOpen }: SidebarProps) {
     // 建筑公司显示两个独立菜单项
     assetIssuanceItems = [
       { id: 'receivables-management', labelKey: 'navigation.receivablesManagement', icon: 'fa-file-invoice-dollar', path: '/app/receivables-management', permission: 'assetIssuanceReceivable' },
-      { id: 'inventory-issuance', labelKey: 'navigation.inventoryIssuance', icon: 'fa-boxes', path: '/app/inventory-issuance', permission: 'assetIssuanceInventory' },
     ]
   } else {
     // 其他角色显示原来的资产发行菜单
@@ -59,11 +58,10 @@ function Sidebar({ isOpen }: SidebarProps) {
             <NavLink
               key={item.id}
               to={item.path}
-              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                isActive
-                  ? 'bg-blue-50 text-blue-700 font-semibold'
-                  : 'text-gray-700 hover:bg-gray-100'
-              }`}
+              className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${isActive
+                ? 'bg-blue-50 text-blue-700 font-semibold'
+                : 'text-gray-700 hover:bg-gray-100'
+                }`}
             >
               <i className={`fas ${item.icon} w-5 text-center`}></i>
               <span>{t(item.labelKey)}</span>

@@ -5,7 +5,7 @@ import RoleSelection from './pages/RoleSelection'
 import DashboardPage from './pages/Dashboard'
 import AssetIssuancePage from './pages/AssetIssuance'
 import ReceivablesManagementPage from './pages/ReceivablesManagement'
-import InventoryIssuancePage from './pages/InventoryIssuance'
+
 import MarketTradingPage from './pages/MarketTrading'
 import ABSPackagingPage from './pages/ABSPackaging'
 import LendingPage from './pages/Lending'
@@ -31,7 +31,7 @@ function App() {
             <Route path="dashboard" element={<DashboardPage />} />
             <Route path="asset-issuance" element={<AssetIssuancePage />} />
             <Route path="receivables-management" element={<ReceivablesManagementPage />} />
-            <Route path="inventory-issuance" element={<InventoryIssuancePage />} />
+
             <Route path="market-trading" element={<MarketTradingPage />} />
             <Route path="lending" element={<LendingPage />} />
             <Route path="abs-packaging" element={<ABSPackagingPage />} />
