@@ -21,14 +21,13 @@ function DashboardPage() {
         { nameKey: 'dashboard.activeARCount', value: '23', change: '+5', icon: 'fa-file-contract', bgColor: '#e9d5ff', iconColor: '#8b5cf6' },
       ]
     } else if (currentRole === '核心企业') {
-      // 核心企业：显示已发行的应收账款（负债）和融资成本
+      // 核心企业：待确认AR、已确认AR、待支付、平均账期、确权效率
       return [
-        { nameKey: 'dashboard.issuedReceivables', value: '1,600.0K', change: '+150.0K', icon: 'fa-file-invoice', bgColor: '#fee2e2', iconColor: '#dc2626' },
-        { nameKey: 'dashboard.fundingCost', value: '6.5%', change: '-0.2%', icon: 'fa-percent', bgColor: '#fef3c7', iconColor: '#f59e0b' },
-        { nameKey: 'dashboard.totalLiabilities', value: '1,600.0K', change: '+150.0K', icon: 'fa-balance-scale', bgColor: '#fee2e2', iconColor: '#dc2626' },
-        { nameKey: 'dashboard.activeIssuances', value: '5', change: '+1', icon: 'fa-coins', bgColor: '#e9d5ff', iconColor: '#8b5cf6' },
-        { nameKey: 'dashboard.avgMaturity', value: '45天', change: '-2天', icon: 'fa-calendar-alt', bgColor: '#dbeafe', iconColor: '#2563eb' },
-        { nameKey: 'dashboard.costAnalysis', value: '良好', change: '稳定', icon: 'fa-chart-pie', bgColor: '#d1fae5', iconColor: '#10b981' },
+        { nameKey: 'dashboard.issuedReceivables', value: 'HK$ 1,600K', change: (language === 'zh' ? '环比 ' : 'MoM ') + '+150K', icon: 'fa-file-invoice', bgColor: '#fee2e2', iconColor: '#dc2626' },
+        { nameKey: 'dashboard.fundingCost', value: 'HK$ 6,500K', change: (language === 'zh' ? '环比 ' : 'MoM ') + '+200K', icon: 'fa-check-circle', bgColor: '#d1fae5', iconColor: '#10b981' },
+        { nameKey: 'dashboard.totalLiabilities', value: 'HK$ 2,800K', change: (language === 'zh' ? '环比 +3 笔' : 'MoM +3 txns'), icon: 'fa-balance-scale', bgColor: '#fef3c7', iconColor: '#f59e0b' },
+        { nameKey: 'dashboard.avgMaturity', value: '45' + (language === 'zh' ? '天' : ' days'), change: (language === 'zh' ? '环比 -2天' : 'MoM -2 days'), icon: 'fa-calendar-alt', bgColor: '#dbeafe', iconColor: '#2563eb' },
+        { nameKey: 'dashboard.costAnalysis', value: '2.4' + (language === 'zh' ? '天' : ' days'), change: '-0.3', icon: 'fa-chart-pie', bgColor: '#e9d5ff', iconColor: '#8b5cf6' },
       ]
     } else {
       // 其他角色：显示通用KPI
@@ -42,6 +41,31 @@ function DashboardPage() {
       ]
     }
   }, [currentRole])
+
+  // 核心企业：确权趋势数据
+  const confirmationTrendData = useMemo(() => {
+    const locale = language === 'zh' ? 'zh-CN' : 'en-US'
+    return Array.from({ length: 7 }, (_, i) => {
+      const date = new Date()
+      date.setDate(date.getDate() - (6 - i))
+      return {
+        date: date.toLocaleDateString(locale, { month: 'short', day: 'numeric' }),
+        confirmed: Math.floor(Math.random() * 500 + 200), // 确权金额
+        pending: Math.floor(Math.random() * 300 + 100),   // 待确权金额
+      }
+    })
+  }, [language])
+
+  // 核心企业：确权效率对比数据
+  const efficiencyData = useMemo(() => {
+    return [
+      { name: t('dashboard.sampleDebtors.abcTech'), value: 1.5, color: '#3b82f6' },
+      { name: t('dashboard.sampleDebtors.xyzEngineering'), value: 2.8, color: '#10b981' },
+      { name: t('dashboard.sampleDebtors.defConstruction'), value: 3.2, color: '#f59e0b' },
+      { name: t('dashboard.sampleIssuers.constructionCompanyX'), value: 2.1, color: '#6366f1' },
+      { name: t('dashboard.sampleIssuers.constructionCompanyY'), value: 1.8, color: '#ec4899' },
+    ]
+  }, [t])
 
   // 交易趋势数据 - 使用翻译键作为 dataKey
   const transactionData = useMemo(() => {
@@ -68,9 +92,11 @@ function DashboardPage() {
         { nameKey: 'dashboard.inventory', value: 35, color: '#10b981' },
       ]
     } else if (currentRole === '核心企业') {
-      // 核心企业：已发行的应收账款（负债）
+      // 核心企业：待确权AR分布（按项目）
       return [
-        { nameKey: 'dashboard.issuedReceivables', value: 100, color: '#dc2626' },
+        { nameKey: 'dashboard.projectA', value: 40, color: '#3b82f6' },
+        { nameKey: 'dashboard.projectB', value: 35, color: '#10b981' },
+        { nameKey: 'dashboard.projectC', value: 25, color: '#f59e0b' },
       ]
     } else {
       // 其他角色：通用资产分布
@@ -87,7 +113,7 @@ function DashboardPage() {
 
 
         {/* KPI 卡片 */}
-        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${currentRole === '建筑公司' ? 'xl:grid-cols-4' : 'xl:grid-cols-6'} gap-4 mb-6`}>
+        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${currentRole === '建筑公司' ? 'xl:grid-cols-4' : currentRole === '核心企业' ? 'xl:grid-cols-5' : 'xl:grid-cols-6'} gap-4 mb-6`}>
           {kpiData.map((kpi, index) => (
             <div
               key={index}
@@ -101,7 +127,7 @@ function DashboardPage() {
                   <i className={`fas ${kpi.icon}`} style={{ color: kpi.iconColor }}></i>
                 </div>
                 <span
-                  className={`text-sm font-medium ${kpi.change.startsWith('+') ? 'text-green-600' : 'text-red-600'
+                  className={`text-sm font-medium ${kpi.change.includes('+') ? 'text-green-600' : 'text-red-600'
                     }`}
                 >
                   {kpi.change}
@@ -155,43 +181,57 @@ function DashboardPage() {
         {/* 图表区域 - 仅非建筑公司可见 */}
         {currentRole !== '建筑公司' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            {/* 交易趋势图 */}
+            {/* 左侧图表：核心企业显示确权趋势，其他显示交易趋势 */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('dashboard.transactionTrend')}</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                {currentRole === '核心企业' ? t('dashboard.confirmationTrend') : t('dashboard.transactionTrend')}
+              </h3>
               <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={transactionData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} />
-                  <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#fff',
-                      border: '1px solid #e5e7eb',
-                      borderRadius: '8px',
-                    }}
-                  />
-                  <Legend
-                    formatter={(value) => {
-                      const legendMap: Record<string, string> = {
-                        buy: t('dashboard.buy'),
-                        sell: t('dashboard.sell'),
-                        lend: t('dashboard.lend'),
-                        bridge: t('dashboard.bridge'),
-                      }
-                      return legendMap[value] || value
-                    }}
-                  />
-                  <Line type="monotone" dataKey="buy" name="buy" stroke="#3b82f6" strokeWidth={2} />
-                  <Line type="monotone" dataKey="sell" name="sell" stroke="#f97316" strokeWidth={2} />
-                  <Line type="monotone" dataKey="lend" name="lend" stroke="#8b5cf6" strokeWidth={2} />
-                  <Line type="monotone" dataKey="bridge" name="bridge" stroke="#10b981" strokeWidth={2} />
-                </LineChart>
+                {currentRole === '核心企业' ? (
+                  <LineChart data={confirmationTrendData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} />
+                    <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
+                    <Tooltip
+                      contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                    />
+                    <Legend />
+                    <Line type="monotone" dataKey="confirmed" name={t('dashboard.confirmedAmount')} stroke="#10b981" strokeWidth={2} />
+                    <Line type="monotone" dataKey="pending" name={t('dashboard.pendingConfirmationAmount')} stroke="#f59e0b" strokeWidth={2} strokeDasharray="5 5" />
+                  </LineChart>
+                ) : (
+                  <LineChart data={transactionData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} />
+                    <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
+                    <Tooltip
+                      contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                    />
+                    <Legend
+                      formatter={(value) => {
+                        const legendMap: Record<string, string> = {
+                          buy: t('dashboard.buy'),
+                          sell: t('dashboard.sell'),
+                          lend: t('dashboard.lend'),
+                          bridge: t('dashboard.bridge'),
+                        }
+                        return legendMap[value] || value
+                      }}
+                    />
+                    <Line type="monotone" dataKey="buy" name="buy" stroke="#3b82f6" strokeWidth={2} />
+                    <Line type="monotone" dataKey="sell" name="sell" stroke="#f97316" strokeWidth={2} />
+                    <Line type="monotone" dataKey="lend" name="lend" stroke="#8b5cf6" strokeWidth={2} />
+                    <Line type="monotone" dataKey="bridge" name="bridge" stroke="#10b981" strokeWidth={2} />
+                  </LineChart>
+                )}
               </ResponsiveContainer>
             </div>
 
-            {/* 资产分布图 */}
+            {/* 右侧图表：核心企业显示待确权AR分布，其他显示资产分布 */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('dashboard.assetDistribution')}</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                {currentRole === '核心企业' ? t('dashboard.pendingARDistribution') : t('dashboard.assetDistribution')}
+              </h3>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie
@@ -212,11 +252,7 @@ function DashboardPage() {
                     formatter={(value: number, _name: string, props: any) => {
                       return [`${value}%`, t(props.payload.nameKey)]
                     }}
-                    contentStyle={{
-                      backgroundColor: '#fff',
-                      border: '1px solid #e5e7eb',
-                      borderRadius: '8px',
-                    }}
+                    contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
                   />
                 </PieChart>
               </ResponsiveContainer>
@@ -291,6 +327,7 @@ function DashboardPage() {
         {/* 交易类型对比 */}
 
         {/* 底部图表区域 */}
+        {/* 底部图表区域 */}
         {currentRole === '建筑公司' ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* 融资申请趋势 */}
@@ -313,11 +350,7 @@ function DashboardPage() {
                   <YAxis yAxisId="left" stroke="#3b82f6" orientation="left" style={{ fontSize: '12px' }} />
                   <YAxis yAxisId="right" stroke="#10b981" orientation="right" style={{ fontSize: '12px' }} />
                   <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#fff',
-                      border: '1px solid #e5e7eb',
-                      borderRadius: '8px',
-                    }}
+                    contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
                   />
                   <Legend />
                   <Line yAxisId="left" type="monotone" dataKey="count" name={t('common.quantity')} stroke="#3b82f6" strokeWidth={2} />
@@ -359,17 +392,36 @@ function DashboardPage() {
                     formatter={(value: number, _name: string, props: any) => {
                       return [`${value}`, t(props.payload.nameKey)]
                     }}
-                    contentStyle={{
-                      backgroundColor: '#fff',
-                      border: '1px solid #e5e7eb',
-                      borderRadius: '8px',
-                    }}
+                    contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
                   />
                 </PieChart>
               </ResponsiveContainer>
             </div>
           </div>
+        ) : currentRole === '核心企业' ? (
+          /* 核心企业：确权效率对比 */
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('dashboard.confirmationEfficiency')}</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={efficiencyData} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" horizontal={false} />
+                <XAxis type="number" stroke="#6b7280" style={{ fontSize: '12px' }} />
+                <YAxis dataKey="name" type="category" stroke="#6b7280" style={{ fontSize: '12px' }} width={150} />
+                <Tooltip
+                  cursor={{ fill: 'transparent' }}
+                  contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                />
+                <Legend />
+                <Bar dataKey="value" name={t('dashboard.avgConfirmationTime')} radius={[0, 4, 4, 0]} barSize={20}>
+                  {efficiencyData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         ) : (
+          /* 其他角色：交易类型对比 */
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('dashboard.transactionComparison')}</h3>
             <ResponsiveContainer width="100%" height={300}>
@@ -378,11 +430,7 @@ function DashboardPage() {
                 <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} />
                 <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
                 <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#fff',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '8px',
-                  }}
+                  contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
                 />
                 <Legend
                   formatter={(value) => {
