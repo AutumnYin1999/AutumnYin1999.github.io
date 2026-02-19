@@ -70,6 +70,7 @@ export interface Translations {
     absPackaging: string
     bridge: string
     fundRecovery: string
+    pendingReviews: string
   }
 
   // 仪表盘
@@ -138,9 +139,52 @@ export interface Translations {
     financingHistory: string
     financingDate: string
     basicInfo: string
+
+    // 核心企业图表专用
+    confirmationTrend: string
+    confirmedAmount: string
+    pendingConfirmationAmount: string
+    pendingARDistribution: string
+    projectA: string
+    projectB: string
+    projectC: string
+    confirmationEfficiency: string
+    avgConfirmationTime: string
+    supplier: string
+    sampleDebtors: {
+      abcTech: string
+      xyzEngineering: string
+      defConstruction: string
+    }
+    sampleIssuers: {
+      constructionCompanyX: string
+      constructionCompanyY: string
+    }
+
     bank: string
     completed: string
     inProgress: string
+    // 验证节点专用
+    totalValidatedAR: string
+    pendingReviews: string
+    nodeEarnings: string
+    avgValidationTime: string
+    participatingSMEs: string
+    nodeUptime: string
+    pendingTasksOverview: string
+    kycPending: string
+    arPending: string
+    complianceCheck: string
+    viewAllPending: string
+    nodeEarningsTrend: string
+    monthlyAccumulated: string
+    dailyAvg: string
+    verificationTaskDistribution: string
+    nodeStatus: string
+    hsbc: string
+    kpmg: string
+    currentNode: string
+    online: string
   }
 
   // 资产发行
@@ -562,6 +606,37 @@ export interface Translations {
       certified: string
       pendingCertification: string
     }
+    // Validator Specific
+    pendingKYC: string
+    pendingAR: string
+    pendingCompliance: string
+    avgResponseTime: string
+    completedToday: string
+    taskType: string
+    taskStatus: string
+    pending: string
+    inProgress: string
+    urgent: string
+    taskID: string
+    submissionTime: string
+    submitter: string
+    review: string
+    taskDistribution: string
+    taskTrend7Days: string
+    validationHistory: string
+    validationHistoryDesc: string
+    auditTime: string
+    result: string
+    pass: string
+    reject: string
+    auditor: string
+    remarks: string
+    smeName: string
+    documentStatus: string
+    priority: string
+    coreEnterprise: string
+    complianceType: string
+    dueDate: string
   }
 
   // ABS打包
@@ -774,8 +849,8 @@ const translations: Record<Language, Translations> = {
     },
     roles: {
       admin: '平台管理员',
-      bank: '验证节点',
-      nbfi: '资本方',
+      bank: '验证节点 (银行/审计/CIC)',
+      nbfi: '资金方',
       coreEnterprise: '核心企业',
       construction: '中小企业',
     },
@@ -789,6 +864,7 @@ const translations: Record<Language, Translations> = {
       absPackaging: 'ABS打包',
       bridge: '桥接管理',
       fundRecovery: '资金回收',
+      pendingReviews: '待验证任务',
     },
     dashboard: {
       title: '智能仪表盘',
@@ -879,6 +955,27 @@ const translations: Record<Language, Translations> = {
       bank: '银行',
       completed: '已完成',
       inProgress: '进行中',
+      // 验证节点专用
+      totalValidatedAR: '网络已验证AR总额',
+      pendingReviews: '待验证任务',
+      nodeEarnings: '累计节点收益',
+      avgValidationTime: '平均验证时间',
+      participatingSMEs: '已加入SME',
+      nodeUptime: '节点在线率',
+      pendingTasksOverview: '待验证任务概览',
+      kycPending: 'KYC 待审核',
+      arPending: 'AR 验证待审核',
+      complianceCheck: '合规查询',
+      viewAllPending: '查看全部待审核',
+      nodeEarningsTrend: '节点收益趋势（近30天）',
+      monthlyAccumulated: '本月累计收益',
+      dailyAvg: '日均收益',
+      verificationTaskDistribution: '验证任务分布',
+      nodeStatus: '节点在线状态',
+      hsbc: '汇丰银行',
+      kpmg: '毕马威',
+      currentNode: '当前节点（你）',
+      online: '在线',
     },
     assetIssuance: {
       title: 'AR确权管理',
@@ -1403,6 +1500,35 @@ const translations: Record<Language, Translations> = {
         certified: '已认证',
         pendingCertification: '待认证',
       },
+      pendingKYC: '待 KYC 审核',
+      pendingAR: '待 AR 验证',
+      pendingCompliance: '待合规查询',
+      avgResponseTime: '平均审核耗时',
+      completedToday: '今日已完成',
+      taskType: '任务类型',
+      taskStatus: '状态',
+      pending: '待处理',
+      inProgress: '进行中',
+      urgent: '紧急',
+      taskID: '任务 ID',
+      submissionTime: '提交时间',
+      submitter: '提交方',
+      review: '审核',
+      taskDistribution: '任务分布',
+      taskTrend7Days: '近7天任务趋势',
+      validationHistory: '验证历史',
+      validationHistoryDesc: '展示所有已完成的审核记录',
+      auditTime: '审核时间',
+      result: '结果',
+      pass: '通过',
+      reject: '拒绝',
+      auditor: '审核人',
+      remarks: '备注',
+      smeName: '中小企业名称',
+      documentStatus: '文件状态',
+      priority: '优先级',
+      coreEnterprise: '核心企业',
+      complianceType: '合规类型',
     },
     absPackaging: {
       title: 'ABS打包平台',
@@ -1606,7 +1732,7 @@ const translations: Record<Language, Translations> = {
     },
     roles: {
       admin: 'Platform Admin',
-      bank: 'Validator',
+      bank: 'Validator (Bank/Auditor/CIC)',
       nbfi: 'Capital Provider',
       coreEnterprise: 'Core Enterprise',
       construction: 'SME',
@@ -1621,6 +1747,7 @@ const translations: Record<Language, Translations> = {
       absPackaging: 'ABS Packaging',
       bridge: 'Bridge',
       fundRecovery: 'Fund Recovery',
+      pendingReviews: 'Pending Reviews',
     },
     dashboard: {
       title: 'Smart Dashboard',
@@ -1711,6 +1838,27 @@ const translations: Record<Language, Translations> = {
       bank: 'Bank',
       completed: 'Completed',
       inProgress: 'In Progress',
+      // Validator metrics
+      totalValidatedAR: 'Total Validated AR',
+      pendingReviews: 'Pending Reviews',
+      nodeEarnings: 'My Node Earnings',
+      avgValidationTime: 'Avg Validation Time',
+      participatingSMEs: 'Participating SMEs',
+      nodeUptime: 'Node Uptime',
+      pendingTasksOverview: 'Pending Verification Overview',
+      kycPending: 'KYC Pending Review',
+      arPending: 'AR Verification Pending',
+      complianceCheck: 'Compliance Check',
+      viewAllPending: 'View All Pending Tasks',
+      nodeEarningsTrend: 'Node Earnings Trend (Last 30 Days)',
+      monthlyAccumulated: 'Monthly Accumulated',
+      dailyAvg: 'Daily Avg',
+      verificationTaskDistribution: 'Verification Task Distribution',
+      nodeStatus: 'Node Online Status',
+      hsbc: 'HSBC',
+      kpmg: 'KPMG',
+      currentNode: 'Current Node (You)',
+      online: 'Online',
     },
     assetIssuance: {
       title: 'AR Confirmation Management',
@@ -2231,6 +2379,35 @@ const translations: Record<Language, Translations> = {
         certified: 'Certified',
         pendingCertification: 'Pending Certification',
       },
+      pendingKYC: 'Pending KYC',
+      pendingAR: 'Pending AR',
+      pendingCompliance: 'Pending Compliance',
+      avgResponseTime: 'Avg. Response Time',
+      completedToday: 'Completed Today',
+      taskType: 'Task Type',
+      taskStatus: 'Status',
+      pending: 'Pending',
+      inProgress: 'In Progress',
+      urgent: 'Urgent',
+      taskID: 'Task ID',
+      submissionTime: 'Submission Time',
+      submitter: 'Submitter',
+      review: 'Review',
+      taskDistribution: 'Task Distribution',
+      taskTrend7Days: 'Task Trend (Last 7 Days)',
+      validationHistory: 'Validation History',
+      validationHistoryDesc: 'Show all completed verification records',
+      auditTime: 'Audit Time',
+      result: 'Result',
+      pass: 'Pass',
+      reject: 'Reject',
+      auditor: 'Auditor',
+      remarks: 'Remarks',
+      smeName: 'SME Name',
+      documentStatus: 'Document Status',
+      priority: 'Priority',
+      coreEnterprise: 'Core Enterprise',
+      complianceType: 'Compliance Type',
     },
     absPackaging: {
       title: 'ABS Packaging Platform',

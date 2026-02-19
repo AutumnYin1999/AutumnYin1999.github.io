@@ -315,8 +315,8 @@ function BankView() {
           />
 
           {/* 我的贷款管理 */}
-          <MyLending 
-            loans={myLoans} 
+          <MyLending
+            loans={myLoans}
             onViewDetail={handleViewDetail}
             onContact={handleContact}
             onLiquidate={handleLiquidate}

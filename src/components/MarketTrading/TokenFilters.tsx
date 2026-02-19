@@ -27,6 +27,14 @@ function TokenFilters({ filters, onFiltersChange }: TokenFiltersProps) {
     onFiltersChange({ ...filters, tokenTypes: newTypes })
   }
 
+  const handleTaskTypeToggle = (type: string) => {
+    const currentTypes = filters.taskTypes || []
+    const newTypes = currentTypes.includes(type)
+      ? currentTypes.filter(t => t !== type)
+      : [...currentTypes, type]
+    onFiltersChange({ ...filters, taskTypes: newTypes })
+  }
+
   const handleReset = () => {
     onFiltersChange({
       tokenTypes: [],
@@ -35,10 +43,83 @@ function TokenFilters({ filters, onFiltersChange }: TokenFiltersProps) {
       priceRange: [0, 1000000],
       dueTime: undefined,
       inventoryType: undefined,
-      yieldRange: undefined,
+      // yieldRange removed
       remainingDays: undefined,
       creditRating: undefined,
+      taskTypes: [],
+      taskStatus: 'all',
     })
+  }
+
+  if (isBank) {
+    return (
+      <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-gray-800">
+            <i className="fas fa-filter mr-2 text-blue-600"></i>
+            {t('marketTrading.filterConditions')}
+          </h3>
+          <button
+            onClick={handleReset}
+            className="text-sm text-gray-600 hover:text-gray-800 transition-colors"
+          >
+            <i className="fas fa-redo mr-1"></i>
+            {t('marketTrading.reset')}
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Task Type (Tags) */}
+          <div className="lg:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              {t('marketTrading.taskType')}
+            </label>
+            <div className="flex flex-wrap gap-3">
+              {[
+                { id: 'kyc', labelKey: 'marketTrading.pendingKYC' },
+                { id: 'ar', labelKey: 'marketTrading.pendingAR' },
+                { id: 'compliance', labelKey: 'marketTrading.pendingCompliance' },
+              ].map(type => {
+                const isSelected = filters.taskTypes?.includes(type.id)
+                return (
+                  <button
+                    key={type.id}
+                    onClick={() => handleTaskTypeToggle(type.id)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors border ${isSelected
+                      ? 'bg-blue-50 border-blue-200 text-blue-700'
+                      : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+                      }`}
+                  >
+                    {t(type.labelKey).replace('Pending ', '').replace('待 ', '').replace('审核', '').replace('验证', '').replace('查询', '')}
+                    {/* Basic cleanup or rely on t() returning full string. User requested: KYC | AR 验证 | 合规查询 */}
+                    {/* Let's use direct labels or existing keys. existing keys have "Pending". User wants "KYC", "AR Verification". */}
+                    {/* Reuse keys but maybe strip "Pending"? Or adds new keys? User said: "KYC | AR Verification | Compliance Check". */}
+                    {/* I'll use hardcoded for now or reuse keys. I reused keys. */}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Status (Select) */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              {t('marketTrading.taskStatus')}
+            </label>
+            <select
+              value={filters.taskStatus || 'all'}
+              onChange={(e) => onFiltersChange({ ...filters, taskStatus: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="all">{t('marketTrading.all')}</option>
+              <option value="pending">{t('marketTrading.pending')}</option>
+              <option value="inProgress">{t('marketTrading.inProgress')}</option>
+              <option value="urgent">{t('marketTrading.urgent')}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -196,87 +277,7 @@ function TokenFilters({ filters, onFiltersChange }: TokenFiltersProps) {
           </div>
         )}
 
-        {/* 银行专用筛选条件 */}
-        {isBank && filters.tokenTypes.includes('receivable') && (
-          <>
-            {/* 年化收益率范围 */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {language === 'zh' ? '年化收益率范围' : 'Annual Yield Range'} (%)
-              </label>
-              <div className="flex items-center space-x-2">
-                <input
-                  type="number"
-                  min="0"
-                  max="20"
-                  step="0.5"
-                  value={filters.yieldRange?.[0] || ''}
-                  onChange={(e) => onFiltersChange({
-                    ...filters,
-                    yieldRange: [parseFloat(e.target.value) || 0, filters.yieldRange?.[1] || 20]
-                  })}
-                  placeholder={language === 'zh' ? '最低' : 'Min'}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-                <span className="text-gray-500">-</span>
-                <input
-                  type="number"
-                  min="0"
-                  max="20"
-                  step="0.5"
-                  value={filters.yieldRange?.[1] || ''}
-                  onChange={(e) => onFiltersChange({
-                    ...filters,
-                    yieldRange: [filters.yieldRange?.[0] || 0, parseFloat(e.target.value) || 20]
-                  })}
-                  placeholder={language === 'zh' ? '最高' : 'Max'}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-              </div>
-            </div>
 
-            {/* 剩余期限筛选 */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {language === 'zh' ? '剩余期限' : 'Remaining Days'}
-              </label>
-              <select
-                value={filters.remainingDays || 'all'}
-                onChange={(e) => onFiltersChange({
-                  ...filters,
-                  remainingDays: e.target.value === 'all' ? undefined : e.target.value
-                })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="all">{t('marketTrading.all')}</option>
-                <option value="30">{language === 'zh' ? '30天内' : 'Within 30 days'}</option>
-                <option value="90">{language === 'zh' ? '90天内' : 'Within 90 days'}</option>
-                <option value="180">{language === 'zh' ? '180天内' : 'Within 180 days'}</option>
-                <option value="365">{language === 'zh' ? '365天内' : 'Within 365 days'}</option>
-              </select>
-            </div>
-
-            {/* 信用评级筛选 */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {language === 'zh' ? '债务人信用评级' : 'Debtor Credit Rating'}
-              </label>
-              <select
-                value={filters.creditRating || 'all'}
-                onChange={(e) => onFiltersChange({
-                  ...filters,
-                  creditRating: e.target.value === 'all' ? undefined : e.target.value
-                })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="all">{t('marketTrading.all')}</option>
-                <option value="A+">{language === 'zh' ? 'A级以上' : 'A+ and above'}</option>
-                <option value="A">{language === 'zh' ? 'A级' : 'A'}</option>
-                <option value="B+">{language === 'zh' ? 'B+级及以上' : 'B+ and above'}</option>
-              </select>
-            </div>
-          </>
-        )}
       </div>
     </div>
   )

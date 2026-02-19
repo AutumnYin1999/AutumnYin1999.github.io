@@ -15,7 +15,7 @@ function Sidebar({ isOpen }: SidebarProps) {
   // 基础菜单项
   const baseMenuItems = [
     { id: 'dashboard', labelKey: 'navigation.dashboard', icon: 'fa-chart-line', path: '/app/dashboard', permission: 'dashboard' },
-    { id: 'market-trading', labelKey: 'My Listed AR', icon: 'fa-exchange-alt', path: '/app/market-trading', permission: 'marketTrading' },
+    { id: 'market-trading', labelKey: currentRole === '银行' ? 'navigation.pendingReviews' : 'My Listed AR', icon: 'fa-exchange-alt', path: '/app/market-trading', permission: 'marketTrading' },
     { id: 'lending', labelKey: 'navigation.lending', icon: 'fa-hand-holding-usd', path: '/app/lending', permission: 'lending' },
     { id: 'abs-packaging', labelKey: 'navigation.absPackaging', icon: 'fa-box', path: '/app/abs-packaging', permission: 'absPackaging' },
     { id: 'bridge', labelKey: 'navigation.bridge', icon: 'fa-bridge', path: '/app/bridge', permission: 'bridge' },

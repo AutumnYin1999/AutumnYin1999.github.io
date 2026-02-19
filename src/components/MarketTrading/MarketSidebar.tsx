@@ -1,6 +1,7 @@
 import { Token } from '../../pages/MarketTrading'
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts'
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, PieChart, Pie, Cell, Legend } from 'recharts'
 import { useLanguage } from '../../hooks/useLanguage'
+import { useRole } from '../../hooks/useRole'
 
 interface MarketSidebarProps {
   watchlist: string[]
@@ -11,10 +12,11 @@ interface MarketSidebarProps {
 
 function MarketSidebar({ watchlist, tokens, recentTransactions, onRemoveFromWatchlist }: MarketSidebarProps) {
   const { t } = useLanguage()
+  const { currentRole } = useRole()
   // 获取观察列表中的代币
   const watchedTokens = tokens.filter(token => watchlist.includes(token.id))
 
-  // 模拟市场趋势数据
+  // 模拟市场趋势数据 (Generic)
   const trendData = [
     { day: t('marketTrading.monday'), price: 45000 },
     { day: t('marketTrading.tuesday'), price: 45200 },
@@ -24,6 +26,96 @@ function MarketSidebar({ watchlist, tokens, recentTransactions, onRemoveFromWatc
     { day: t('marketTrading.saturday'), price: 45800 },
     { day: t('marketTrading.sunday'), price: 46200 },
   ]
+
+  // Validator Data
+  const taskDistributionData = [
+    { name: 'KYC', value: 35, color: '#3b82f6' }, // Blue
+    { name: 'AR', value: 45, color: '#22c55e' }, // Green
+    { name: 'Compliance', value: 20, color: '#a855f7' }, // Purple
+  ]
+
+  const taskTrendData = [
+    { day: 'Mon', count: 12 },
+    { day: 'Tue', count: 18 },
+    { day: 'Wed', count: 15 },
+    { day: 'Thu', count: 25 },
+    { day: 'Fri', count: 22 },
+    { day: 'Sat', count: 10 },
+    { day: 'Sun', count: 8 },
+  ]
+
+  if (currentRole === '银行') {
+    return (
+      <div className="space-y-6">
+        {/* Task Distribution */}
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+          <div className="p-4 border-b border-gray-200">
+            <h3 className="font-semibold text-gray-800 flex items-center">
+              <i className="fas fa-chart-pie mr-2 text-blue-600"></i>
+              {t('marketTrading.taskDistribution')}
+            </h3>
+          </div>
+          <div className="p-4 flex flex-col items-center">
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={taskDistributionData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {taskDistributionData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value: number) => [`${value}%`, 'Percentage']}
+                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                  />
+                  <Legend verticalAlign="bottom" height={36} iconType="circle" />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Task Trend */}
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+          <div className="p-4 border-b border-gray-200">
+            <h3 className="font-semibold text-gray-800 flex items-center">
+              <i className="fas fa-chart-line mr-2 text-green-600"></i>
+              {t('marketTrading.taskTrend7Days')}
+            </h3>
+          </div>
+          <div className="p-4">
+            <div className="h-48 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={taskTrendData}>
+                  <XAxis dataKey="day" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                  <Tooltip
+                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                    cursor={{ stroke: '#e2e8f0', strokeWidth: 2 }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="count"
+                    stroke="#3b82f6"
+                    strokeWidth={3}
+                    dot={{ fill: '#3b82f6', strokeWidth: 2, r: 4, stroke: '#fff' }}
+                    activeDot={{ r: 6, strokeWidth: 0 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -52,11 +144,10 @@ function MarketSidebar({ watchlist, tokens, recentTransactions, onRemoveFromWatc
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-1">
                       <span className="text-sm font-semibold text-gray-800">{token.id}</span>
-                      <span className={`px-1.5 py-0.5 rounded text-xs ${
-                        token.type === 'receivable'
-                          ? 'bg-blue-100 text-blue-700'
-                          : 'bg-green-100 text-green-700'
-                      }`}>
+                      <span className={`px-1.5 py-0.5 rounded text-xs ${token.type === 'receivable'
+                        ? 'bg-blue-100 text-blue-700'
+                        : 'bg-green-100 text-green-700'
+                        }`}>
                         {token.type === 'receivable' ? 'AR' : 'INV'}
                       </span>
                     </div>

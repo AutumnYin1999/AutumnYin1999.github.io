@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts'
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend, CartesianGrid, AreaChart, Area } from 'recharts'
 import { useRole } from '../hooks/useRole'
 import { useLanguage } from '../hooks/useLanguage'
 
@@ -28,6 +28,16 @@ function DashboardPage() {
         { nameKey: 'dashboard.totalLiabilities', value: 'HK$ 2,800K', change: (language === 'zh' ? '环比 +3 笔' : 'MoM +3 txns'), icon: 'fa-balance-scale', bgColor: '#fef3c7', iconColor: '#f59e0b' },
         { nameKey: 'dashboard.avgMaturity', value: '45' + (language === 'zh' ? '天' : ' days'), change: (language === 'zh' ? '环比 -2天' : 'MoM -2 days'), icon: 'fa-calendar-alt', bgColor: '#dbeafe', iconColor: '#2563eb' },
         { nameKey: 'dashboard.costAnalysis', value: '2.4' + (language === 'zh' ? '天' : ' days'), change: '-0.3', icon: 'fa-chart-pie', bgColor: '#e9d5ff', iconColor: '#8b5cf6' },
+      ]
+    } else if (currentRole === '银行') {
+      // 验证节点 (银行/审计/CIC)
+      return [
+        { nameKey: 'dashboard.totalValidatedAR', value: 'HK$ 1,245.8M', change: '↑2.1%', icon: 'fa-check-double', bgColor: '#dbeafe', iconColor: '#2563eb' },
+        { nameKey: 'dashboard.pendingReviews', value: '24', change: language === 'zh' ? '+5 今日' : '+5 today', icon: 'fa-tasks', bgColor: '#fef3c7', iconColor: '#f59e0b' },
+        { nameKey: 'dashboard.nodeEarnings', value: 'HK$ 162.5K', change: '↑12.5K', icon: 'fa-coins', bgColor: '#d1fae5', iconColor: '#10b981' },
+        { nameKey: 'dashboard.avgValidationTime', value: '2.3' + (language === 'zh' ? ' 天' : ' days'), change: language === 'zh' ? '↓0.1天' : '↓0.1d', icon: 'fa-clock', bgColor: '#e0e7ff', iconColor: '#6366f1' },
+        { nameKey: 'dashboard.participatingSMEs', value: '89', change: '+3', icon: 'fa-building', bgColor: '#fce7f3', iconColor: '#ec4899' },
+        { nameKey: 'dashboard.nodeUptime', value: '99.8%', change: '↓0.1%', icon: 'fa-server', bgColor: '#f3f4f6', iconColor: '#4b5563' },
       ]
     } else {
       // 其他角色：显示通用KPI
@@ -82,6 +92,33 @@ function DashboardPage() {
       }
     })
   }, [language])
+
+  // 验证节点：收益趋势数据 (30 days)
+  const nodeEarningsData = useMemo(() => {
+    const locale = language === 'zh' ? 'zh-CN' : 'en-US'
+    let total = 120000 // Base
+    return Array.from({ length: 30 }, (_, i) => {
+      const date = new Date()
+      date.setDate(date.getDate() - (29 - i))
+      // Smoother random curve
+      const daily = Math.floor(Math.random() * 800 + 1000 + (i * 20))
+      total += daily
+      return {
+        date: date.toLocaleDateString(locale, { month: 'short', day: 'numeric' }),
+        earnings: total,
+        daily: daily
+      }
+    })
+  }, [language])
+
+  // 验证节点：任务分布数据
+  const verificationDistributionData = useMemo(() => {
+    return [
+      { nameKey: 'dashboard.kycPending', value: 35, color: '#3b82f6' },
+      { nameKey: 'dashboard.arPending', value: 60, color: '#10b981' },
+      { nameKey: 'dashboard.complianceCheck', value: 5, color: '#f59e0b' },
+    ]
+  }, [])
 
   // 根据角色显示不同的资产分布数据
   const assetDistribution = useMemo(() => {
@@ -177,9 +214,99 @@ function DashboardPage() {
           </div>
         )}
 
-        {/* 图表区域 */}
-        {/* 图表区域 - 仅非建筑公司可见 */}
-        {currentRole !== '建筑公司' && (
+        {/* 验证节点专用区域 (Pending Tasks + Earnings Trend) */}
+        {currentRole === '银行' && (
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-6">
+            {/* 左侧：待验证任务概览 (40%) */}
+            <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col h-full">
+              <h3 className="text-lg font-semibold text-gray-800 mb-6 flex items-center">
+                <i className="fas fa-tasks mr-2 text-blue-500"></i>
+                {t('dashboard.pendingTasksOverview')}
+              </h3>
+
+              <div className="space-y-4 flex-1">
+                {/* KYC */}
+                <div className="bg-gray-50 rounded-lg p-4 flex items-center justify-between border border-gray-100 hover:shadow-md transition-shadow">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
+                      <i className="fas fa-user-shield"></i>
+                    </div>
+                    <span className="text-gray-700 font-medium">{t('dashboard.kycPending')}</span>
+                  </div>
+                  <span className="text-xl font-bold text-gray-800">8</span>
+                </div>
+
+                {/* AR Verification */}
+                <div className="bg-gray-50 rounded-lg p-4 flex items-center justify-between border border-gray-100 hover:shadow-md transition-shadow">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center">
+                      <i className="fas fa-file-contract"></i>
+                    </div>
+                    <span className="text-gray-700 font-medium">{t('dashboard.arPending')}</span>
+                  </div>
+                  <span className="text-xl font-bold text-gray-800">14</span>
+                </div>
+
+                {/* Compliance */}
+                <div className="bg-gray-50 rounded-lg p-4 flex items-center justify-between border border-gray-100 hover:shadow-md transition-shadow">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center">
+                      <i className="fas fa-search-dollar"></i>
+                    </div>
+                    <span className="text-gray-700 font-medium">{t('dashboard.complianceCheck')}</span>
+                  </div>
+                  <span className="text-xl font-bold text-gray-800">2</span>
+                </div>
+              </div>
+
+              <button className="w-full mt-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors shadow-md text-lg">
+                {t('dashboard.viewAllPending')}
+              </button>
+            </div>
+
+            {/* 右侧：节点收益趋势 (60%) */}
+            <div className="lg:col-span-3 bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-800">
+                  <i className="fas fa-chart-line mr-2 text-green-500"></i>
+                  {t('dashboard.nodeEarningsTrend')}
+                </h3>
+                <div className="flex space-x-4 text-sm">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                    <span className="text-gray-600">{t('dashboard.monthlyAccumulated')}: <span className="font-bold text-gray-800">HK$ 42.8K</span></span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 rounded-full bg-gray-300 mr-2"></div>
+                    <span className="text-gray-600">{t('dashboard.dailyAvg')}: <span className="font-bold text-gray-800">HK$ 1.4K</span></span>
+                  </div>
+                </div>
+              </div>
+              <ResponsiveContainer width="100%" height={320}>
+                <AreaChart data={nodeEarningsData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorEarnings" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
+                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
+                  <XAxis dataKey="date" stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} tickMargin={10} minTickGap={30} />
+                  <YAxis stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `HK$${(value / 1000).toFixed(0)}K`} domain={['auto', 'auto']} />
+                  <Tooltip
+                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                    formatter={(value: any) => [`HK$ ${value.toLocaleString()}`, t('dashboard.nodeEarnings')]}
+                    labelStyle={{ color: '#6b7280', marginBottom: '4px' }}
+                  />
+                  <Area type="monotone" dataKey="earnings" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorEarnings)" activeDot={{ r: 6 }} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        )}
+
+        {/* 图表区域 - 仅非建筑公司且非验证节点可见 */}
+        {currentRole !== '建筑公司' && currentRole !== '银行' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* 左侧图表：核心企业显示确权趋势，其他显示交易趋势 */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
@@ -419,6 +546,68 @@ function DashboardPage() {
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
+          </div>
+        ) : currentRole === '银行' ? (
+          /* 验证节点：底部区域 (节点在线状态 + 验证任务分布) */
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            {/* Left: Node Online Status (List) - 40% */}
+            <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('dashboard.nodeStatus')}</h3>
+              <div className="space-y-4 flex-1">
+                {[
+                  { nameKey: 'dashboard.hsbc', status: 'online', color: 'bg-green-500' },
+                  { nameKey: 'dashboard.kpmg', status: 'online', color: 'bg-green-500' },
+                  { nameKey: 'dashboard.cic', status: 'online', color: 'bg-green-500' },
+                  { nameKey: 'dashboard.currentNode', status: 'online', color: 'bg-green-500', bold: true },
+                ].map((node, index) => (
+                  <div key={index} className={`flex items-center justify-between p-4 rounded-lg bg-gray-50 border border-gray-100 ${node.bold ? 'bg-blue-50 border-blue-100 ring-1 ring-blue-100' : ''} hover:bg-gray-100 transition-colors`}>
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-sm ${node.bold ? 'bg-blue-100 text-blue-600' : 'bg-white text-gray-400'}`}>
+                        <i className="fas fa-server"></i>
+                      </div>
+                      <span className={`text-base ${node.bold ? 'font-bold text-gray-800' : 'font-medium text-gray-700'}`}>{t(node.nameKey)}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <span className={`w-2.5 h-2.5 rounded-full ${node.color} animate-pulse shadow-sm shadow-green-200`}></span>
+                      <span className="text-sm font-medium text-green-600 bg-green-50 px-2 py-1 rounded-md">{t('dashboard.online')}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: Verification Distribution (Pie Chart) - 60% */}
+            <div className="lg:col-span-3 bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col items-center">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 w-full">{t('dashboard.verificationTaskDistribution')}</h3>
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={verificationDistributionData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={80}
+                    outerRadius={120}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {verificationDistributionData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value: number, _name: string, props: any) => {
+                      return [`${value}%`, t(props.payload.nameKey)]
+                    }}
+                    contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                  />
+                  <Legend
+                    formatter={(value, entry: any) => t(entry.payload.nameKey)}
+                    wrapperStyle={{ paddingTop: '20px' }}
+                    verticalAlign="bottom"
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         ) : (
           /* 其他角色：交易类型对比 */

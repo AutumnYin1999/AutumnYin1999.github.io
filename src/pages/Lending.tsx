@@ -11,7 +11,7 @@ function Lending() {
   const [userRole, setUserRole] = useState<'核心企业' | '建筑公司' | 'NBFI' | 'Bank' | 'admin' | '系统管理员'>(() => {
     return (localStorage.getItem('userRole') as any) || 'NBFI'
   })
-  
+
   // 监听localStorage变化（当在同一标签页切换角色时）
   useEffect(() => {
     const handleStorageChange = () => {
@@ -20,10 +20,10 @@ function Lending() {
         setUserRole(newRole)
       }
     }
-    
+
     // 监听storage事件（跨标签页）
     window.addEventListener('storage', handleStorageChange)
-    
+
     // 定期检查localStorage（同一标签页）
     const interval = setInterval(() => {
       const currentRole = localStorage.getItem('userRole') as any
@@ -31,7 +31,7 @@ function Lending() {
         setUserRole(currentRole)
       }
     }, 500)
-    
+
     return () => {
       window.removeEventListener('storage', handleStorageChange)
       clearInterval(interval)
@@ -48,7 +48,7 @@ function Lending() {
       <div className="mb-6">
         <div className="flex items-center space-x-2 mb-2">
           <h2 className="text-2xl font-bold text-gray-800">
-            {isBank ? (language === 'zh' ? '借贷管理（贷方）' : 'Lending Management (Lender)') : t('lending.title')}
+            {isBank ? t('marketTrading.validationHistory') : t('lending.title')}
           </h2>
           {isAdmin && (
             <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
@@ -70,8 +70,8 @@ function Lending() {
           {isAdmin
             ? t('lending.adminDescription') || '系统管理员可以查看所有借贷管理功能'
             : isNBFI
-            ? t('lending.nbfiDescription') || '管理您的抵押借款和申请新借款'
-            : (language === 'zh' ? '管理您的贷款业务和审批新的贷款申请' : 'Manage your lending business and approve new loan applications')}
+              ? t('lending.nbfiDescription') || '管理您的抵押借款和申请新借款'
+              : (isBank ? t('marketTrading.validationHistoryDesc') : (language === 'zh' ? '管理您的贷款业务和审批新的贷款申请' : 'Manage your lending business and approve new loan applications'))}
         </p>
       </div>
 
