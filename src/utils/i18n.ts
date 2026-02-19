@@ -1441,7 +1441,7 @@ const translations: Record<Language, Translations> = {
       lowRisk: '低风险',
       mediumRisk: '中风险',
       highRisk: '高风险',
-      issuer: '发行方',
+
       priceRange: '价格范围',
       dueTime: '到期时间',
       withinDays: '天内',
@@ -1452,7 +1452,7 @@ const translations: Record<Language, Translations> = {
       recentTransactions: '最近交易',
       noTransactionRecords: '暂无交易记录',
       marketTrend: '市场趋势（7天）',
-      price: '价格',
+
       monday: '周一',
       tuesday: '周二',
       wednesday: '周三',
@@ -1466,8 +1466,8 @@ const translations: Record<Language, Translations> = {
       pendingCertification: '待认证',
       currentPrice: '当前价格',
       discount: '折扣',
-      receivable: '应收账款',
-      inventory: '库存',
+
+
       sampleDebtors: {
         abcTech: 'ABC科技有限公司',
         xyzEngineering: 'XYZ工程集团',
