@@ -24,6 +24,30 @@ export interface Translations {
     select: string
     close: string
     back: string
+    minutes: string
+    normal: string
+    addressBook: string
+    advancedOptions: string
+    slippageProtection: string
+    default: string
+    gasStrategy: string
+    standard: string
+    fast: string
+    custom: string
+    items: string
+    history: string
+    targetChain: string
+    quantity: string
+    value: string
+    chainConfirming: string
+    blocks: string
+    noPermission: string
+    quickActions: string
+    transactionId: string
+    operations: string
+    retry: string
+    reportIssue: string
+    description: string
   }
 
   // 角色
@@ -123,6 +147,25 @@ export interface Translations {
   assetIssuance: {
     title: string
     description: string
+    pendingConfirmationList: string
+    confirmedList: string
+    rejectedList: string
+    confirmationTime: string
+    rejectionTime: string
+    arDetails: string
+    modify: string
+    history: string
+    pendingCount: string
+    pendingTotal: string
+    smeName: string
+    submissionTime: string
+    reject: string
+    viewContract: string
+    confirmReject: string
+    rejectReason: string
+    enterRejectReason: string
+    confirmSuccess: string
+    rejectSuccess: string
     receivableTab: string
     inventoryTab: string
     noPermission: string
@@ -677,26 +720,7 @@ export interface Translations {
     lightTheme: string
   }
 
-  // 通用补充
-  common: {
-    minutes: string
-    normal: string
-    addressBook: string
-    advancedOptions: string
-    slippageProtection: string
-    default: string
-    gasStrategy: string
-    standard: string
-    fast: string
-    custom: string
-    items: string
-    history: string
-    targetChain: string
-    quantity: string
-    value: string
-    chainConfirming: string
-    blocks: string
-  }
+
 }
 
 const translations: Record<Language, Translations> = {
@@ -723,6 +747,23 @@ const translations: Record<Language, Translations> = {
       select: '选择',
       close: '关闭',
       back: '返回',
+      minutes: '分钟',
+      normal: '正常',
+      addressBook: '地址簿',
+      advancedOptions: '高级选项',
+      slippageProtection: '滑点保护',
+      default: '默认',
+      gasStrategy: 'Gas费策略',
+      standard: '标准',
+      fast: '快速',
+      custom: '自定义',
+      items: '项',
+      history: '历史',
+      targetChain: '目标链',
+      quantity: '数量',
+      value: '价值',
+      chainConfirming: '联盟链确认中',
+      blocks: '区块',
       noPermission: '您没有权限访问此功能',
       quickActions: '一键操作',
       transactionId: '交易ID',
@@ -740,7 +781,7 @@ const translations: Record<Language, Translations> = {
     },
     navigation: {
       dashboard: '仪表盘',
-      assetIssuance: '资产发行',
+      assetIssuance: 'AR确权管理',
       receivablesManagement: '应收账款管理',
       inventoryIssuance: '库存代币发行',
       marketTrading: '市场交易',
@@ -840,8 +881,27 @@ const translations: Record<Language, Translations> = {
       inProgress: '进行中',
     },
     assetIssuance: {
-      title: '资产发行',
-      description: '创建并发行应收账款代币或库存代币',
+      title: 'AR确权管理',
+      description: '核心企业对应收账款进行确权，将其转化为链上可流转的数字资产，并管理待确权与已确权的单据。',
+      pendingConfirmationList: '待确认列表',
+      confirmedList: '已确认列表',
+      rejectedList: '已拒绝列表',
+      history: '历史记录',
+      pendingCount: '待确认笔数',
+      pendingTotal: '待确认总额',
+      smeName: 'SME名称',
+      submissionTime: '提交时间',
+      confirmationTime: '确权时间',
+      rejectionTime: '拒绝时间',
+      arDetails: 'AR详情',
+      reject: '拒绝',
+      modify: '修改',
+      viewContract: '查看合同',
+      confirmReject: '确认拒绝',
+      rejectReason: '拒绝原因',
+      enterRejectReason: '请输入拒绝原因（可选）',
+      confirmSuccess: '确权成功',
+      rejectSuccess: '已拒绝',
       receivableTab: '应收账款代币发行',
       inventoryTab: '库存代币发行',
       noPermission: '您没有资产发行权限',
@@ -1494,25 +1554,7 @@ const translations: Record<Language, Translations> = {
       darkTheme: '暗色主题',
       lightTheme: '亮色主题',
     },
-    common: {
-      minutes: '分钟',
-      normal: '正常',
-      addressBook: '地址簿',
-      advancedOptions: '高级选项',
-      slippageProtection: '滑点保护',
-      default: '默认',
-      gasStrategy: 'Gas费策略',
-      standard: '标准',
-      fast: '快速',
-      custom: '自定义',
-      items: '项',
-      history: '历史',
-      targetChain: '目标链',
-      quantity: '数量',
-      value: '价值',
-      chainConfirming: '联盟链确认中',
-      blocks: '区块',
-    },
+
   },
   en: {
     common: {
@@ -1544,6 +1586,23 @@ const translations: Record<Language, Translations> = {
       retry: 'Retry',
       reportIssue: 'Report Issue',
       description: 'Description',
+      minutes: 'minutes',
+      normal: 'Normal',
+      addressBook: 'Address Book',
+      advancedOptions: 'Advanced Options',
+      slippageProtection: 'Slippage Protection',
+      default: 'Default',
+      gasStrategy: 'Gas Strategy',
+      standard: 'Standard',
+      fast: 'Fast',
+      custom: 'Custom',
+      items: 'items',
+      history: 'History',
+      targetChain: 'Target Chain',
+      quantity: 'Quantity',
+      value: 'Value',
+      chainConfirming: 'Chain Confirming',
+      blocks: 'blocks',
     },
     roles: {
       admin: 'Platform Admin',
@@ -1554,7 +1613,7 @@ const translations: Record<Language, Translations> = {
     },
     navigation: {
       dashboard: 'Dashboard',
-      assetIssuance: 'Asset Issuance',
+      assetIssuance: 'AR Confirmation Management',
       receivablesManagement: 'Receivables Management',
       inventoryIssuance: 'Inventory Issuance',
       marketTrading: 'Market Trading',
@@ -1654,8 +1713,27 @@ const translations: Record<Language, Translations> = {
       inProgress: 'In Progress',
     },
     assetIssuance: {
-      title: 'Asset Issue',
-      description: 'Create and issue accounts receivable tokens or inventory tokens',
+      title: 'AR Confirmation Management',
+      description: 'Core enterprises confirm Accounts Receivable (AR) to convert them into transferable digital assets on-chain, and manage pending and confirmed documents.',
+      pendingConfirmationList: 'Pending Confirmation List',
+      confirmedList: 'Confirmed List',
+      rejectedList: 'Rejected List',
+      history: 'History',
+      pendingCount: 'Pending Count',
+      pendingTotal: 'Pending Total Amount',
+      smeName: 'SME Name',
+      submissionTime: 'Submission Time',
+      confirmationTime: 'Confirmation Time',
+      rejectionTime: 'Rejection Time',
+      arDetails: 'AR Details',
+      reject: 'Reject',
+      modify: 'Modify',
+      viewContract: 'View Contract',
+      confirmReject: 'Confirm Reject',
+      rejectReason: 'Rejection Reason',
+      enterRejectReason: 'Enter rejection reason (optional)',
+      confirmSuccess: 'Confirmation Successful',
+      rejectSuccess: 'Rejected Successfully',
       receivableTab: 'Accounts Receivable Tokens',
       inventoryTab: 'Inventory Tokens',
       noPermission: 'You do not have asset issuance permission',
@@ -1664,7 +1742,7 @@ const translations: Record<Language, Translations> = {
       autoGenerated: '(Auto-generated by system)',
       debtorName: 'Debtor Name',
       selectDebtor: 'Please select debtor',
-      receivableAmount: 'Accounts Receivable Amount',
+      receivableAmount: 'AR Amount',
       enterAmount: 'Enter amount',
       dueDate: 'Due Date',
       selectDueDate: 'Please select due date',
@@ -2303,25 +2381,6 @@ const translations: Record<Language, Translations> = {
       freeExploreDesc: 'No time limit',
       darkTheme: 'Dark Theme',
       lightTheme: 'Light Theme',
-    },
-    common: {
-      minutes: 'minutes',
-      normal: 'Normal',
-      addressBook: 'Address Book',
-      advancedOptions: 'Advanced Options',
-      slippageProtection: 'Slippage Protection',
-      default: 'Default',
-      gasStrategy: 'Gas Strategy',
-      standard: 'Standard',
-      fast: 'Fast',
-      custom: 'Custom',
-      items: 'items',
-      history: 'History',
-      targetChain: 'Target Chain',
-      quantity: 'Quantity',
-      value: 'Value',
-      chainConfirming: 'Chain Confirming',
-      blocks: 'blocks',
     },
   },
 }
