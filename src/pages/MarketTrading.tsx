@@ -8,6 +8,7 @@ import MarketSidebar from '../components/MarketTrading/MarketSidebar'
 import PurchaseModal from '../components/MarketTrading/PurchaseModal'
 import BatchPurchaseModal from '../components/MarketTrading/BatchPurchaseModal'
 import MyListingsContent from '../components/MarketTrading/MyListingsContent'
+import ValidatorPendingReviews from '../components/MarketTrading/ValidatorPendingReviews'
 
 export interface Token {
   id: string
@@ -51,7 +52,12 @@ function MarketTrading() {
   if (currentRole === '建筑公司') {
     return <MyListingsContent />
   }
-  
+
+  // 银行角色显示"待处理审核"面板
+  if (currentRole === '银行') {
+    return <ValidatorPendingReviews />
+  }
+
   // 创建公司名称映射函数
   const getDebtorName = (debtorKey: string) => {
     const debtorMap: Record<string, string> = {
@@ -61,7 +67,7 @@ function MarketTrading() {
     }
     return debtorMap[debtorKey] || debtorKey
   }
-  
+
   // 创建库存类型映射函数
   const getInventoryType = (typeKey: string) => {
     const typeMap: Record<string, string> = {
@@ -71,7 +77,7 @@ function MarketTrading() {
     }
     return typeMap[typeKey] || typeKey
   }
-  
+
   // 创建库存物品映射函数
   const getInventoryItem = (itemKey: string) => {
     const itemMap: Record<string, string> = {
@@ -81,7 +87,7 @@ function MarketTrading() {
     }
     return itemMap[itemKey] || itemKey
   }
-  
+
   // 创建存储位置映射函数
   const getStorageLocation = (locationKey: string) => {
     const locationMap: Record<string, string> = {
@@ -91,7 +97,7 @@ function MarketTrading() {
     }
     return locationMap[locationKey] || locationKey
   }
-  
+
   // 创建质量状态映射函数
   const getQualityStatus = (statusKey: string) => {
     const statusMap: Record<string, string> = {
@@ -100,7 +106,7 @@ function MarketTrading() {
     }
     return statusMap[statusKey] || statusKey
   }
-  
+
   const [filters, setFilters] = useState<FilterState>({
     tokenTypes: [],
     riskLevel: 'all',
@@ -321,18 +327,18 @@ function MarketTrading() {
       quantity,
       totalPrice,
       timestamp: new Date().toLocaleString('zh-CN'),
-      hash: '0x' + Array.from({ length: 64 }, () => 
+      hash: '0x' + Array.from({ length: 64 }, () =>
         Math.floor(Math.random() * 16).toString(16)
       ).join(''),
     }
-    
+
     setRecentTransactions(prev => [transaction, ...prev].slice(0, 10))
     setShowPurchaseModal(false)
     setSelectedToken(null)
   }
 
   const toggleWatchlist = (tokenId: string) => {
-    setWatchlist(prev => 
+    setWatchlist(prev =>
       prev.includes(tokenId)
         ? prev.filter(id => id !== tokenId)
         : [...prev, tokenId]
@@ -370,12 +376,6 @@ function MarketTrading() {
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center space-x-3">
             <h2 className="text-2xl font-bold text-gray-800">{t('marketTrading.title')}</h2>
-            {currentRole === '银行' && (
-              <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium flex items-center">
-                <i className="fas fa-building-columns mr-2"></i>
-                {language === 'zh' ? '银行视图' : 'Bank View'}
-              </span>
-            )}
           </div>
         </div>
         <p className="text-gray-600">{t('marketTrading.description') || '浏览和交易应收账款代币与库存代币'}</p>
@@ -427,14 +427,6 @@ function MarketTrading() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {filteredTokens.map(token => (
                 <div key={token.id} className="relative">
-                  {currentRole === '银行' && (
-                    <input
-                      type="checkbox"
-                      checked={selectedTokens.includes(token.id)}
-                      onChange={() => toggleTokenSelection(token.id)}
-                      className="absolute top-4 right-4 z-10 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                    />
-                  )}
                   <TokenCard
                     token={token}
                     onPurchase={() => handlePurchase(token)}
