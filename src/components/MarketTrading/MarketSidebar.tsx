@@ -11,7 +11,7 @@ interface MarketSidebarProps {
 }
 
 function MarketSidebar({ watchlist, tokens, recentTransactions, onRemoveFromWatchlist }: MarketSidebarProps) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const { currentRole } = useRole()
   // 获取观察列表中的代币
   const watchedTokens = tokens.filter(token => watchlist.includes(token.id))
@@ -111,6 +111,105 @@ function MarketSidebar({ watchlist, tokens, recentTransactions, onRemoveFromWatc
                 </LineChart>
               </ResponsiveContainer>
             </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (currentRole === 'NBFI') {
+    const topYields = [...tokens]
+      .filter(t => t.type === 'receivable' && t.annualYield !== undefined)
+      .sort((a, b) => (b.annualYield || 0) - (a.annualYield || 0))
+      .slice(0, 3)
+
+    const hotAssets = [...tokens]
+      .filter(t => t.type === 'receivable')
+      .sort((a, b) => b.faceValue - a.faceValue)
+      .slice(0, 2)
+
+    const nbfiTransactions = [
+      { tokenId: 'AR-2025-001', time: '10 mins ago', amount: '500,000' },
+      { tokenId: 'AR-2025-005', time: '1 hour ago', amount: '1,200,000' },
+      { tokenId: 'AR-2025-002', time: '2 hours ago', amount: '800,000' },
+    ]
+
+    return (
+      <div className="space-y-6">
+        {/* 热门资产推荐 */}
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+          <div className="p-4 border-b border-gray-200">
+            <h3 className="font-semibold text-gray-800 flex items-center">
+              <i className="fas fa-fire mr-2 text-red-500"></i>
+              {language === 'zh' ? '热门资产推荐' : 'Hot Assets'}
+            </h3>
+          </div>
+          <div className="p-4 space-y-4">
+            {hotAssets.map((token) => (
+              <div key={`hot-${token.id}`} className="bg-red-50/50 rounded-lg p-3 border border-red-100/50">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="font-semibold text-gray-800 text-sm">{token.id}</span>
+                  <span className="text-xs text-red-600 bg-red-100 px-2 py-0.5 rounded-full"><i className="fas fa-arrow-trend-up mr-1"></i> Hot</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-gray-500">{language === 'zh' ? '面值' : 'Face Value'}:</span>
+                  <span className="font-medium text-gray-700">HK$ {token.faceValue.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between text-xs mt-1">
+                  <span className="text-gray-500">{language === 'zh' ? '年化收益' : 'Yield'}:</span>
+                  <span className="font-medium text-green-600">{token.annualYield}%</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 收益率排行榜 */}
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+          <div className="p-4 border-b border-gray-200">
+            <h3 className="font-semibold text-gray-800 flex items-center">
+              <i className="fas fa-trophy mr-2 text-yellow-500"></i>
+              {language === 'zh' ? '收益率排行榜' : 'Top Yield Leaderboard'}
+            </h3>
+          </div>
+          <div className="p-4">
+            <div className="space-y-4">
+              {topYields.map((token, index) => (
+                <div key={`yield-${token.id}`} className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-3 ${index === 0 ? 'bg-yellow-100 text-yellow-600' : index === 1 ? 'bg-gray-200 text-gray-600' : 'bg-orange-100 text-orange-600'}`}>
+                      {index + 1}
+                    </span>
+                    <span className="text-sm font-medium text-gray-700">{token.id}</span>
+                  </div>
+                  <span className="text-green-600 font-bold text-sm">{token.annualYield}%</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* 最近成交记录 */}
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+          <div className="p-4 border-b border-gray-200">
+            <h3 className="font-semibold text-gray-800 flex items-center">
+              <i className="fas fa-exchange-alt mr-2 text-blue-500"></i>
+              {language === 'zh' ? '资本方实时成交' : 'Live Transactions'}
+            </h3>
+          </div>
+          <div className="p-4 space-y-4">
+            {nbfiTransactions.map((tx, idx) => (
+              <div key={idx} className="flex justify-between items-center pb-3 border-b border-gray-100 last:border-0 last:pb-0">
+                <div>
+                  <div className="text-sm font-medium text-gray-800">{tx.tokenId}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">{tx.time}</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-xs text-gray-500 mb-0.5">{language === 'zh' ? '成交量' : 'Vol'}</div>
+                  <div className="text-sm font-semibold text-gray-700">HK$ {tx.amount}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

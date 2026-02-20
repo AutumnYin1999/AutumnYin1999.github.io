@@ -8,7 +8,7 @@ function Lending() {
   const { t, language } = useLanguage()
   const { currentRole, permissions } = useRole()
   // 从localStorage获取用户角色（与TopNavbar同步）
-  const [userRole, setUserRole] = useState<'核心企业' | '建筑公司' | 'NBFI' | 'Bank' | 'admin' | '系统管理员'>(() => {
+  const [userRole, setUserRole] = useState<'核心企业' | '建筑公司' | 'NBFI' | 'Bank' | '银行' | 'admin' | '系统管理员'>(() => {
     return (localStorage.getItem('userRole') as any) || 'NBFI'
   })
 
@@ -45,36 +45,6 @@ function Lending() {
 
   return (
     <div className="p-6 min-h-[calc(100vh-4rem)]">
-      <div className="mb-6">
-        <div className="flex items-center space-x-2 mb-2">
-          <h2 className="text-2xl font-bold text-gray-800">
-            {isBank ? t('marketTrading.validationHistory') : t('lending.title')}
-          </h2>
-          {isAdmin && (
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
-              {t('roles.admin')} - {t('lending.fullAccess') || '全权限访问'}
-            </span>
-          )}
-          {!isAdmin && isNBFI && (
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
-              {t('roles.nbfi')} - {t('lending.borrower')}
-            </span>
-          )}
-          {!isAdmin && isBank && (
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
-              {t('roles.bank')} - {language === 'zh' ? '贷方' : 'Lender'}
-            </span>
-          )}
-        </div>
-        <p className="text-gray-600">
-          {isAdmin
-            ? t('lending.adminDescription') || '系统管理员可以查看所有借贷管理功能'
-            : isNBFI
-              ? t('lending.nbfiDescription') || '管理您的抵押借款和申请新借款'
-              : (isBank ? t('marketTrading.validationHistoryDesc') : (language === 'zh' ? '管理您的贷款业务和审批新的贷款申请' : 'Manage your lending business and approve new loan applications'))}
-        </p>
-      </div>
-
       {/* 系统管理员：显示所有视图 */}
       {isAdmin && (
         <div className="space-y-6">

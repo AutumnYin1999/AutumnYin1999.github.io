@@ -12,7 +12,7 @@ import ValidatorPendingReviews from '../components/MarketTrading/ValidatorPendin
 
 export interface Token {
   id: string
-  type: 'receivable' | 'inventory'
+  type: 'receivable' | 'inventory' | 'abs'
   debtor?: string
   inventoryType?: string
   inventoryItem?: string
@@ -27,19 +27,29 @@ export interface Token {
   issuer: string
   discount: number
   priceChange: number
+  assetPool?: string
+  tranche?: string
+  scale?: number
+  expectedYield?: number
 }
 
-interface FilterState {
-  tokenTypes: ('receivable' | 'inventory')[]
+export interface FilterState {
+  tokenTypes: string[]
   riskLevel: string
   issuer: string
   priceRange: [number, number]
+  yieldRangeMin?: string
+  yieldRangeMax?: string
+  dueDateStart?: string
+  dueDateEnd?: string
   dueTime?: string
   inventoryType?: string
   // 银行专用筛选
   yieldRange?: [number, number]
   remainingDays?: string
   creditRating?: string
+  taskTypes?: string[]
+  taskStatus?: string
 }
 
 type SortOption = 'yield' | 'daysRemaining' | 'discount' | 'price' | 'none'
@@ -108,15 +118,21 @@ function MarketTrading() {
   }
 
   const [filters, setFilters] = useState<FilterState>({
-    tokenTypes: [],
+    tokenTypes: ['receivable', 'abs'],
     riskLevel: 'all',
     issuer: 'all',
-    priceRange: [0, 1000000],
+    priceRange: [0, 10000000],
+    yieldRangeMin: '',
+    yieldRangeMax: '',
+    dueDateStart: '',
+    dueDateEnd: '',
     dueTime: undefined,
     inventoryType: undefined,
     yieldRange: undefined,
     remainingDays: undefined,
     creditRating: undefined,
+    taskTypes: [],
+    taskStatus: 'all',
   })
 
   const [sortOption, setSortOption] = useState<SortOption>('none')
@@ -128,89 +144,65 @@ function MarketTrading() {
   const [recentTransactions, setRecentTransactions] = useState<any[]>([])
 
   // 模拟代币数据 - 使用 useMemo 确保语言变化时更新
+  // 模拟代币数据 - 使用 useMemo 确保语言变化时更新
   const tokens: Token[] = useMemo(() => [
     {
-      id: 'AR-2025-001',
+      id: 'AR-2025-021',
       type: 'receivable',
-      debtor: getDebtorName('ABC科技有限公司'),
+      issuer: t('marketTrading.sampleIssuers.coreEnterpriseA'),
       faceValue: 500000,
       currentPrice: 498500,
       dueDate: '2025-06-30',
-      daysRemaining: 89,
-      annualYield: 7.2,
+      daysRemaining: 101, // approximate
+      annualYield: 24.5,
       riskRating: 'B+',
+      discount: -0.3,
+      priceChange: 0,
+    },
+    {
+      id: 'ABS-2025-001',
+      type: 'abs',
       issuer: t('marketTrading.sampleIssuers.coreEnterpriseA'),
-      discount: 0.3,
-      priceChange: -0.3,
+      assetPool: language === 'zh' ? '核心企业A、B、C 共 5 笔 AR' : '5 ARs from Core Enterprise A, B, C',
+      scale: 2500000,
+      faceValue: 2500000, // For scaling/rendering purposes
+      currentPrice: 2500000, // Placeholders
+      tranche: 'Senior 70%',
+      expectedYield: 21.2,
+      annualYield: 21.2, // map to annual yield for sorting
+      riskRating: 'AAA',
+      discount: 0,
+      priceChange: 0,
     },
     {
-      id: 'AR-2025-002',
+      id: 'AR-2025-022',
       type: 'receivable',
-      debtor: getDebtorName('XYZ工程集团'),
-      faceValue: 800000,
-      currentPrice: 792000,
-      dueDate: '2025-08-15',
-      daysRemaining: 135,
-      annualYield: 6.8,
-      riskRating: 'A-',
       issuer: t('marketTrading.sampleIssuers.coreEnterpriseB'),
-      discount: 1.0,
-      priceChange: -1.0,
+      faceValue: 800000,
+      currentPrice: 790400,
+      dueDate: '2025-08-15',
+      daysRemaining: 147,
+      annualYield: 26.8,
+      riskRating: 'A-',
+      discount: -1.2,
+      priceChange: 0,
     },
     {
-      id: 'INV-2025-015',
-      type: 'inventory',
-      inventoryType: getInventoryType('成品'),
-      inventoryItem: getInventoryItem('建筑钢材'),
-      faceValue: 300000,
-      currentPrice: 297000,
-      storageLocation: getStorageLocation('深圳仓库A'),
-      qualityStatus: getQualityStatus('已认证'),
-      issuer: t('marketTrading.sampleIssuers.constructionCompanyX'),
-      discount: 1.0,
-      priceChange: -1.0,
+      id: 'ABS-2025-002',
+      type: 'abs',
+      issuer: t('marketTrading.sampleIssuers.coreEnterpriseB'),
+      assetPool: language === 'zh' ? '建筑公司X、Y 共 12 笔 AR' : '12 ARs from Construction X, Y',
+      scale: 5000000,
+      faceValue: 5000000,
+      currentPrice: 5000000,
+      tranche: 'Senior 80%',
+      expectedYield: 22.0,
+      annualYield: 22.0,
+      riskRating: 'AA+',
+      discount: 0,
+      priceChange: 0,
     },
-    {
-      id: 'INV-2025-016',
-      type: 'inventory',
-      inventoryType: getInventoryType('原材料'),
-      inventoryItem: getInventoryItem('水泥'),
-      faceValue: 150000,
-      currentPrice: 148500,
-      storageLocation: getStorageLocation('广州仓库B'),
-      qualityStatus: getQualityStatus('已认证'),
-      issuer: t('marketTrading.sampleIssuers.constructionCompanyY'),
-      discount: 1.0,
-      priceChange: -1.0,
-    },
-    {
-      id: 'AR-2025-003',
-      type: 'receivable',
-      debtor: getDebtorName('DEF建设股份公司'),
-      faceValue: 1200000,
-      currentPrice: 1188000,
-      dueDate: '2025-12-31',
-      daysRemaining: 273,
-      annualYield: 5.5,
-      riskRating: 'A',
-      issuer: t('marketTrading.sampleIssuers.coreEnterpriseC'),
-      discount: 1.0,
-      priceChange: -1.0,
-    },
-    {
-      id: 'INV-2025-017',
-      type: 'inventory',
-      inventoryType: getInventoryType('在制品'),
-      inventoryItem: getInventoryItem('预制构件'),
-      faceValue: 450000,
-      currentPrice: 445500,
-      storageLocation: getStorageLocation('东莞工厂C'),
-      qualityStatus: getQualityStatus('待认证'),
-      issuer: t('marketTrading.sampleIssuers.constructionCompanyZ'),
-      discount: 1.0,
-      priceChange: -1.0,
-    },
-  ], [t])
+  ], [t, language])
 
   // 筛选逻辑
   const filteredTokens = useMemo(() => {
@@ -220,16 +212,30 @@ function MarketTrading() {
         return false
       }
 
-      // 风险等级筛选（仅应收账款）
-      if (filters.riskLevel !== 'all' && token.type === 'receivable') {
-        if (filters.riskLevel === 'low' && !['A', 'A-', 'B+'].includes(token.riskRating || '')) {
+      // 风险等级筛选
+      if (filters.riskLevel !== 'all' && token.riskRating) {
+        if (!token.riskRating.startsWith(filters.riskLevel)) {
           return false
         }
-        if (filters.riskLevel === 'medium' && !['B', 'B+', 'B-'].includes(token.riskRating || '')) {
-          return false
+      }
+
+      // 收益率范围筛选
+      if (token.annualYield !== undefined) {
+        if (filters.yieldRangeMin && filters.yieldRangeMin !== '') {
+          if (token.annualYield < parseFloat(filters.yieldRangeMin)) return false
         }
-        if (filters.riskLevel === 'high' && !['C', 'C+', 'C-'].includes(token.riskRating || '')) {
-          return false
+        if (filters.yieldRangeMax && filters.yieldRangeMax !== '') {
+          if (token.annualYield > parseFloat(filters.yieldRangeMax)) return false
+        }
+      }
+
+      // 到期日范围筛选
+      if (token.dueDate !== undefined) {
+        if (filters.dueDateStart && filters.dueDateStart !== '') {
+          if (new Date(token.dueDate) < new Date(filters.dueDateStart)) return false
+        }
+        if (filters.dueDateEnd && filters.dueDateEnd !== '') {
+          if (new Date(token.dueDate) > new Date(filters.dueDateEnd)) return false
         }
       }
 
@@ -238,7 +244,8 @@ function MarketTrading() {
         return false
       }
 
-      // 价格范围筛选
+      // 价格范围筛选 (仅为了兼容其他场景，原为必有条件)
+      // 在新过滤视图中可能被隐藏，但仍存在
       if (token.currentPrice < filters.priceRange[0] || token.currentPrice > filters.priceRange[1]) {
         return false
       }
@@ -372,14 +379,6 @@ function MarketTrading() {
 
   return (
     <div className="p-6 min-h-[calc(100vh-4rem)]">
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center space-x-3">
-            <h2 className="text-2xl font-bold text-gray-800">{t('marketTrading.title')}</h2>
-          </div>
-        </div>
-        <p className="text-gray-600">{t('marketTrading.description') || '浏览和交易应收账款代币与库存代币'}</p>
-      </div>
 
       {/* 市场概览 */}
       <MarketOverview />
@@ -436,6 +435,33 @@ function MarketTrading() {
                 </div>
               ))}
             </div>
+
+            {/* 这里是分页 */}
+            {filteredTokens.length > 0 && (
+              <div className="mt-8 flex justify-center">
+                <nav className="flex items-center space-x-2">
+                  <button className="p-2 border border-gray-300 rounded-md text-gray-500 hover:bg-gray-50 disabled:opacity-50" disabled>
+                    <i className="fas fa-chevron-left"></i>
+                  </button>
+                  <button className="px-4 py-2 border border-blue-600 bg-blue-50 text-blue-600 font-medium rounded-md">
+                    1
+                  </button>
+                  <button className="px-4 py-2 border border-gray-300 text-gray-600 hover:bg-gray-50 font-medium rounded-md">
+                    2
+                  </button>
+                  <button className="px-4 py-2 border border-gray-300 text-gray-600 hover:bg-gray-50 font-medium rounded-md">
+                    3
+                  </button>
+                  <span className="text-gray-500 px-2">...</span>
+                  <button className="px-4 py-2 border border-gray-300 text-gray-600 hover:bg-gray-50 font-medium rounded-md">
+                    12
+                  </button>
+                  <button className="p-2 border border-gray-300 rounded-md text-gray-500 hover:bg-gray-50">
+                    <i className="fas fa-chevron-right"></i>
+                  </button>
+                </nav>
+              </div>
+            )}
 
             {filteredTokens.length === 0 && (
               <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">

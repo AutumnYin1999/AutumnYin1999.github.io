@@ -112,15 +112,7 @@ function MyListingsContent() {
   return (
     <div className="p-6 min-h-[calc(100vh-4rem)]">
       {/* 顶部导航 */}
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">
-            {language === 'zh' ? '已上架应收账款' : 'My Listed AR'}
-          </h2>
-          <p className="text-gray-600">
-            {language === 'zh' ? '管理已上架待售的代币，查看销售状态' : 'Manage listed tokens for sale and view sales status'}
-          </p>
-        </div>
+      <div className="mb-6 flex items-center justify-end">
         <div className="flex space-x-3">
           <button
             onClick={() => navigate('/app/dashboard')}

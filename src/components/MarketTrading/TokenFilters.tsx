@@ -20,9 +20,9 @@ function TokenFilters({ filters, onFiltersChange }: TokenFiltersProps) {
     t('marketTrading.sampleIssuers.constructionCompanyZ'),
   ]
 
-  const handleTokenTypeToggle = (type: 'receivable' | 'inventory') => {
+  const handleTokenTypeToggle = (type: string) => {
     const newTypes = filters.tokenTypes.includes(type)
-      ? filters.tokenTypes.filter(t => t !== type)
+      ? filters.tokenTypes.filter(val => val !== type)
       : [...filters.tokenTypes, type]
     onFiltersChange({ ...filters, tokenTypes: newTypes })
   }
@@ -30,17 +30,21 @@ function TokenFilters({ filters, onFiltersChange }: TokenFiltersProps) {
   const handleTaskTypeToggle = (type: string) => {
     const currentTypes = filters.taskTypes || []
     const newTypes = currentTypes.includes(type)
-      ? currentTypes.filter(t => t !== type)
+      ? currentTypes.filter(val => val !== type)
       : [...currentTypes, type]
     onFiltersChange({ ...filters, taskTypes: newTypes })
   }
 
   const handleReset = () => {
     onFiltersChange({
-      tokenTypes: [],
+      tokenTypes: ['receivable', 'abs'],
       riskLevel: 'all',
       issuer: 'all',
-      priceRange: [0, 1000000],
+      priceRange: [0, 10000000],
+      yieldRangeMin: '',
+      yieldRangeMax: '',
+      dueDateStart: '',
+      dueDateEnd: '',
       dueTime: undefined,
       inventoryType: undefined,
       // yieldRange removed
@@ -139,12 +143,12 @@ function TokenFilters({ filters, onFiltersChange }: TokenFiltersProps) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* 代币类型 */}
+        {/* 资产类型 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            {t('marketTrading.tokenType')}
+            {language === 'zh' ? '资产类型' : 'Asset Type'}
           </label>
-          <div className="flex space-x-3">
+          <div className="flex space-x-3 mt-2">
             <label className="flex items-center cursor-pointer">
               <input
                 type="checkbox"
@@ -152,46 +156,96 @@ function TokenFilters({ filters, onFiltersChange }: TokenFiltersProps) {
                 onChange={() => handleTokenTypeToggle('receivable')}
                 className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <span className="ml-2 text-sm text-gray-700">{t('marketTrading.receivable')}</span>
+              <span className="ml-2 text-sm text-gray-700">AR</span>
             </label>
             <label className="flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                checked={filters.tokenTypes.includes('inventory')}
-                onChange={() => handleTokenTypeToggle('inventory')}
+                checked={filters.tokenTypes.includes('abs')}
+                onChange={() => handleTokenTypeToggle('abs')}
                 className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <span className="ml-2 text-sm text-gray-700">{t('marketTrading.inventory')}</span>
+              <span className="ml-2 text-sm text-gray-700">ABS</span>
             </label>
           </div>
         </div>
 
-        {/* 风险等级 */}
+        {/* 风险评级 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             {t('marketTrading.riskLevel')}
           </label>
-          <select
-            value={filters.riskLevel}
-            onChange={(e) => onFiltersChange({ ...filters, riskLevel: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option value="all">{t('marketTrading.all')}</option>
-            <option value="low">{t('marketTrading.lowRisk')}</option>
-            <option value="medium">{t('marketTrading.mediumRisk')}</option>
-            <option value="high">{t('marketTrading.highRisk')}</option>
-          </select>
+          <div className="flex space-x-2">
+            {['all', 'A', 'B', 'C'].map(rating => (
+              <button
+                key={rating}
+                onClick={() => onFiltersChange({ ...filters, riskLevel: rating })}
+                className={`px-3 py-1.5 rounded-md text-sm font-medium border transition-colors ${filters.riskLevel === rating
+                  ? 'bg-blue-50 border-blue-200 text-blue-700'
+                  : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+                  }`}
+              >
+                {rating === 'all' ? t('marketTrading.all') : rating}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* 发行方 */}
+        {/* 收益率范围 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            {t('marketTrading.issuer')}
+            {language === 'zh' ? '收益率范围 (%)' : 'Yield Range (%)'}
+          </label>
+          <div className="flex items-center space-x-2">
+            <input
+              type="number"
+              value={filters.yieldRangeMin || ''}
+              onChange={(e) => onFiltersChange({ ...filters, yieldRangeMin: e.target.value })}
+              placeholder="Min"
+              className="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <span className="text-gray-400">-</span>
+            <input
+              type="number"
+              value={filters.yieldRangeMax || ''}
+              onChange={(e) => onFiltersChange({ ...filters, yieldRangeMax: e.target.value })}
+              placeholder="Max"
+              className="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+        </div>
+
+        {/* 到期日范围 */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            {language === 'zh' ? '到期日范围' : 'Due Date Range'}
+          </label>
+          <div className="flex items-center space-x-2">
+            <input
+              type="date"
+              value={filters.dueDateStart || ''}
+              onChange={(e) => onFiltersChange({ ...filters, dueDateStart: e.target.value })}
+              className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <span className="text-gray-400">-</span>
+            <input
+              type="date"
+              value={filters.dueDateEnd || ''}
+              onChange={(e) => onFiltersChange({ ...filters, dueDateEnd: e.target.value })}
+              className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+        </div>
+
+        {/* 核心企业 */}
+        <div className="lg:col-start-3">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            {language === 'zh' ? '核心企业' : 'Core Enterprise'}
           </label>
           <select
             value={filters.issuer}
             onChange={(e) => onFiltersChange({ ...filters, issuer: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="all">{t('marketTrading.all')}</option>
             {issuers.map(issuer => (
@@ -199,85 +253,6 @@ function TokenFilters({ filters, onFiltersChange }: TokenFiltersProps) {
             ))}
           </select>
         </div>
-
-        {/* 价格范围 */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            {t('marketTrading.priceRange')}: {filters.priceRange[0].toLocaleString()} - HK$
-          </label>
-          <div className="flex items-center space-x-2">
-            <input
-              type="range"
-              min="0"
-              max="1000000"
-              step="10000"
-              value={filters.priceRange[0]}
-              onChange={(e) => onFiltersChange({
-                ...filters,
-                priceRange: [parseInt(e.target.value), filters.priceRange[1]]
-              })}
-              className="flex-1"
-            />
-            <input
-              type="range"
-              min="0"
-              max="1000000"
-              step="10000"
-              value={filters.priceRange[1]}
-              onChange={(e) => onFiltersChange({
-                ...filters,
-                priceRange: [filters.priceRange[0], parseInt(e.target.value)]
-              })}
-              className="flex-1"
-            />
-          </div>
-        </div>
-
-        {/* 到期时间（仅应收账款） */}
-        {filters.tokenTypes.includes('receivable') && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('marketTrading.dueTime')}
-            </label>
-            <select
-              value={filters.dueTime || 'all'}
-              onChange={(e) => onFiltersChange({
-                ...filters,
-                dueTime: e.target.value === 'all' ? undefined : e.target.value
-              })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="all">{t('marketTrading.all')}</option>
-              <option value="30">30 {t('marketTrading.withinDays')}</option>
-              <option value="90">90 {t('marketTrading.withinDays')}</option>
-              <option value="180">180 {t('marketTrading.withinDays')}</option>
-            </select>
-          </div>
-        )}
-
-        {/* 库存类型（仅库存） */}
-        {filters.tokenTypes.includes('inventory') && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('marketTrading.inventoryType')}
-            </label>
-            <select
-              value={filters.inventoryType || 'all'}
-              onChange={(e) => onFiltersChange({
-                ...filters,
-                inventoryType: e.target.value === 'all' ? undefined : e.target.value
-              })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="all">{t('marketTrading.all')}</option>
-              <option value="raw">{t('assetIssuance.rawMaterial')}</option>
-              <option value="wip">{t('assetIssuance.workInProgress')}</option>
-              <option value="finished">{t('assetIssuance.finishedProduct')}</option>
-            </select>
-          </div>
-        )}
-
-
       </div>
     </div>
   )

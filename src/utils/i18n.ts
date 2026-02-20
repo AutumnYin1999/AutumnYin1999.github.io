@@ -306,15 +306,6 @@ export interface Translations {
     }
   }
 
-  // ABS打包
-  absPackaging: {
-    title: string
-    bankOnly: string
-    nbfiPurchase: string
-    bankDescription: string
-    nbfiDescription: string
-  }
-
   // 桥接管理
   bridge: {
     title: string
@@ -583,6 +574,11 @@ export interface Translations {
     onSale: string
     soldOut: string
     searchPlaceholder: string
+    totalInvestableAR: string
+    absProducts: string
+    averageYield: string
+    newAssetsToday: string
+    lowestDiscount: string
     purchase: string
     price: string
     quantity: string
@@ -1424,7 +1420,12 @@ const translations: Record<Language, Translations> = {
       allStatus: '全部',
       onSale: '在售',
       soldOut: '已售罄',
-      searchPlaceholder: '搜索代币...',
+      searchPlaceholder: '搜索核心企业、评级或ID...',
+      totalInvestableAR: '可投资 AR 总额',
+      absProducts: 'ABS 产品数量',
+      averageYield: '平均收益率',
+      newAssetsToday: '今日新增资产',
+      lowestDiscount: '最低折扣',
       purchase: '购买',
       price: '价格',
       quantity: '数量',
@@ -2326,7 +2327,12 @@ const translations: Record<Language, Translations> = {
       allStatus: 'All',
       onSale: 'On Sale',
       soldOut: 'Sold Out',
-      searchPlaceholder: 'Search tokens...',
+      searchPlaceholder: 'Search core enterprise, rating or ID...',
+      totalInvestableAR: 'Total Investable AR',
+      absProducts: 'ABS Products',
+      averageYield: 'Average Yield',
+      newAssetsToday: 'New Assets Today',
+      lowestDiscount: 'Lowest Discount',
       purchase: 'Purchase',
       price: 'Price',
       quantity: 'Quantity',
