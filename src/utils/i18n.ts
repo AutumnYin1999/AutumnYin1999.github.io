@@ -186,6 +186,26 @@ export interface Translations {
     kpmg: string
     currentNode: string
     online: string
+    // Capital Provider specific
+    totalInvestment: string
+    portfolioValue: string
+    accumulatedReturn: string
+    avgAnnualizedReturn: string
+    activeInvestments: string
+    pendingCollections: string
+    portfolioDistribution: string
+    revenueTrend: string
+    riskLevelA: string
+    riskLevelB: string
+    riskLevelC: string
+    recentInvestments: string
+    time: string
+    assetId: string
+    investmentType: string
+    investmentAmount: string
+    yieldRate: string
+    investmentStatus: string
+    holding: string
   }
 
   // 资产发行
@@ -978,6 +998,26 @@ const translations: Record<Language, Translations> = {
       kpmg: '毕马威',
       currentNode: '当前节点（你）',
       online: '在线',
+      // 资本方专用
+      totalInvestment: '总投资额',
+      portfolioValue: '持仓市值',
+      accumulatedReturn: '累计收益',
+      avgAnnualizedReturn: '平均年化',
+      activeInvestments: '活跃投资',
+      pendingCollections: '待回款金额',
+      portfolioDistribution: '投资组合分布',
+      revenueTrend: '收益趋势（近30天）',
+      riskLevelA: 'A级资产 (低风险)',
+      riskLevelB: 'B级资产 (中风险)',
+      riskLevelC: 'C级资产 (高风险)',
+      recentInvestments: '最近投资记录',
+      time: '时间',
+      assetId: '资产ID',
+      investmentType: '类型',
+      investmentAmount: '金额',
+      yieldRate: '收益率',
+      investmentStatus: '状态',
+      holding: '持有中',
     },
     assetIssuance: {
       title: 'AR确权管理',
@@ -1864,6 +1904,26 @@ const translations: Record<Language, Translations> = {
       kpmg: 'KPMG',
       currentNode: 'Current Node (You)',
       online: 'Online',
+      // Capital Provider specific
+      totalInvestment: 'Total Investment',
+      portfolioValue: 'Portfolio Value',
+      accumulatedReturn: 'Accumulated Return',
+      avgAnnualizedReturn: 'Avg Annualized',
+      activeInvestments: 'Active Investments',
+      pendingCollections: 'Pending Collections',
+      portfolioDistribution: 'Portfolio Distribution',
+      revenueTrend: 'Revenue Trend (Last 30 Days)',
+      riskLevelA: 'Class A (Low Risk)',
+      riskLevelB: 'Class B (Medium Risk)',
+      riskLevelC: 'Class C (High Risk)',
+      recentInvestments: 'Recent Investments',
+      time: 'Time',
+      assetId: 'Asset ID',
+      investmentType: 'Type',
+      investmentAmount: 'Amount',
+      yieldRate: 'Yield',
+      investmentStatus: 'Status',
+      holding: 'Holding',
     },
     assetIssuance: {
       title: 'AR Confirmation Management',

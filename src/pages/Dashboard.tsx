@@ -39,6 +39,16 @@ function DashboardPage() {
         { nameKey: 'dashboard.participatingSMEs', value: '89', change: '+3', icon: 'fa-building', bgColor: '#fce7f3', iconColor: '#ec4899' },
         { nameKey: 'dashboard.nodeUptime', value: '99.8%', change: '↓0.1%', icon: 'fa-server', bgColor: '#f3f4f6', iconColor: '#4b5563' },
       ]
+    } else if (currentRole === 'NBFI') {
+      // 资本方 (Capital Provider)
+      return [
+        { nameKey: 'dashboard.totalInvestment', value: 'HK$ 42.5M', change: (language === 'zh' ? '环比 ↑2.5%' : 'MoM ↑2.5%'), icon: 'fa-chart-pie', bgColor: '#dbeafe', iconColor: '#2563eb' },
+        { nameKey: 'dashboard.portfolioValue', value: 'HK$ 38.2M', change: (language === 'zh' ? '环比 ↑1.8%' : 'MoM ↑1.8%'), icon: 'fa-briefcase', bgColor: '#e0e7ff', iconColor: '#6366f1' },
+        { nameKey: 'dashboard.accumulatedReturn', value: 'HK$ 2.8M', change: (language === 'zh' ? '环比 ↑5.2%' : 'MoM ↑5.2%'), icon: 'fa-coins', bgColor: '#d1fae5', iconColor: '#10b981' },
+        { nameKey: 'dashboard.avgAnnualizedReturn', value: '6.8%', change: (language === 'zh' ? '环比 +0.3%' : 'MoM +0.3%'), icon: 'fa-percent', bgColor: '#fce7f3', iconColor: '#ec4899' },
+        { nameKey: 'dashboard.activeInvestments', value: '23' + (language === 'zh' ? ' 笔' : ''), change: (language === 'zh' ? '环比 +5' : 'MoM +5'), icon: 'fa-chart-line', bgColor: '#fef3c7', iconColor: '#f59e0b' },
+        { nameKey: 'dashboard.pendingCollections', value: 'HK$ 8.7M', change: (language === 'zh' ? '环比 ↓0.5%' : 'MoM ↓0.5%'), icon: 'fa-clock', bgColor: '#fee2e2', iconColor: '#dc2626' },
+      ]
     } else {
       // 其他角色：显示通用KPI
       return [
@@ -50,7 +60,7 @@ function DashboardPage() {
         { nameKey: 'dashboard.avgFundingCost', value: '6.5%', change: '-0.2%', icon: 'fa-percent', bgColor: '#e0e7ff', iconColor: '#6366f1' },
       ]
     }
-  }, [currentRole])
+  }, [currentRole, language])
 
   // 核心企业：确权趋势数据
   const confirmationTrendData = useMemo(() => {
@@ -110,6 +120,42 @@ function DashboardPage() {
       }
     })
   }, [language])
+
+  // 资本方：投资组合分布数据
+  const nbfiPortfolioData = useMemo(() => {
+    return [
+      { nameKey: 'dashboard.riskLevelA', value: 45, color: '#10b981' }, // Low Risk (A)
+      { nameKey: 'dashboard.riskLevelB', value: 35, color: '#3b82f6' }, // Medium Risk (B)
+      { nameKey: 'dashboard.riskLevelC', value: 20, color: '#f59e0b' }, // High Risk (C)
+    ]
+  }, [])
+
+  // 资本方：收益趋势数据 (30天)
+  const nbfiEarningsData = useMemo(() => {
+    const locale = language === 'zh' ? 'zh-CN' : 'en-US'
+    let total = 2500000 // Base: 2.5M
+    return Array.from({ length: 30 }, (_, i) => {
+      const date = new Date()
+      date.setDate(date.getDate() - (29 - i))
+      const daily = Math.floor(Math.random() * 5000 + 8000 + (i * 100))
+      total += daily
+      return {
+        date: date.toLocaleDateString(locale, { month: 'short', day: 'numeric' }),
+        earnings: total,
+        daily: daily
+      }
+    })
+  }, [language])
+
+  const nbfiRecentInvestments = useMemo(() => {
+    return [
+      { id: 'AR-2025-021', type: 'AR', amount: 'HK$ 500,000', yield: '26.5%', status: 'holding', date: '2025-04-02' },
+      { id: 'ABS-001', type: 'ABS', amount: 'HK$ 1,200,000', yield: '22.8%', status: 'holding', date: '2025-04-01' },
+      { id: 'AR-2025-015', type: 'AR', amount: 'HK$ 800,000', yield: '27.2%', status: 'repaid', date: '2025-03-30' },
+      { id: 'AR-2025-012', type: 'AR', amount: 'HK$ 350,000', yield: '24.5%', status: 'holding', date: '2025-03-25' },
+      { id: 'ABS-005', type: 'ABS', amount: 'HK$ 2,500,000', yield: '21.5%', status: 'holding', date: '2025-03-20' },
+    ]
+  }, [])
 
   // 验证节点：任务分布数据
   const verificationDistributionData = useMemo(() => {
@@ -308,10 +354,11 @@ function DashboardPage() {
         {/* 图表区域 - 仅非建筑公司且非验证节点可见 */}
         {currentRole !== '建筑公司' && currentRole !== '银行' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            {/* 左侧图表：核心企业显示确权趋势，其他显示交易趋势 */}
+            {/* 左侧图表：核心企业显示确权趋势，NBFI显示投资组合分布，其他显示交易趋势 */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                {currentRole === '核心企业' ? t('dashboard.confirmationTrend') : t('dashboard.transactionTrend')}
+                {currentRole === '核心企业' ? t('dashboard.confirmationTrend') :
+                  currentRole === 'NBFI' ? t('dashboard.portfolioDistribution') : t('dashboard.transactionTrend')}
               </h3>
               <ResponsiveContainer width="100%" height={300}>
                 {currentRole === '核心企业' ? (
@@ -326,6 +373,34 @@ function DashboardPage() {
                     <Line type="monotone" dataKey="confirmed" name={t('dashboard.confirmedAmount')} stroke="#10b981" strokeWidth={2} />
                     <Line type="monotone" dataKey="pending" name={t('dashboard.pendingConfirmationAmount')} stroke="#f59e0b" strokeWidth={2} strokeDasharray="5 5" />
                   </LineChart>
+                ) : currentRole === 'NBFI' ? (
+                  <PieChart>
+                    <Pie
+                      data={nbfiPortfolioData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={100}
+                      paddingAngle={5}
+                      dataKey="value"
+                      labelLine={false}
+                      label={({ nameKey, percent }) => `${t(nameKey)} ${(percent * 100).toFixed(0)}%`}
+                    >
+                      {nbfiPortfolioData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      formatter={(value: number, _name: string, props: any) => {
+                        return [`${value}%`, t(props.payload.nameKey)]
+                      }}
+                      contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                    />
+                    <Legend
+                      formatter={(_value, entry: any) => t(entry.payload.nameKey)}
+                      verticalAlign="bottom"
+                    />
+                  </PieChart>
                 ) : (
                   <LineChart data={transactionData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
@@ -354,41 +429,104 @@ function DashboardPage() {
               </ResponsiveContainer>
             </div>
 
-            {/* 右侧图表：核心企业显示待确权AR分布，其他显示资产分布 */}
+            {/* 右侧图表：核心企业显示待确权AR分布，NBFI显示收益趋势，其他显示资产分布 */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                {currentRole === '核心企业' ? t('dashboard.pendingARDistribution') : t('dashboard.assetDistribution')}
+                {currentRole === '核心企业' ? t('dashboard.pendingARDistribution') :
+                  currentRole === 'NBFI' ? t('dashboard.revenueTrend') : t('dashboard.assetDistribution')}
               </h3>
               <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={assetDistribution}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ nameKey, percent }) => `${t(nameKey)} ${(percent * 100).toFixed(0)}%`}
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {assetDistribution.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    formatter={(value: number, _name: string, props: any) => {
-                      return [`${value}%`, t(props.payload.nameKey)]
-                    }}
-                    contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
-                  />
-                </PieChart>
+                {currentRole === 'NBFI' ? (
+                  <AreaChart data={nbfiEarningsData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="colorNbfiEarnings" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
+                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
+                    <XAxis dataKey="date" stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} tickMargin={10} minTickGap={30} />
+                    <YAxis stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `HK$${(value / 1000).toFixed(0)}K`} domain={['auto', 'auto']} />
+                    <Tooltip
+                      contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                      formatter={(value: any) => [`HK$ ${value.toLocaleString()}`, t('dashboard.accumulatedReturn')]}
+                      labelStyle={{ color: '#6b7280', marginBottom: '4px' }}
+                    />
+                    <Area type="monotone" dataKey="earnings" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorNbfiEarnings)" activeDot={{ r: 6 }} />
+                  </AreaChart>
+                ) : (
+                  <PieChart>
+                    <Pie
+                      data={assetDistribution}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ nameKey, percent }) => `${t(nameKey)} ${(percent * 100).toFixed(0)}%`}
+                      outerRadius={100}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {assetDistribution.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      formatter={(value: number, _name: string, props: any) => {
+                        return [`${value}%`, t(props.payload.nameKey)]
+                      }}
+                      contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                    />
+                  </PieChart>
+                )}
               </ResponsiveContainer>
             </div>
           </div>
         )}
 
-
-
+        {/* 最近投资记录 - 仅资本方可见 */}
+        {currentRole === 'NBFI' && (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('dashboard.recentInvestments')}</h3>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr className="bg-gray-50">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.time')}</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.assetId')}</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.investmentType')}</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.investmentAmount')}</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.yieldRate')}</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.investmentStatus')}</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.operations')}</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {nbfiRecentInvestments.map((item, index) => (
+                    <tr key={index} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.date}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.id}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${item.type === 'AR' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}`}>
+                          {item.type}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.amount}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.yield}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${item.status === 'holding' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                          {t(`dashboard.${item.status}` as any)}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button className="text-blue-600 hover:text-blue-900" onClick={(e) => { e.preventDefault() }}>{t('dashboard.viewDetails')}</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
         {/* 最近提交的应收账款列表 - 仅建筑公司可见 */}
         {currentRole === '建筑公司' && (
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
@@ -601,7 +739,7 @@ function DashboardPage() {
                     contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
                   />
                   <Legend
-                    formatter={(value, entry: any) => t(entry.payload.nameKey)}
+                    formatter={(_value, entry: any) => t(entry.payload.nameKey)}
                     wrapperStyle={{ paddingTop: '20px' }}
                     verticalAlign="bottom"
                   />
@@ -609,7 +747,7 @@ function DashboardPage() {
               </ResponsiveContainer>
             </div>
           </div>
-        ) : (
+        ) : currentRole !== 'NBFI' && (
           /* 其他角色：交易类型对比 */
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('dashboard.transactionComparison')}</h3>
