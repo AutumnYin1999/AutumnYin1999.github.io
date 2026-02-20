@@ -11,6 +11,8 @@ function DashboardPage() {
 
 
   // 根据角色显示不同的KPI数据
+  const isPlatformAdmin = !['核心企业', '建筑公司', '银行', 'NBFI'].includes(currentRole as string || '')
+
   const kpiData = useMemo(() => {
     if (currentRole === '建筑公司') {
       // 建筑公司：显示累计提交AR、已融资、待回款、活跃AR数量
@@ -50,14 +52,14 @@ function DashboardPage() {
         { nameKey: 'dashboard.pendingCollections', value: 'HK$ 8.7M', change: (language === 'zh' ? '环比 ↓0.5%' : 'MoM ↓0.5%'), icon: 'fa-clock', bgColor: '#fee2e2', iconColor: '#dc2626' },
       ]
     } else {
-      // 其他角色：显示通用KPI
+      // 平台管理员 (Platform Admin) 等其他角色：显示平台通用运营指标
       return [
-        { nameKey: 'dashboard.totalAssets', value: '1,245.8M', change: '+3.2%', icon: 'fa-wallet', bgColor: '#dbeafe', iconColor: '#2563eb' },
-        { nameKey: 'dashboard.dailyVolume', value: '325.0M', change: '+5.2%', icon: 'fa-exchange-alt', bgColor: '#d1fae5', iconColor: '#10b981' },
-        { nameKey: 'dashboard.platformRevenue', value: '162.5K', change: '+3.8%', icon: 'fa-dollar-sign', bgColor: '#fef3c7', iconColor: '#f59e0b' },
-        { nameKey: 'dashboard.activeAssets', value: '89', change: '+1.1%', icon: 'fa-coins', bgColor: '#e9d5ff', iconColor: '#8b5cf6' },
-        { nameKey: 'dashboard.userActivity', value: '1,250', change: '-0.5%', icon: 'fa-users', bgColor: '#fce7f3', iconColor: '#ec4899' },
-        { nameKey: 'dashboard.avgFundingCost', value: '6.5%', change: '-0.2%', icon: 'fa-percent', bgColor: '#e0e7ff', iconColor: '#6366f1' },
+        { nameKey: 'dashboard.totalAssets', name: language === 'zh' ? '总上链资产' : 'Total On-Chain Assets', value: 'HK$ 1,245.8M', change: '↑2.1%', icon: 'fa-globe-asia', bgColor: '#dbeafe', iconColor: '#2563eb' },
+        { nameKey: 'dashboard.dailyVolume', name: language === 'zh' ? '累计融资金额' : 'Total Financed Amount', value: 'HK$ 892.3M', change: '↑3.5%', icon: 'fa-coins', bgColor: '#d1fae5', iconColor: '#10b981' },
+        { nameKey: 'dashboard.platformRevenue', name: language === 'zh' ? '活跃节点数' : 'Active Nodes', value: '9', change: '0', icon: 'fa-network-wired', bgColor: '#fef3c7', iconColor: '#f59e0b' },
+        { nameKey: 'dashboard.activeAssets', name: language === 'zh' ? '累计分账总额' : 'Total Distributed Revenue', value: 'HK$ 4.2M', change: '↑8.2%', icon: 'fa-chart-pie', bgColor: '#e9d5ff', iconColor: '#8b5cf6' },
+        { nameKey: 'dashboard.userActivity', name: language === 'zh' ? '活跃 SME 数' : 'Active SMEs', value: '89', change: '+5', icon: 'fa-users', bgColor: '#fce7f3', iconColor: '#ec4899' },
+        { nameKey: 'dashboard.avgFundingCost', name: language === 'zh' ? '待处理任务' : 'Pending Tasks', value: '24', change: '-3', icon: 'fa-tasks', bgColor: '#e0e7ff', iconColor: '#6366f1' },
       ]
     }
   }, [currentRole, language])
@@ -87,20 +89,30 @@ function DashboardPage() {
     ]
   }, [t])
 
-  // 交易趋势数据 - 使用翻译键作为 dataKey
-  const transactionData = useMemo(() => {
+  // 平台管理员：收益趋势数据 (30天)
+  const adminRevenueData = useMemo(() => {
     const locale = language === 'zh' ? 'zh-CN' : 'en-US'
-    return Array.from({ length: 7 }, (_, i) => {
+    let total = 3500000 // Base
+    return Array.from({ length: 30 }, (_, i) => {
       const date = new Date()
-      date.setDate(date.getDate() - (6 - i))
+      date.setDate(date.getDate() - (29 - i))
+      const daily = Math.floor(Math.random() * 20000 + 15000 + (i * 500))
+      total += daily
       return {
         date: date.toLocaleDateString(locale, { month: 'short', day: 'numeric' }),
-        buy: Math.floor(Math.random() * 100 + 50),
-        sell: Math.floor(Math.random() * 80 + 30),
-        lend: Math.floor(Math.random() * 60 + 20),
-        bridge: Math.floor(Math.random() * 40 + 10),
+        revenue: total,
       }
     })
+  }, [language])
+
+  // 平台管理员：节点任务处理量分布
+  const adminTaskData = useMemo(() => {
+    return [
+      { name: language === 'zh' ? '汇丰银行' : 'HSBC', completed: 156, processing: 12 },
+      { name: language === 'zh' ? '渣打银行' : 'Standard Chartered', completed: 142, processing: 8 },
+      { name: language === 'zh' ? '毕马威' : 'KPMG', completed: 98, processing: 5 },
+      { name: 'CIC', completed: 85, processing: 3 },
+    ]
   }, [language])
 
   // 验证节点：收益趋势数据 (30 days)
@@ -217,7 +229,7 @@ function DashboardPage() {
                 </span>
               </div>
               <div className="text-2xl font-bold text-gray-800 mb-1">{kpi.value}</div>
-              <div className="text-sm text-gray-600">{t(kpi.nameKey)}</div>
+              <div className="text-sm text-gray-600">{(kpi as any).name || t(kpi.nameKey)}</div>
             </div>
           ))}
         </div>
@@ -358,7 +370,7 @@ function DashboardPage() {
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">
                 {currentRole === '核心企业' ? t('dashboard.confirmationTrend') :
-                  currentRole === 'NBFI' ? t('dashboard.portfolioDistribution') : t('dashboard.transactionTrend')}
+                  currentRole === 'NBFI' ? t('dashboard.portfolioDistribution') : (language === 'zh' ? '平台累计分账收益趋势' : 'Platform Cumulative Distributed Revenue Trend')}
               </h3>
               <ResponsiveContainer width="100%" height={300}>
                 {currentRole === '核心企业' ? (
@@ -402,84 +414,110 @@ function DashboardPage() {
                     />
                   </PieChart>
                 ) : (
-                  <LineChart data={transactionData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                    <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} />
-                    <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
+                  <AreaChart data={adminRevenueData}>
+                    <defs>
+                      <linearGradient id="colorAdminRev" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2} />
+                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                    <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} tickLine={false} axisLine={false} tickMargin={10} minTickGap={30} />
+                    <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} tickLine={false} axisLine={false} tickFormatter={(value) => `HK$${(value / 1000).toFixed(0)}K`} />
                     <Tooltip
-                      contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                      contentStyle={{ backgroundColor: '#fff', border: 'none', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                      formatter={(value: any) => [`HK$ ${value.toLocaleString()}`, language === 'zh' ? '累计收益' : 'Cumulative Revenue']}
+                      labelStyle={{ color: '#6b7280', marginBottom: '4px' }}
                     />
-                    <Legend
-                      formatter={(value) => {
-                        const legendMap: Record<string, string> = {
-                          buy: t('dashboard.buy'),
-                          sell: t('dashboard.sell'),
-                          lend: t('dashboard.lend'),
-                          bridge: t('dashboard.bridge'),
-                        }
-                        return legendMap[value] || value
-                      }}
-                    />
-                    <Line type="monotone" dataKey="buy" name="buy" stroke="#3b82f6" strokeWidth={2} />
-                    <Line type="monotone" dataKey="sell" name="sell" stroke="#f97316" strokeWidth={2} />
-                    <Line type="monotone" dataKey="lend" name="lend" stroke="#8b5cf6" strokeWidth={2} />
-                    <Line type="monotone" dataKey="bridge" name="bridge" stroke="#10b981" strokeWidth={2} />
-                  </LineChart>
+                    <Area type="monotone" dataKey="revenue" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorAdminRev)" activeDot={{ r: 6 }} />
+                  </AreaChart>
                 )}
               </ResponsiveContainer>
             </div>
 
+            {/* 右侧图表：平台管理员显示节点状态 */}
+            {isPlatformAdmin && (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col h-full">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">{language === 'zh' ? '节点在线状态' : 'Node Online Status'}</h3>
+                <div className="space-y-4 flex-1 overflow-y-auto pr-2">
+                  {[
+                    { name: language === 'zh' ? '汇丰银行' : 'HSBC', status: 'online', color: 'bg-green-500' },
+                    { name: language === 'zh' ? '毕马威' : 'KPMG', status: 'online', color: 'bg-green-500' },
+                    { name: 'CIC', status: 'online', color: 'bg-green-500' },
+                    { name: language === 'zh' ? '渣打银行' : 'Standard Chartered', status: 'offline', color: 'bg-gray-400' },
+                  ].map((node, index) => (
+                    <div key={index} className="flex items-center justify-between p-4 rounded-lg bg-gray-50 border border-gray-100 hover:bg-gray-100 transition-colors">
+                      <div className="flex items-center space-x-3">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-sm ${node.status === 'online' ? 'bg-blue-50 text-blue-500' : 'bg-white text-gray-400'}`}>
+                          <i className="fas fa-server"></i>
+                        </div>
+                        <span className={`text-base font-medium ${node.status === 'online' ? 'text-gray-800' : 'text-gray-500'}`}>{node.name}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <span className={`w-2.5 h-2.5 rounded-full ${node.color} ${node.status === 'online' ? 'animate-pulse shadow-sm shadow-green-200' : ''}`}></span>
+                        <span className={`text-sm font-medium px-2 py-1 rounded-md ${node.status === 'online' ? 'text-green-600 bg-green-50' : 'text-gray-500 bg-gray-100'}`}>
+                          {node.status === 'online' ? (language === 'zh' ? '在线' : 'Online') : (language === 'zh' ? '离线' : 'Offline')}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* 右侧图表：核心企业显示待确权AR分布，NBFI显示收益趋势，其他显示资产分布 */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                {currentRole === '核心企业' ? t('dashboard.pendingARDistribution') :
-                  currentRole === 'NBFI' ? t('dashboard.revenueTrend') : t('dashboard.assetDistribution')}
-              </h3>
-              <ResponsiveContainer width="100%" height={300}>
-                {currentRole === 'NBFI' ? (
-                  <AreaChart data={nbfiEarningsData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                    <defs>
-                      <linearGradient id="colorNbfiEarnings" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
-                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
-                    <XAxis dataKey="date" stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} tickMargin={10} minTickGap={30} />
-                    <YAxis stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `HK$${(value / 1000).toFixed(0)}K`} domain={['auto', 'auto']} />
-                    <Tooltip
-                      contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
-                      formatter={(value: any) => [`HK$ ${value.toLocaleString()}`, t('dashboard.accumulatedReturn')]}
-                      labelStyle={{ color: '#6b7280', marginBottom: '4px' }}
-                    />
-                    <Area type="monotone" dataKey="earnings" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorNbfiEarnings)" activeDot={{ r: 6 }} />
-                  </AreaChart>
-                ) : (
-                  <PieChart>
-                    <Pie
-                      data={assetDistribution}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ nameKey, percent }) => `${t(nameKey)} ${(percent * 100).toFixed(0)}%`}
-                      outerRadius={100}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {assetDistribution.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      formatter={(value: number, _name: string, props: any) => {
-                        return [`${value}%`, t(props.payload.nameKey)]
-                      }}
-                      contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
-                    />
-                  </PieChart>
-                )}
-              </ResponsiveContainer>
-            </div>
+            {!isPlatformAdmin && (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  {currentRole === '核心企业' ? t('dashboard.pendingARDistribution') :
+                    currentRole === 'NBFI' ? t('dashboard.revenueTrend') : t('dashboard.assetDistribution')}
+                </h3>
+                <ResponsiveContainer width="100%" height={300}>
+                  {currentRole === 'NBFI' ? (
+                    <AreaChart data={nbfiEarningsData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="colorNbfiEarnings" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
+                          <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
+                      <XAxis dataKey="date" stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} tickMargin={10} minTickGap={30} />
+                      <YAxis stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `HK$${(value / 1000).toFixed(0)}K`} domain={['auto', 'auto']} />
+                      <Tooltip
+                        contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                        formatter={(value: any) => [`HK$ ${value.toLocaleString()}`, t('dashboard.accumulatedReturn')]}
+                        labelStyle={{ color: '#6b7280', marginBottom: '4px' }}
+                      />
+                      <Area type="monotone" dataKey="earnings" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorNbfiEarnings)" activeDot={{ r: 6 }} />
+                    </AreaChart>
+                  ) : (
+                    <PieChart>
+                      <Pie
+                        data={assetDistribution}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ nameKey, percent }) => `${t(nameKey)} ${(percent * 100).toFixed(0)}%`}
+                        outerRadius={100}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {assetDistribution.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        formatter={(value: number, _name: string, props: any) => {
+                          return [`${value}%`, t(props.payload.nameKey)]
+                        }}
+                        contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                      />
+                    </PieChart>
+                  )}
+                </ResponsiveContainer>
+              </div>
+            )}
           </div>
         )}
 
@@ -747,33 +785,22 @@ function DashboardPage() {
               </ResponsiveContainer>
             </div>
           </div>
-        ) : currentRole !== 'NBFI' && (
-          /* 其他角色：交易类型对比 */
+        ) : isPlatformAdmin && (
+          /* 平台管理员：节点任务处理量分布 */
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('dashboard.transactionComparison')}</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">{language === 'zh' ? '节点任务处理量（近7天）' : 'Node Task Processing Volume (Last 7 Days)'}</h3>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={transactionData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} />
-                <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
+              <BarChart data={adminTaskData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+                <XAxis dataKey="name" stroke="#6b7280" style={{ fontSize: '12px' }} axisLine={false} tickLine={false} />
+                <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} axisLine={false} tickLine={false} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                  contentStyle={{ backgroundColor: '#fff', border: 'none', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                  cursor={{ fill: '#f3f4f6' }}
                 />
-                <Legend
-                  formatter={(value) => {
-                    const legendMap: Record<string, string> = {
-                      buy: t('dashboard.buy'),
-                      sell: t('dashboard.sell'),
-                      lend: t('dashboard.lend'),
-                      bridge: t('dashboard.bridge'),
-                    }
-                    return legendMap[value] || value
-                  }}
-                />
-                <Bar dataKey="buy" name="buy" fill="#3b82f6" />
-                <Bar dataKey="sell" name="sell" fill="#f97316" />
-                <Bar dataKey="lend" name="lend" fill="#8b5cf6" />
-                <Bar dataKey="bridge" name="bridge" fill="#10b981" />
+                <Legend iconType="circle" />
+                <Bar dataKey="completed" name={language === 'zh' ? '已完成' : 'Completed'} fill="#3b82f6" radius={[4, 4, 0, 0]} barSize={40} />
+                <Bar dataKey="processing" name={language === 'zh' ? '处理中' : 'Processing'} fill="#f59e0b" radius={[4, 4, 0, 0]} barSize={40} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -781,138 +808,140 @@ function DashboardPage() {
       </div>
 
       {/* AR 详情弹窗 */}
-      {selectedAR && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-          onClick={() => setSelectedAR(null)}
-        >
+      {
+        selectedAR && (
           <div
-            className="bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto flex flex-col"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+            onClick={() => setSelectedAR(null)}
           >
-            {/* 弹窗头部 */}
-            <div className="p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white z-10 rounded-t-2xl">
-              <h3 className="text-2xl font-bold text-gray-800">{t('dashboard.arId')}: {selectedAR.id}</h3>
-              <button
-                onClick={() => setSelectedAR(null)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
-              >
-                <i className="fas fa-times text-2xl"></i>
-              </button>
-            </div>
-
-            <div className="p-6 space-y-8">
-              {/* 基本信息 - 网格布局 */}
-              <div>
-                <h4 className="text-base font-semibold text-gray-500 uppercase tracking-wider mb-4">{t('dashboard.basicInfo')}</h4>
-                <div className="grid grid-cols-2 gap-6 bg-gray-50 p-6 rounded-xl">
-                  <div>
-                    <span className="text-sm text-gray-500 block mb-1">{t('dashboard.receivableAmount')}</span>
-                    <span className="text-xl font-bold text-gray-900">{selectedAR.amount}</span>
-                  </div>
-                  <div>
-                    <span className="text-sm text-gray-500 block mb-1">{t('dashboard.coreEnterprise')}</span>
-                    <span className="text-base font-medium text-gray-900">{t(`marketTrading.sampleIssuers.coreEnterprise${selectedAR.enterprise.split(' ')[2] || 'A'}`)}</span>
-                  </div>
-                  <div>
-                    <span className="text-sm text-gray-500 block mb-1">{t('dashboard.status')}</span>
-                    <span className={`px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full w-fit ${selectedAR.status === 'pendingVerification' ? 'bg-yellow-100 text-yellow-800' :
-                      selectedAR.status === 'financing' ? 'bg-purple-100 text-purple-800' :
-                        selectedAR.status === 'pendingConfirmation' ? 'bg-orange-100 text-orange-800' :
-                          'bg-green-100 text-green-800'
-                      }`}>
-                      {t(`dashboard.${selectedAR.status}`)}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-sm text-gray-500 block mb-1">{t('dashboard.uploadDate')}</span>
-                    <span className="text-base text-gray-900">{selectedAR.date}</span>
-                  </div>
-                  <div>
-                    <span className="text-sm text-gray-500 block mb-1">{t('dashboard.expectedPaymentDate')}</span>
-                    <span className="text-base text-gray-900">2024-01-20</span>
-                  </div>
-                </div>
+            <div
+              className="bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* 弹窗头部 */}
+              <div className="p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white z-10 rounded-t-2xl">
+                <h3 className="text-2xl font-bold text-gray-800">{t('dashboard.arId')}: {selectedAR.id}</h3>
+                <button
+                  onClick={() => setSelectedAR(null)}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <i className="fas fa-times text-2xl"></i>
+                </button>
               </div>
 
-              {/* 验证节点签名状态 */}
-              <div>
-                <h4 className="text-base font-semibold text-gray-500 uppercase tracking-wider mb-4">{t('dashboard.validatorStatus')}</h4>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 border border-gray-100 rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
-                        <i className="fas fa-university text-lg"></i>
-                      </div>
-                      <span className="text-base font-medium text-gray-700">{t('dashboard.bank')} - HSBC</span>
+              <div className="p-6 space-y-8">
+                {/* 基本信息 - 网格布局 */}
+                <div>
+                  <h4 className="text-base font-semibold text-gray-500 uppercase tracking-wider mb-4">{t('dashboard.basicInfo')}</h4>
+                  <div className="grid grid-cols-2 gap-6 bg-gray-50 p-6 rounded-xl">
+                    <div>
+                      <span className="text-sm text-gray-500 block mb-1">{t('dashboard.receivableAmount')}</span>
+                      <span className="text-xl font-bold text-gray-900">{selectedAR.amount}</span>
                     </div>
-                    <span className="text-sm font-medium text-green-600 bg-green-50 px-3 py-1 rounded">{t('dashboard.completed')}</span>
-                  </div>
-                  <div className="flex items-center justify-between p-4 border border-gray-100 rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center">
-                        <i className="fas fa-file-contract text-lg"></i>
-                      </div>
-                      <span className="text-base font-medium text-gray-700">{t('dashboard.audit')} - PwC</span>
+                    <div>
+                      <span className="text-sm text-gray-500 block mb-1">{t('dashboard.coreEnterprise')}</span>
+                      <span className="text-base font-medium text-gray-900">{t(`marketTrading.sampleIssuers.coreEnterprise${selectedAR.enterprise.split(' ')[2] || 'A'}`)}</span>
                     </div>
-                    <span className="text-sm font-medium text-yellow-600 bg-yellow-50 px-3 py-1 rounded">{t('dashboard.inProgress')}</span>
-                  </div>
-                  <div className="flex items-center justify-between p-4 border border-gray-100 rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center">
-                        <i className="fas fa-globe text-lg"></i>
-                      </div>
-                      <span className="text-base font-medium text-gray-700">{t('dashboard.cic')}</span>
+                    <div>
+                      <span className="text-sm text-gray-500 block mb-1">{t('dashboard.status')}</span>
+                      <span className={`px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full w-fit ${selectedAR.status === 'pendingVerification' ? 'bg-yellow-100 text-yellow-800' :
+                        selectedAR.status === 'financing' ? 'bg-purple-100 text-purple-800' :
+                          selectedAR.status === 'pendingConfirmation' ? 'bg-orange-100 text-orange-800' :
+                            'bg-green-100 text-green-800'
+                        }`}>
+                        {t(`dashboard.${selectedAR.status}`)}
+                      </span>
                     </div>
-                    <span className="text-sm font-medium text-gray-500 bg-gray-50 px-3 py-1 rounded">{t('dashboard.notStarted')}</span>
+                    <div>
+                      <span className="text-sm text-gray-500 block mb-1">{t('dashboard.uploadDate')}</span>
+                      <span className="text-base text-gray-900">{selectedAR.date}</span>
+                    </div>
+                    <div>
+                      <span className="text-sm text-gray-500 block mb-1">{t('dashboard.expectedPaymentDate')}</span>
+                      <span className="text-base text-gray-900">2024-01-20</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* 相关文件 */}
-              <div>
-                <h4 className="text-base font-semibold text-gray-500 uppercase tracking-wider mb-4">{t('dashboard.relatedDocuments')}</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {[t('dashboard.contract'), t('dashboard.invoice'), t('dashboard.acceptanceNote')].map((doc, idx) => (
-                    <div key={idx} className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors group">
-                      <div className="flex flex-col items-center text-center space-y-3">
-                        <i className="fas fa-file-pdf text-4xl text-red-500 group-hover:scale-110 transition-transform"></i>
-                        <span className="text-sm font-medium text-gray-700 truncate w-full">{doc}.pdf</span>
-                        <div className="flex space-x-3 w-full justify-center">
-                          <button className="text-sm text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1.5 rounded flex-1">{t('dashboard.preview')}</button>
-                          <button className="text-sm text-gray-600 hover:text-gray-800 bg-gray-100 px-3 py-1.5 rounded"><i className="fas fa-download"></i></button>
+                {/* 验证节点签名状态 */}
+                <div>
+                  <h4 className="text-base font-semibold text-gray-500 uppercase tracking-wider mb-4">{t('dashboard.validatorStatus')}</h4>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-4 border border-gray-100 rounded-lg">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                          <i className="fas fa-university text-lg"></i>
+                        </div>
+                        <span className="text-base font-medium text-gray-700">{t('dashboard.bank')} - HSBC</span>
+                      </div>
+                      <span className="text-sm font-medium text-green-600 bg-green-50 px-3 py-1 rounded">{t('dashboard.completed')}</span>
+                    </div>
+                    <div className="flex items-center justify-between p-4 border border-gray-100 rounded-lg">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-10 h-10 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center">
+                          <i className="fas fa-file-contract text-lg"></i>
+                        </div>
+                        <span className="text-base font-medium text-gray-700">{t('dashboard.audit')} - PwC</span>
+                      </div>
+                      <span className="text-sm font-medium text-yellow-600 bg-yellow-50 px-3 py-1 rounded">{t('dashboard.inProgress')}</span>
+                    </div>
+                    <div className="flex items-center justify-between p-4 border border-gray-100 rounded-lg">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-10 h-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center">
+                          <i className="fas fa-globe text-lg"></i>
+                        </div>
+                        <span className="text-base font-medium text-gray-700">{t('dashboard.cic')}</span>
+                      </div>
+                      <span className="text-sm font-medium text-gray-500 bg-gray-50 px-3 py-1 rounded">{t('dashboard.notStarted')}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 相关文件 */}
+                <div>
+                  <h4 className="text-base font-semibold text-gray-500 uppercase tracking-wider mb-4">{t('dashboard.relatedDocuments')}</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {[t('dashboard.contract'), t('dashboard.invoice'), t('dashboard.acceptanceNote')].map((doc, idx) => (
+                      <div key={idx} className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors group">
+                        <div className="flex flex-col items-center text-center space-y-3">
+                          <i className="fas fa-file-pdf text-4xl text-red-500 group-hover:scale-110 transition-transform"></i>
+                          <span className="text-sm font-medium text-gray-700 truncate w-full">{doc}.pdf</span>
+                          <div className="flex space-x-3 w-full justify-center">
+                            <button className="text-sm text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1.5 rounded flex-1">{t('dashboard.preview')}</button>
+                            <button className="text-sm text-gray-600 hover:text-gray-800 bg-gray-100 px-3 py-1.5 rounded"><i className="fas fa-download"></i></button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* 融资记录 (可选) */}
-              {selectedAR.status === 'financing' && (
-                <div>
-                  <h4 className="text-base font-semibold text-gray-500 uppercase tracking-wider mb-4">{t('dashboard.financingHistory')}</h4>
-                  <div className="bg-gray-50 p-4 rounded-lg text-base text-gray-600 flex justify-between">
-                    <span>{t('dashboard.financingDate')}: 2023-11-01</span>
-                    <span>{t('dashboard.financedAmount')}: HK$ 400K</span>
+                    ))}
                   </div>
                 </div>
-              )}
-            </div>
 
-            {/* 底部按钮 */}
-            <div className="p-6 border-t border-gray-100 flex justify-end">
-              <button
-                onClick={() => setSelectedAR(null)}
-                className="bg-gray-100 text-gray-700 px-8 py-3 rounded-xl hover:bg-gray-200 font-medium transition-colors text-base"
-              >
-                {language === 'zh' ? '关闭' : 'Close'}
-              </button>
+                {/* 融资记录 (可选) */}
+                {selectedAR.status === 'financing' && (
+                  <div>
+                    <h4 className="text-base font-semibold text-gray-500 uppercase tracking-wider mb-4">{t('dashboard.financingHistory')}</h4>
+                    <div className="bg-gray-50 p-4 rounded-lg text-base text-gray-600 flex justify-between">
+                      <span>{t('dashboard.financingDate')}: 2023-11-01</span>
+                      <span>{t('dashboard.financedAmount')}: HK$ 400K</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* 底部按钮 */}
+              <div className="p-6 border-t border-gray-100 flex justify-end">
+                <button
+                  onClick={() => setSelectedAR(null)}
+                  className="bg-gray-100 text-gray-700 px-8 py-3 rounded-xl hover:bg-gray-200 font-medium transition-colors text-base"
+                >
+                  {language === 'zh' ? '关闭' : 'Close'}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )
+      }
+    </div >
   )
 }
 

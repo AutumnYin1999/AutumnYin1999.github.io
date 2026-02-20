@@ -559,6 +559,7 @@ export interface Translations {
   }
 
   // 市场交易
+  nodeManagement: any
   marketTrading: {
     title: string
     marketOverview: string
@@ -1111,7 +1112,7 @@ const translations: Record<Language, Translations> = {
         onlyImageFiles: '仅支持图像文件',
       },
     },
-    absPackaging: {
+    oldAbsPackaging1: {
       title: 'ABS打包平台',
       bankOnly: '银行专属',
       nbfiPurchase: 'NBFI购买',
@@ -1484,9 +1485,6 @@ const translations: Record<Language, Translations> = {
       lowRisk: '低风险',
       mediumRisk: '中风险',
       highRisk: '高风险',
-
-      // edit
-
       priceRange: '价格范围',
       dueTime: '到期时间',
       withinDays: '天内',
@@ -1497,7 +1495,6 @@ const translations: Record<Language, Translations> = {
       recentTransactions: '最近交易',
       noTransactionRecords: '暂无交易记录',
       marketTrend: '市场趋势（7天）',
-
       monday: '周一',
       tuesday: '周二',
       wednesday: '周三',
@@ -1511,8 +1508,6 @@ const translations: Record<Language, Translations> = {
       pendingCertification: '待认证',
       currentPrice: '当前价格',
       discount: '折扣',
-
-
       sampleDebtors: {
         abcTech: 'ABC科技有限公司',
         xyzEngineering: 'XYZ工程集团',
@@ -2022,7 +2017,7 @@ const translations: Record<Language, Translations> = {
         onlyImageFiles: 'Only image files are supported',
       },
     },
-    absPackaging: {
+    oldAbsPackaging3: {
       title: 'ABS Packaging Platform',
       bankOnly: 'Bank Only',
       nbfiPurchase: 'NBFI Purchase',
@@ -2391,7 +2386,7 @@ const translations: Record<Language, Translations> = {
       lowRisk: 'Low Risk',
       mediumRisk: 'Medium Risk',
       highRisk: 'High Risk',
-      issuer: 'Issuer',
+      issuer2: 'Issuer',
       priceRange: 'Price Range',
       dueTime: 'Due Time',
       withinDays: 'days',
@@ -2402,7 +2397,7 @@ const translations: Record<Language, Translations> = {
       recentTransactions: 'Recent Transactions',
       noTransactionRecords: 'No transaction records',
       marketTrend: 'Market Trend (7 days)',
-      price: 'Price',
+      price3: 'Price',
       monday: 'Mon',
       tuesday: 'Tue',
       wednesday: 'Wed',
@@ -2414,10 +2409,10 @@ const translations: Record<Language, Translations> = {
       setPriceAlert: 'Set Price Alert',
       certified: 'Certified',
       pendingCertification: 'Pending Certification',
-      currentPrice: 'Current Price',
-      discount: 'Discount',
-      receivable: 'Accounts Receivable',
-      inventory: 'Inventory',
+      currentPrice2: 'Current Price',
+      discount2: 'Discount',
+      receivable2: 'Accounts Receivable',
+      inventory2: 'Inventory',
       sampleDebtors: {
         abcTech: 'ABC Technology Co., Ltd.',
         xyzEngineering: 'XYZ Engineering Group',
@@ -2480,7 +2475,7 @@ const translations: Record<Language, Translations> = {
       coreEnterprise: 'Core Enterprise',
       complianceType: 'Compliance Type',
     },
-    absPackaging: {
+    oldAbsPackaging2: {
       title: 'ABS Packaging Platform',
       description: 'Package accounts receivable and inventory tokens into ABS tokens of different risk levels',
       bankOnly: 'Bank Only',

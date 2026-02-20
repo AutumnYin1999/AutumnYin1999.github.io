@@ -11,7 +11,7 @@ import ABSPackagingPage from './pages/ABSPackaging'
 import LendingPage from './pages/Lending'
 import FundRecoveryPage from './pages/FundRecovery'
 import BridgePage from './pages/Bridge'
-
+import NodeManagementPage from './pages/NodeManagement'
 
 function App() {
   // 获取 Vite 配置的 base 路径，用于 GitHub Pages 部署
@@ -33,6 +33,7 @@ function App() {
             <Route path="receivables-management" element={<ReceivablesManagementPage />} />
 
             <Route path="market-trading" element={<MarketTradingPage />} />
+            <Route path="node-management" element={<NodeManagementPage />} />
             <Route path="lending" element={<LendingPage />} />
             <Route path="abs-packaging" element={<ABSPackagingPage />} />
             <Route path="bridge" element={<BridgePage />} />

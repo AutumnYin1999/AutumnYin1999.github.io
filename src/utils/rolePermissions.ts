@@ -22,14 +22,15 @@ export interface RolePermissions {
   fundRecoveryForexPool: boolean // 外汇池兑换
   userManagement: boolean // 用户管理（仅管理员）
   systemConfig: boolean // 系统配置（仅管理员）
+  nodeManagement: boolean // 节点管理 (仅管理员)
 }
 
 const rolePermissionsMap: Record<UserRole, RolePermissions> = {
   admin: {
     dashboard: true,
-    assetIssuance: true,
-    assetIssuanceReceivable: true,
-    assetIssuanceInventory: true,
+    assetIssuance: false,
+    assetIssuanceReceivable: false,
+    assetIssuanceInventory: false,
     marketTrading: true,
     marketTradingPurchase: true,
     marketTradingViewOwn: false,
@@ -47,6 +48,7 @@ const rolePermissionsMap: Record<UserRole, RolePermissions> = {
     fundRecoveryForexPool: true,
     userManagement: true,
     systemConfig: true,
+    nodeManagement: true,
   },
   银行: {
     dashboard: true,
@@ -70,6 +72,7 @@ const rolePermissionsMap: Record<UserRole, RolePermissions> = {
     fundRecoveryForexPool: true,
     userManagement: false,
     systemConfig: false,
+    nodeManagement: false,
   },
   NBFI: {
     dashboard: true,
@@ -93,6 +96,7 @@ const rolePermissionsMap: Record<UserRole, RolePermissions> = {
     fundRecoveryForexPool: true,
     userManagement: false,
     systemConfig: false,
+    nodeManagement: false,
   },
   核心企业: {
     dashboard: true,
@@ -116,6 +120,7 @@ const rolePermissionsMap: Record<UserRole, RolePermissions> = {
     fundRecoveryForexPool: false,
     userManagement: false,
     systemConfig: false,
+    nodeManagement: false,
   },
   建筑公司: {
     dashboard: true,
@@ -139,6 +144,7 @@ const rolePermissionsMap: Record<UserRole, RolePermissions> = {
     fundRecoveryForexPool: false,
     userManagement: false,
     systemConfig: false,
+    nodeManagement: false,
   },
 }
 
@@ -147,7 +153,7 @@ export function getRolePermissions(role: string): RolePermissions {
   let normalizedRole = role
   if (role === 'Bank') normalizedRole = '银行'
   if (role === 'admin' || role === '系统管理员') normalizedRole = 'admin'
-  
+
   return rolePermissionsMap[normalizedRole as UserRole] || rolePermissionsMap['核心企业']
 }
 

@@ -15,6 +15,7 @@ function Sidebar({ isOpen }: SidebarProps) {
   // 基础菜单项
   const baseMenuItems = [
     { id: 'dashboard', labelKey: 'navigation.dashboard', icon: 'fa-chart-line', path: '/app/dashboard', permission: 'dashboard' },
+    { id: 'node-management', labelKey: 'Node Management', icon: 'fa-server', path: '/app/node-management', permission: 'nodeManagement' },
     { id: 'market-trading', labelKey: currentRole === '银行' ? 'navigation.pendingReviews' : 'Asset Marketplace', icon: 'fa-exchange-alt', path: '/app/market-trading', permission: 'marketTrading' },
     { id: 'lending', labelKey: 'My Portfolio', icon: 'fa-hand-holding-usd', path: '/app/lending', permission: 'lending' },
     { id: 'abs-packaging', labelKey: 'marketTrading.validationHistory', icon: 'fa-history', path: '/app/abs-packaging', permission: 'absPackaging' },
@@ -64,7 +65,7 @@ function Sidebar({ isOpen }: SidebarProps) {
                 }`}
             >
               <i className={`fas ${item.icon} w-5 text-center`}></i>
-              <span>{item.labelKey === 'Asset Marketplace' || item.labelKey === 'My Portfolio' ? item.labelKey : t(item.labelKey)}</span>
+              <span>{item.labelKey === 'Node Management' ? (t('common.language') === '中文' ? 'Node Management' : '节点管理') : item.labelKey === 'Asset Marketplace' || item.labelKey === 'My Portfolio' ? item.labelKey : t(item.labelKey)}</span>
             </NavLink>
           )
         })}
