@@ -1,177 +1,141 @@
-import { useState, useEffect } from 'react'
 import { useRole } from '../hooks/useRole'
 import { useLanguage } from '../hooks/useLanguage'
 import PermissionGuard from '../components/Common/PermissionGuard'
-import BankCircleConversion from '../components/FundRecovery/BankCircleConversion'
-import LiquidityManagement from '../components/FundRecovery/LiquidityManagement'
-import MarketData from '../components/FundRecovery/MarketData'
-import ConversionConfirmModal from '../components/FundRecovery/ConversionConfirmModal'
-import LiquidityModal from '../components/FundRecovery/LiquidityModal'
+import NodeEarningsOverview from '../components/FundRecovery/NodeEarningsOverview'
+import EarningsDetail from '../components/FundRecovery/EarningsDetail'
 
-function FundRecovery() {
-  const { currentRole, permissions } = useRole()
-  const { t, language } = useLanguage()
-  
-  // 从localStorage获取用户角色（用于组件内部逻辑）
-  const [userRole] = useState(() => {
-    const role = localStorage.getItem('userRole') || 'NBFI'
-    // 标准化角色名称
-    if (role === 'admin') return 'Bank' // 系统管理员可以使用银行功能
-    if (role === '银行') return 'Bank'
-    return role
+// ── Earnings Source Donut Chart ────────────────────────────────────────────────
+
+interface Slice { labelZh: string; labelEn: string; pct: number; color: string; textColor: string; bg: string }
+
+const slices: Slice[] = [
+  { labelZh: 'AR 验证收益', labelEn: 'AR Validation', pct: 60, color: '#6366f1', textColor: 'text-indigo-600', bg: 'bg-indigo-50' },
+  { labelZh: 'KYC 收益', labelEn: 'KYC Earnings', pct: 30, color: '#10b981', textColor: 'text-emerald-600', bg: 'bg-emerald-50' },
+  { labelZh: '合规收益', labelEn: 'Compliance', pct: 10, color: '#f59e0b', textColor: 'text-amber-500', bg: 'bg-amber-50' },
+]
+
+function EarningsDonut({ lang }: { lang: string }) {
+  const R = 52, cx = 70, cy = 70, strokeW = 20
+  const circumf = 2 * Math.PI * R
+
+  // Build cumulative offsets
+  let cumulative = 0
+  const arcs = slices.map(s => {
+    const dashLen = (s.pct / 100) * circumf
+    const dashOffset = circumf / 4 - cumulative * circumf   // start from top
+    cumulative += s.pct / 100
+    return { ...s, dashLen, dashOffset }
   })
 
-  const [usdcBalance, setUsdcBalance] = useState(1250000)
-  const [circleExchangeRate, setCircleExchangeRate] = useState(7.82) // Circle通道汇率
-  const [forexPoolRate, setForexPoolRate] = useState(7.80) // 外汇池汇率
-  const [showConversionModal, setShowConversionModal] = useState(false)
-  const [showLiquidityModal, setShowLiquidityModal] = useState(false)
-  const [conversionData, setConversionData] = useState<any>(null)
+  return (
+    <div className="flex items-center gap-5">
+      {/* SVG donut */}
+      <svg viewBox="0 0 140 140" className="w-28 h-28 flex-shrink-0">
+        {/* track */}
+        <circle cx={cx} cy={cy} r={R} fill="none" stroke="#f3f4f6" strokeWidth={strokeW} />
+        {arcs.map((a, i) => (
+          <circle
+            key={i}
+            cx={cx} cy={cy} r={R}
+            fill="none"
+            stroke={a.color}
+            strokeWidth={strokeW}
+            strokeDasharray={`${a.dashLen} ${circumf - a.dashLen}`}
+            strokeDashoffset={a.dashOffset}
+            strokeLinecap="butt"
+          />
+        ))}
+        {/* centre label */}
+        <text x={cx} y={cy - 5} textAnchor="middle" fontSize="11" fontWeight="bold" fill="#1f2937">100%</text>
+        <text x={cx} y={cy + 10} textAnchor="middle" fontSize="8" fill="#9ca3af">
+          {lang === 'zh' ? '收益来源' : 'Source'}
+        </text>
+      </svg>
 
-  const isAdmin = currentRole === 'admin' || userRole === 'admin' || userRole === '系统管理员'
-  const isBank = userRole === 'Bank' || userRole === '银行' || (isAdmin && permissions.fundRecoveryDirect)
-  const isNBFI = userRole === 'NBFI' || (isAdmin && permissions.fundRecoveryForexPool)
+      {/* Legend */}
+      <div className="flex flex-col gap-2 flex-1">
+        {slices.map((s, i) => (
+          <div key={i} className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5">
+              <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0`} style={{ background: s.color }} />
+              <span className="text-[11px] text-gray-600 leading-tight">
+                {lang === 'zh' ? s.labelZh : s.labelEn}
+              </span>
+            </div>
+            <span className={`text-xs font-bold ${s.textColor}`}>{s.pct}%</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
-  // 模拟实时汇率更新
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // 模拟Circle通道汇率波动 ±0.1%
-      const circleChange = (Math.random() - 0.5) * 0.002
-      setCircleExchangeRate(prev => Math.max(7.75, Math.min(7.90, prev + circleChange)))
-      
-      // 模拟外汇池汇率波动（略低于Circle通道）
-      const poolChange = (Math.random() - 0.5) * 0.002
-      setForexPoolRate(prev => Math.max(7.73, Math.min(7.88, prev + poolChange)))
-    }, 5000)
+// ── Page ──────────────────────────────────────────────────────────────────────
 
-    return () => clearInterval(interval)
-  }, [])
-
-  const handleConversion = (data: any) => {
-    setConversionData(data)
-    setShowConversionModal(true)
-  }
-
-  const handleConversionConfirm = () => {
-    // 模拟兑换处理
-    setShowConversionModal(false)
-    setConversionData(null)
-    // 更新余额等
-  }
+function FundRecovery() {
+  const { currentRole } = useRole()
+  const { t, language } = useLanguage()
 
   return (
-    <PermissionGuard permission="fundRecovery" fallback={
+    <PermissionGuard
+      permission="fundRecovery"
+      fallback={
+        <div className="p-6 min-h-[calc(100vh-4rem)]">
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+            <i className="fas fa-exclamation-triangle text-yellow-600 text-3xl mb-3" />
+            <p className="text-yellow-800 font-medium">
+              {language === 'zh'
+                ? '您没有权限访问此功能'
+                : 'You do not have permission to access this feature'}
+            </p>
+          </div>
+        </div>
+      }
+    >
       <div className="p-6 min-h-[calc(100vh-4rem)]">
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
-          <i className="fas fa-exclamation-triangle text-yellow-600 text-3xl mb-3"></i>
-          <p className="text-yellow-800 font-medium">
-            {language === 'zh' ? '您没有权限访问此功能' : 'You do not have permission to access this feature'}
+
+        {/* Page title */}
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-gray-800 mb-1">
+            {t('fundRecovery.title')}
+          </h2>
+          <p className="text-sm text-gray-500">
+            {language === 'zh'
+              ? '节点运营收益统计与分账明细'
+              : 'Node operation earnings statistics & distribution detail'}
           </p>
         </div>
-      </div>
-    }>
-      <div className="p-6 min-h-[calc(100vh-4rem)] overflow-hidden">
-      {/* 角色标识横幅 */}
-      {isAdmin && (
-        <div className="mb-6 p-4 rounded-lg bg-purple-50 border border-purple-200">
-          <div className="flex items-center space-x-3">
-            <i className="fas fa-user-shield text-2xl text-purple-600"></i>
-            <div>
-              <h3 className="font-semibold text-gray-800">
-                {t('roles.admin')} - {t('fundRecovery.fullAccess')}
-              </h3>
-              <p className="text-sm text-gray-600">
-                {t('fundRecovery.adminDescription')}
-              </p>
+
+        {/* Two-column layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
+
+          {/* Left (60%): stat cards + 30-day trend */}
+          <div className="lg:col-span-3">
+            <NodeEarningsOverview />
+          </div>
+
+          {/* Right (40%): earnings table + donut chart */}
+          <div className="lg:col-span-2 flex flex-col gap-4">
+
+            <EarningsDetail />
+
+            {/* Earnings source distribution donut */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-sm font-semibold text-gray-800">
+                  {language === 'zh' ? '收益来源分布' : 'Earnings Source Distribution'}
+                </h4>
+                <span className="text-[10px] text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                  {language === 'zh' ? '模拟数据' : 'Demo data'}
+                </span>
+              </div>
+              <EarningsDonut lang={language} />
             </div>
+
           </div>
         </div>
-      )}
-      {!isAdmin && (
-        <div className={`mb-6 p-4 rounded-lg ${
-          isBank ? 'bg-blue-50 border border-blue-200' : 'bg-purple-50 border border-purple-200'
-        }`}>
-          <div className="flex items-center space-x-3">
-            <i className={`fas ${isBank ? 'fa-university' : 'fa-building'} text-2xl ${
-              isBank ? 'text-blue-600' : 'text-purple-600'
-            }`}></i>
-            <div>
-              <h3 className="font-semibold text-gray-800">
-                {isBank ? `${t('roles.bank')} - ${t('fundRecovery.bankDirectConversion')}` : `${t('roles.nbfi')} - ${t('fundRecovery.nbfiForexPoolConversion')}`}
-              </h3>
-              <p className="text-sm text-gray-600">
-                {isBank
-                  ? t('fundRecovery.noHandlingFee')
-                  : t('fundRecovery.handlingFeeNote')}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
 
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">{t('fundRecovery.title')}</h2>
-        <p className="text-gray-600">{t('fundRecovery.description')}</p>
       </div>
-
-      {/* 三模块布局：60% - 40% */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-        {/* 模块A：银行特权兑换（Circle通道）- 左侧主面板（60%宽度） */}
-        <div className="lg:col-span-3">
-          {isBank ? (
-            <BankCircleConversion
-              usdcBalance={usdcBalance}
-              exchangeRate={circleExchangeRate}
-              forexPoolRate={forexPoolRate}
-              onConversion={handleConversion}
-            />
-          ) : (
-            <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6 text-center">
-              <i className="fas fa-lock text-3xl text-gray-400 mb-3"></i>
-              <p className="text-gray-600">
-                {language === 'zh' 
-                  ? '此功能仅限银行角色使用' 
-                  : 'This feature is only available for Bank role'}
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* 右侧面板（40%宽度） */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* 模块B：外汇池流动性管理 - 右侧上方面板 */}
-          {isBank && (
-            <LiquidityManagement
-              onLiquidityManage={() => setShowLiquidityModal(true)}
-            />
-          )}
-
-          {/* 模块C：外汇池市场数据 - 右侧下方面板 */}
-          <MarketData />
-        </div>
-      </div>
-
-      {/* 兑换确认模态框 */}
-      {showConversionModal && conversionData && (
-        <ConversionConfirmModal
-          conversionData={conversionData}
-          exchangeRate={circleExchangeRate}
-          userRole={userRole}
-          onConfirm={handleConversionConfirm}
-          onClose={() => {
-            setShowConversionModal(false)
-            setConversionData(null)
-          }}
-        />
-      )}
-
-      {/* 流动性管理模态框（银行或系统管理员） */}
-      {showLiquidityModal && (isBank || isAdmin) && (
-        <LiquidityModal
-          onClose={() => setShowLiquidityModal(false)}
-        />
-      )}
-    </div>
     </PermissionGuard>
   )
 }

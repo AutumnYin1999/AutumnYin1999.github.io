@@ -70,6 +70,7 @@ export interface Translations {
     absPackaging: string
     bridge: string
     fundRecovery: string
+    nodeEarnings: string
     pendingReviews: string
   }
 
@@ -864,6 +865,7 @@ const translations: Record<Language, Translations> = {
       absPackaging: 'ABS打包',
       bridge: '桥接管理',
       fundRecovery: '资金回收',
+      nodeEarnings: '节点收益',
       pendingReviews: '待验证任务',
     },
     dashboard: {
@@ -1146,7 +1148,7 @@ const translations: Record<Language, Translations> = {
       allianceChainConfirmation: '联盟链确认',
     },
     fundRecovery: {
-      title: '资金回收与外汇兑换平台',
+      title: '节点收益',
       description: '处理从外部公链回流USDC的兑换和资金回收流程',
       usdcBalanceOverview: 'USDC余额概览',
       currentBalance: '当前余额',
@@ -1749,6 +1751,7 @@ const translations: Record<Language, Translations> = {
       absPackaging: 'ABS Packaging',
       bridge: 'Bridge',
       fundRecovery: 'Fund Recovery',
+      nodeEarnings: 'Node Earnings',
       pendingReviews: 'Pending Reviews',
     },
     dashboard: {
@@ -2031,7 +2034,7 @@ const translations: Record<Language, Translations> = {
       allianceChainConfirmation: 'Alliance Chain Confirmation',
     },
     fundRecovery: {
-      title: 'Fund Recovery & Forex Exchange Platform',
+      title: 'Node Earnings',
       description: 'Process USDC repatriation and conversion from external public chains',
       usdcBalanceOverview: 'USDC Balance Overview',
       currentBalance: 'Current Balance',
