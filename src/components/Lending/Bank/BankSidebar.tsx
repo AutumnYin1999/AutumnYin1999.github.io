@@ -77,7 +77,7 @@ function BankSidebar({ totalLentAmount, totalInterest, badDebtRate, loans, onVie
               <TrendArrow value={trends.totalLentAmount.value} direction={trends.totalLentAmount.direction} />
             </div>
             <div className="text-2xl font-bold text-gray-800 font-mono">
-              {totalLentAmount.toLocaleString('en-US')} eHKD
+              HK$ 
             </div>
           </div>
           <div className="border-t border-gray-200 pt-4">
@@ -86,7 +86,7 @@ function BankSidebar({ totalLentAmount, totalInterest, badDebtRate, loans, onVie
               <TrendArrow value={trends.totalInterest.value} direction={trends.totalInterest.direction} />
             </div>
             <div className="text-2xl font-bold text-green-600 font-mono">
-              {totalInterest.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+              {totalInterest.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
             </div>
           </div>
           <div className="border-t border-gray-200 pt-4">

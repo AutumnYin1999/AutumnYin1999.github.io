@@ -55,7 +55,7 @@ function ConversionConfirmModal({
               <i className="fas fa-check text-3xl text-green-600"></i>
             </div>
             <h3 className="text-2xl font-bold text-gray-800 mb-2">{t('fundRecovery.conversionSuccess')}</h3>
-            <p className="text-gray-600">{t('fundRecovery.eHKDReceived')}</p>
+            <p className="text-gray-600">{t('fundRecoveryHK$ Received')}</p>
           </div>
 
           <div className="p-6 space-y-4">
@@ -121,7 +121,7 @@ function ConversionConfirmModal({
                 {isBank ? t('fundRecovery.bankDirectConversion') : t('fundRecovery.nbfiForexPoolConversion')}
               </span>
               <i className="fas fa-arrow-right text-gray-400"></i>
-              <span className="font-medium text-gray-800">eHKD</span>
+              <span className="font-medium text-gray-800">HK$</span>
             </div>
           </div>
 
@@ -138,14 +138,14 @@ function ConversionConfirmModal({
               <div className="flex items-center justify-between">
                 <span className="text-gray-600">{t('fundRecovery.exchangeRate')}</span>
                 <span className="font-medium text-gray-800">
-                  1 USDC = {exchangeRate.toFixed(2)} eHKD
+                  1 USDC = HK$ 
                 </span>
               </div>
               {!isBank && conversionData.fee > 0 && (
                 <div className="flex items-center justify-between">
                   <span className="text-gray-600">{t('fundRecovery.feeRate')} 1.2%</span>
                   <span className="font-medium text-gray-800">
-                    {conversionData.fee.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                    {conversionData.fee.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
                   </span>
                 </div>
               )}
@@ -153,7 +153,7 @@ function ConversionConfirmModal({
                 <div className="flex items-center justify-between font-semibold">
                   <span className="text-gray-800">{t('fundRecovery.estimatedReceiveEHKD')}:</span>
                   <span className="text-blue-600 text-lg">
-                    {conversionData.estimatedEHKD.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                    {conversionData.estimatedEHKD.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
                   </span>
                 </div>
               </div>

@@ -22,13 +22,13 @@ function NBFISidebar({ totalLoanAmount, availableCollateral, averageRate, upcomi
           <div>
             <div className="text-sm text-gray-600 mb-1">{t('lending.myTotalLoanAmount')}</div>
             <div className="text-2xl font-bold text-gray-800">
-              {totalLoanAmount.toLocaleString('en-US')} eHKD
+              HK$ 
             </div>
           </div>
           <div className="border-t border-gray-200 pt-4">
             <div className="text-sm text-gray-600 mb-1">{t('lending.availableCollateral')}</div>
             <div className="text-2xl font-bold text-blue-600">
-              {availableCollateral.toLocaleString('en-US')} eHKD
+              HK$ 
             </div>
           </div>
           <div className="border-t border-gray-200 pt-4">
@@ -64,7 +64,7 @@ function NBFISidebar({ totalLoanAmount, availableCollateral, averageRate, upcomi
                 </div>
                 <div className="text-sm text-gray-600">
                   {t('lending.repaymentRequired')} <span className="font-semibold text-gray-800">
-                    {loan.loanAmount.toLocaleString('en-US')} eHKD
+                    HK$ 
                   </span>
                 </div>
               </div>

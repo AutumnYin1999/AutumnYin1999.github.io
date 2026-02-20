@@ -152,7 +152,7 @@ function MarketSidebar({ watchlist, tokens, recentTransactions, onRemoveFromWatc
                       </span>
                     </div>
                     <div className="text-xs text-gray-600">
-                      {token.currentPrice.toLocaleString('en-US')} eHKD
+                      HK$
                     </div>
                   </div>
                   <button
@@ -197,7 +197,7 @@ function MarketSidebar({ watchlist, tokens, recentTransactions, onRemoveFromWatc
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-gray-600">{t('marketTrading.quantity')}: {tx.quantity}</span>
                     <span className="text-gray-800 font-medium">
-                      {tx.totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                      {tx.totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
                     </span>
                   </div>
                 </div>
@@ -237,7 +237,7 @@ function MarketSidebar({ watchlist, tokens, recentTransactions, onRemoveFromWatc
                   color: '#fff',
                   fontSize: '12px',
                 }}
-                formatter={(value: number) => [`${value.toLocaleString('en-US')} eHKD`, t('marketTrading.price')]}
+                formatter={(value: number) => [`$HK$ `, t('marketTrading.price')]}
               />
               <Line
                 type="monotone"

@@ -17,7 +17,7 @@ function ConversionPanel({ userRole, usdcBalance, exchangeRate, onConversion }: 
   const isBank = userRole === 'Bank' || userRole === '银行' || isAdmin
   const isNBFI = userRole === 'NBFI' || isAdmin
 
-  // 计算预计接收的eHKD
+  // 计算预计接收的HK$
   const estimatedEHKD = useMemo(() => {
     if (!conversionAmount) return 0
     const amount = parseFloat(conversionAmount)
@@ -54,7 +54,7 @@ function ConversionPanel({ userRole, usdcBalance, exchangeRate, onConversion }: 
     }
 
     if (isNBFI && estimatedEHKD > dailyLimit) {
-      alert(`${t('fundRecovery.exceedDailyLimit')} ${dailyLimit.toLocaleString('en-US')} eHKD`)
+      alert(`${t('fundRecovery.exceedDailyLimit')} $HK$ `)
       return
     }
 
@@ -85,13 +85,13 @@ function ConversionPanel({ userRole, usdcBalance, exchangeRate, onConversion }: 
           <div>
             <div className="text-sm text-gray-600 mb-1">{t('fundRecovery.todayConvertibleQuota')}</div>
             <div className="text-2xl font-bold text-blue-600">
-              {isBank ? t('fundRecovery.unlimited') : `${dailyLimit.toLocaleString('en-US')} eHKD`}
+              {isBank ? t('fundRecovery.unlimited') : `$HK$ `}
             </div>
           </div>
           <div>
             <div className="text-sm text-gray-600 mb-1">{t('fundRecovery.currentExchangeRate')}</div>
             <div className="text-2xl font-bold text-green-600">
-              1 USDC = {exchangeRate.toFixed(2)} eHKD
+              1 USDC = HK$ 
             </div>
           </div>
         </div>
@@ -185,7 +185,7 @@ function ConversionPanel({ userRole, usdcBalance, exchangeRate, onConversion }: 
                   <div className="flex items-center justify-between mt-1">
                     <span className="text-sm text-gray-600">{t('fundRecovery.feeAmount')}</span>
                     <span className="font-semibold text-gray-800">
-                      {fee.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                      {fee.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
                     </span>
                   </div>
                 </div>
@@ -198,12 +198,12 @@ function ConversionPanel({ userRole, usdcBalance, exchangeRate, onConversion }: 
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm text-gray-600">{t('fundRecovery.currentPoolDepth')}</span>
-                    <span className="font-semibold text-blue-700">15,800,000 eHKD</span>
+                    <span className="font-semibold text-blue-700">HK$ </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">{t('fundRecovery.exchangeRate')}</span>
                     <span className="font-semibold text-blue-700">
-                      1 USDC = {exchangeRate.toFixed(2)} eHKD
+                      1 USDC = HK$ 
                     </span>
                   </div>
                   <div className="text-xs text-gray-500 mt-2">
@@ -234,14 +234,14 @@ function ConversionPanel({ userRole, usdcBalance, exchangeRate, onConversion }: 
             </>
           )}
 
-          {/* 预计接收eHKD */}
+          {/* 预计接收HK$ */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               {t('fundRecovery.estimatedReceiveEHKD')}
             </label>
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <div className="text-2xl font-bold text-green-700">
-                {estimatedEHKD.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                {estimatedEHKD.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
               </div>
               {isNBFI && (
                 <div className="text-sm text-gray-600 mt-1">

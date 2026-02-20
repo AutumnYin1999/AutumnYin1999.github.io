@@ -149,7 +149,7 @@ function NewLoanApplication({ onNewLoan }: NewLoanApplicationProps) {
                           </span>
                         </div>
                         <div className="text-sm text-gray-600 mt-1">
-                          {t('lending.currentValue')} {token.currentValue.toLocaleString('en-US')} eHKD
+                          {t('lending.currentValue')} HK$ 
                         </div>
                       </div>
                     </div>
@@ -163,13 +163,13 @@ function NewLoanApplication({ onNewLoan }: NewLoanApplicationProps) {
               <div className="text-sm">
                 <span className="text-gray-600">{t('lending.totalCollateralValue')}：</span>
                 <span className="font-semibold text-blue-700 ml-2">
-                  {totalCollateralValue.toLocaleString('en-US')} eHKD
+                  HK$ 
                 </span>
               </div>
               <div className="text-sm mt-1">
                 <span className="text-gray-600">{t('lending.maxBorrowableAmount')}（70%）：</span>
                 <span className="font-semibold text-blue-700 ml-2">
-                  {maxLoanAmount.toLocaleString('en-US')} eHKD
+                  HK$ 
                 </span>
               </div>
             </div>
@@ -192,7 +192,7 @@ function NewLoanApplication({ onNewLoan }: NewLoanApplicationProps) {
               className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               required
             />
-            <span className="absolute right-3 top-3.5 text-gray-500 text-sm">eHKD</span>
+            <span className="absolute right-3 top-3.5 text-gray-500 text-sm">HK$</span>
           </div>
           {loanAmount && parseFloat(loanAmount) > maxLoanAmount && (
             <p className="mt-1 text-sm text-red-500">
@@ -225,7 +225,7 @@ function NewLoanApplication({ onNewLoan }: NewLoanApplicationProps) {
             <div className="flex items-center justify-between text-sm mb-2">
               <span className="text-gray-600">{t('lending.estimatedInterestLabel')}</span>
               <span className="font-semibold text-gray-800">
-                {estimatedInterest.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                {estimatedInterest.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
               </span>
             </div>
             <div className="text-xs text-gray-500">

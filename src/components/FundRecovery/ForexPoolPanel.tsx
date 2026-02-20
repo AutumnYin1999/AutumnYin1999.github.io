@@ -23,19 +23,19 @@ function ForexPoolPanel({ userRole, exchangeRate, onLiquidityManage }: ForexPool
           <div>
             <div className="text-sm text-gray-600 mb-1">{t('fundRecovery.totalLiquidity')}</div>
             <div className="text-2xl font-bold text-gray-800">
-              15,800,000 eHKD
+              HK$ 
             </div>
           </div>
           <div className="border-t border-gray-200 pt-4">
             <div className="text-sm text-gray-600 mb-1">{t('fundRecovery.dailyTradingVolume')}</div>
             <div className="text-2xl font-bold text-blue-600">
-              3,250,000 eHKD
+              HK$ 
             </div>
           </div>
           <div className="border-t border-gray-200 pt-4">
             <div className="text-sm text-gray-600 mb-1">{t('fundRecovery.currentExchangeRate')}</div>
             <div className="text-2xl font-bold text-green-600">
-              1 USDC = {exchangeRate.toFixed(2)} eHKD
+              1 USDC = HK$ 
             </div>
           </div>
           <div className="border-t border-gray-200 pt-4">
@@ -58,13 +58,13 @@ function ForexPoolPanel({ userRole, exchangeRate, onLiquidityManage }: ForexPool
             <div>
               <div className="text-sm text-gray-600 mb-1">{t('fundRecovery.myLiquidityContribution')}</div>
               <div className="text-2xl font-bold text-gray-800">
-                2,500,000 eHKD
+                HK$ 
               </div>
             </div>
             <div className="border-t border-gray-200 pt-4">
               <div className="text-sm text-gray-600 mb-1">{t('fundRecovery.todayFeeRevenue')}</div>
               <div className="text-2xl font-bold text-green-600">
-                850 eHKD
+                HK$ 
               </div>
             </div>
             <div className="border-t border-gray-200 pt-4">

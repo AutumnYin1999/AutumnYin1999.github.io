@@ -9,7 +9,7 @@ interface HistoryRecord {
   id: string
   type: 'usdcDeposit' | 'forexExchange' // 改为英文键值
   amount: number
-  currency: 'USDC' | 'eHKD'
+  currency: 'USDC' | 'HK$'
   exchangeRate?: number
   fee?: number
   status: 'completed' | 'inProgress' | 'failed' // 改为英文键值
@@ -36,7 +36,7 @@ function RecoveryHistory({ userRole }: RecoveryHistoryProps) {
       id: 'TXN-2025-002',
       type: 'forexExchange',
       amount: 391000,
-      currency: 'eHKD',
+      currency: 'HK$',
       exchangeRate: 7.82,
       fee: 4680,
       status: 'completed',
@@ -55,7 +55,7 @@ function RecoveryHistory({ userRole }: RecoveryHistoryProps) {
       id: 'TXN-2025-004',
       type: 'forexExchange',
       amount: 234600,
-      currency: 'eHKD',
+      currency: 'HK$',
       exchangeRate: 7.82,
       fee: 2808,
       status: 'inProgress',
@@ -174,7 +174,7 @@ function RecoveryHistory({ userRole }: RecoveryHistoryProps) {
                           <div>
                             <span className="text-gray-600">{t('fundRecovery.exchangeRate')}</span>
                             <span className="font-medium text-gray-800 ml-2">
-                              1 USDC = {record.exchangeRate} eHKD
+                              1 USDC = HK$ 
                             </span>
                           </div>
                         )}
@@ -182,7 +182,7 @@ function RecoveryHistory({ userRole }: RecoveryHistoryProps) {
                           <div>
                             <span className="text-gray-600">{t('fundRecovery.feeAmount')}</span>
                             <span className="font-medium text-gray-800 ml-2">
-                              {record.fee.toLocaleString('en-US')} eHKD
+                              HK$ 
                             </span>
                           </div>
                         )}
@@ -247,12 +247,12 @@ function RecoveryHistory({ userRole }: RecoveryHistoryProps) {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
-                        {record.exchangeRate ? `1 USDC = ${record.exchangeRate} eHKD` : '-'}
+                        {record.exchangeRate ? `1 USDC = $HK$ ` : '-'}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
-                        {record.fee ? `${record.fee.toLocaleString('en-US')} eHKD` : '-'}
+                        {record.fee ? `$HK$ ` : '-'}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

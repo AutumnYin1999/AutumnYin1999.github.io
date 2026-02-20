@@ -87,7 +87,7 @@ function LoanMarket({ applications, onBid, onViewDetail, onReject }: LoanMarketP
                         {language === 'zh' ? '抵押品总值' : 'Total Collateral'}
                       </div>
                       <div className="font-semibold text-gray-800 font-mono">
-                        {application.collateralValue.toLocaleString('en-US')} eHKD
+                        HK$ 
                       </div>
                     </div>
                     <div>
@@ -95,7 +95,7 @@ function LoanMarket({ applications, onBid, onViewDetail, onReject }: LoanMarketP
                         {language === 'zh' ? '申请金额' : 'Loan Amount'}
                       </div>
                       <div className="font-semibold text-gray-800 font-mono">
-                        {application.loanAmount.toLocaleString('en-US')} eHKD
+                        HK$ 
                       </div>
                     </div>
                     <div>

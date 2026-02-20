@@ -55,7 +55,7 @@ function LoanDetailModal({ loan, onClose }: LoanDetailModalProps) {
               <div>
                 <span className="text-gray-600">{t('lending.loanAmount')}：</span>
                 <span className="font-medium text-gray-800 ml-2">
-                  {loan.loanAmount.toLocaleString('en-US')} eHKD
+                  HK$ 
                 </span>
               </div>
               <div>
@@ -66,7 +66,7 @@ function LoanDetailModal({ loan, onClose }: LoanDetailModalProps) {
                 <div>
                   <span className="text-gray-600">{t('lending.collateralValue')}：</span>
                   <span className="font-medium text-gray-800 ml-2">
-                    {loan.collateralValue.toLocaleString('en-US')} eHKD
+                    HK$ 
                   </span>
                 </div>
               )}
@@ -151,11 +151,11 @@ function LoanDetailModal({ loan, onClose }: LoanDetailModalProps) {
                           </span>
                         </td>
                         <td className="px-4 py-2 text-gray-800">
-                          {token.value.toLocaleString('en-US')} eHKD
+                          HK$ 
                         </td>
                         <td className="px-4 py-2 text-gray-800">
                           {/* 模拟实时价值（实际应该从API获取） */}
-                          {(token.value * (0.98 + Math.random() * 0.04)).toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                          {(token.value * (0.98 + Math.random() * 0.04)).toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
                         </td>
                       </tr>
                     ))}
@@ -174,20 +174,20 @@ function LoanDetailModal({ loan, onClose }: LoanDetailModalProps) {
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600">{t('lending.principal')}</span>
                     <span className="font-medium text-gray-800">
-                      {loan.loanAmount.toLocaleString('en-US')} eHKD
+                      HK$ 
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600">{t('lending.interestEstimated')}</span>
                     <span className="font-medium text-gray-800">
-                      {(loan.loanAmount * loan.interestRate / 100 * loan.term / 365).toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                      {(loan.loanAmount * loan.interestRate / 100 * loan.term / 365).toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
                     </span>
                   </div>
                   <div className="border-t border-gray-200 pt-2 mt-2">
                     <div className="flex items-center justify-between font-semibold">
                       <span className="text-gray-800">{t('lending.total')}</span>
                       <span className="text-blue-600">
-                        {(loan.loanAmount * (1 + loan.interestRate / 100 * loan.term / 365)).toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                        {(loan.loanAmount * (1 + loan.interestRate / 100 * loan.term / 365)).toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
                       </span>
                     </div>
                   </div>

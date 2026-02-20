@@ -225,8 +225,8 @@ function BridgePage() {
               )}
             </div>
             <div className="text-sm text-gray-600">
-              {t('bridge.bridgeTotal')}: <strong className="text-gray-800">1,850,000 eHKD</strong> | 
-              {t('bridge.bridgeFee')}: <strong className="text-gray-800">2,775 eHKD</strong>
+              {t('bridge.bridgeTotal')}: <strong className="text-gray-800">HK$ </strong> | 
+              {t('bridge.bridgeFee')}: <strong className="text-gray-800">HK$ </strong>
             </div>
           </div>
       </div>

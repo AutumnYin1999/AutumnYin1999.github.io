@@ -22,18 +22,18 @@ function PurchaseModal({ token, onConfirm, onClose }: PurchaseModalProps) {
 
   const handleConfirm = async () => {
     setIsProcessing(true)
-    
+
     // 模拟交易处理延迟
     await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    const hash = '0x' + Array.from({ length: 64 }, () => 
+
+    const hash = '0x' + Array.from({ length: 64 }, () =>
       Math.floor(Math.random() * 16).toString(16)
     ).join('')
-    
+
     setTransactionHash(hash)
     setIsProcessing(false)
     setIsSuccess(true)
-    
+
     // 延迟关闭并触发回调
     setTimeout(() => {
       onConfirm(token.id, quantity, total)
@@ -102,11 +102,10 @@ function PurchaseModal({ token, onConfirm, onClose }: PurchaseModalProps) {
           <div className="bg-gray-50 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
               <span className="font-semibold text-gray-800">{token.id}</span>
-              <span className={`px-2 py-1 rounded text-xs font-medium ${
-                token.type === 'receivable'
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'bg-green-100 text-green-700'
-              }`}>
+              <span className={`px-2 py-1 rounded text-xs font-medium ${token.type === 'receivable'
+                ? 'bg-blue-100 text-blue-700'
+                : 'bg-green-100 text-green-700'
+                }`}>
                 {token.type === 'receivable' ? t('marketTrading.receivable') : t('marketTrading.inventory')}
               </span>
             </div>

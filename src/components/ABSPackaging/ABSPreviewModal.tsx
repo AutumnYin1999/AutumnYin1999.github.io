@@ -164,7 +164,7 @@ function ABSPreviewModal({
               <div>
                 <span className="text-gray-600">{t('absPackaging.packagingScaleLabel')}</span>
                 <span className="font-medium text-gray-800 ml-2">
-                  {totalValue.toLocaleString('en-US')} eHKD
+                  HK$ 
                 </span>
               </div>
               <div>
@@ -203,7 +203,7 @@ function ABSPreviewModal({
                           </span>
                         </td>
                         <td className="px-4 py-2 text-gray-800">
-                          {asset.faceValue.toLocaleString('en-US')} eHKD
+                          HK$ 
                         </td>
                         <td className="px-4 py-2">
                           <span className="px-2 py-0.5 rounded text-xs bg-gray-100 text-gray-700">
@@ -243,7 +243,7 @@ function ABSPreviewModal({
                     </Pie>
                     <Tooltip
                       formatter={(value: number, name: string, props: any) => [
-                        `${props.payload.amount.toLocaleString('en-US')} eHKD (${value.toFixed(1)}%)`,
+                        `$HK$  (${value.toFixed(1)}%)`,
                         name,
                       ]}
                     />
@@ -276,7 +276,7 @@ function ABSPreviewModal({
                       <div className="flex justify-between">
                         <span className="text-gray-600">{t('absPackaging.amount')}</span>
                         <span className="font-medium text-gray-800">
-                          {tranche.amount.toLocaleString('en-US')} eHKD
+                          HK$ 
                         </span>
                       </div>
                       <div className="flex justify-between">
@@ -332,16 +332,16 @@ function ABSPreviewModal({
                       <tr key={period}>
                         <td className="px-4 py-2 font-medium text-gray-800">第{period}期</td>
                         <td className="px-4 py-2 font-mono text-gray-700">
-                          {seniorCF.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                          {seniorCF.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
                         </td>
                         <td className="px-4 py-2 font-mono text-gray-700">
-                          {mezzanineCF.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                          {mezzanineCF.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
                         </td>
                         <td className="px-4 py-2 font-mono text-gray-700">
-                          {juniorCF.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                          {juniorCF.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
                         </td>
                         <td className="px-4 py-2 font-mono font-semibold text-gray-800">
-                          {totalCF.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                          {totalCF.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
                         </td>
                       </tr>
                     )

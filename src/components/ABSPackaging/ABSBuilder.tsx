@@ -141,11 +141,11 @@ function ABSBuilder({
                 disabled={isDisabled}
                 className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed font-mono"
               />
-              <span className="text-sm text-gray-600">eHKD</span>
+              <span className="text-sm text-gray-600">HK$</span>
             </div>
             <div className="text-xs text-gray-500 mt-1">
               {language === 'zh' ? '最大：' : 'Max: '}
-              <span className="font-mono">{totalValue.toLocaleString('en-US')} eHKD</span>
+              <span className="font-mono">HK$ </span>
               {language === 'zh' ? '（资产池总价值）' : ' (Total Pool Value)'}
             </div>
           </div>
@@ -168,7 +168,7 @@ function ABSBuilder({
               </div>
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-gray-600 font-mono">
-                  {trancheConfig.senior.toFixed(1)}% ({seniorAmount.toLocaleString('en-US')} eHKD)
+                  {trancheConfig.senior.toFixed(1)}% (HK$ )
                 </span>
                 <span className="text-sm font-semibold text-blue-900 font-mono">
                   {language === 'zh' ? '预期利率：' : 'Expected Rate: '}5.2%
@@ -198,7 +198,7 @@ function ABSBuilder({
               </div>
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-gray-600 font-mono">
-                  {trancheConfig.mezzanine.toFixed(1)}% ({mezzanineAmount.toLocaleString('en-US')} eHKD)
+                  {trancheConfig.mezzanine.toFixed(1)}% (HK$ )
                 </span>
                 <span className="text-sm font-semibold text-blue-500 font-mono">
                   {language === 'zh' ? '预期利率：' : 'Expected Rate: '}7.8%
@@ -228,7 +228,7 @@ function ABSBuilder({
               </div>
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-gray-600 font-mono">
-                  {trancheConfig.junior.toFixed(1)}% ({juniorAmount.toLocaleString('en-US')} eHKD)
+                  {trancheConfig.junior.toFixed(1)}% (HK$ )
                 </span>
                 <span className="text-sm font-semibold text-orange-500 font-mono">
                   {language === 'zh' ? '预期利率：' : 'Expected Rate: '}12.5%

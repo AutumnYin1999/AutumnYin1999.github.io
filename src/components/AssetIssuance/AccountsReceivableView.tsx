@@ -71,7 +71,7 @@ function AccountsReceivableView() {
                       {language === 'zh' ? '金额：' : 'Amount: '}
                     </span>
                     <span className="font-medium text-gray-800">
-                      {receivable.amount.toLocaleString()} eHKD
+                      HK$ 
                     </span>
                   </div>
                   <div>

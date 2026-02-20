@@ -79,7 +79,7 @@ function BidModal({ application, onConfirm, onClose }: BidModalProps) {
               <div className="flex items-center justify-between">
                 <span className="text-gray-600">{t('lending.loanAmountLabel')}</span>
                 <span className="font-medium text-gray-800">
-                  {application.loanAmount.toLocaleString('en-US')} eHKD
+                  HK$ 
                 </span>
               </div>
               <div className="flex items-center justify-between">
@@ -148,10 +148,10 @@ function BidModal({ application, onConfirm, onClose }: BidModalProps) {
                 className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
               />
-              <span className="absolute right-3 top-3.5 text-gray-500 text-sm">eHKD</span>
+              <span className="absolute right-3 top-3.5 text-gray-500 text-sm">HK$</span>
             </div>
             <div className="mt-1 text-xs text-gray-500">
-              {t('lending.maxBidable')} {application.loanAmount.toLocaleString('en-US')} eHKD
+              {t('lending.maxBidable')} HK$ 
             </div>
             {amount && parseFloat(amount) > application.loanAmount && (
               <p className="mt-1 text-sm text-red-500">
@@ -167,20 +167,20 @@ function BidModal({ application, onConfirm, onClose }: BidModalProps) {
                 <div className="flex items-center justify-between">
                   <span className="text-gray-600">{t('lending.bidAmountLabel')}：</span>
                   <span className="font-medium text-gray-800">
-                    {parseFloat(amount).toLocaleString('en-US')} eHKD
+                    HK$ 
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-gray-600">{t('lending.estimatedInterestIncome')}</span>
                   <span className="font-semibold text-blue-600">
-                    {estimatedInterest.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                    {estimatedInterest.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
                   </span>
                 </div>
                 <div className="border-t border-blue-200 pt-2 mt-2">
                   <div className="flex items-center justify-between font-semibold">
                     <span className="text-gray-800">{t('lending.estimatedTotalRecovery')}</span>
                     <span className="text-blue-600">
-                      {(parseFloat(amount) + estimatedInterest).toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                      {(parseFloat(amount) + estimatedInterest).toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
                     </span>
                   </div>
                 </div>

@@ -121,7 +121,7 @@ function MyLending({ loans, onViewDetail, onContact, onLiquidate }: MyLendingPro
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-semibold text-gray-900 font-mono">
-                      {loan.loanAmount.toLocaleString('en-US')} eHKD
+                      HK$ 
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">

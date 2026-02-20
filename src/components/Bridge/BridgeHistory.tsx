@@ -74,7 +74,7 @@ function BridgeHistory({ history, onViewDetail }: BridgeHistoryProps) {
               <div className="space-y-1 text-xs text-gray-600 mb-3">
                 <div>{language === 'zh' ? '目标链' : 'Target Chain'}: {bridge.targetChain}</div>
                 <div>{language === 'zh' ? '数量' : 'Quantity'}: {bridge.quantity}</div>
-                <div>{language === 'zh' ? '价值' : 'Value'}: {bridge.value.toLocaleString()} eHKD</div>
+                <div>{language === 'zh' ? '价值' : 'Value'}: HK$ </div>
               </div>
               {/* 进度条 */}
               <div className="mb-2">

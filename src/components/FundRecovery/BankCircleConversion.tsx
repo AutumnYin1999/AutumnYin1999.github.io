@@ -19,7 +19,7 @@ function BankCircleConversion({
   const [circleAccountStatus, setCircleAccountStatus] = useState<'verified' | 'pending' | 'unverified'>('verified')
   const [circleAccountAddress] = useState('0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb0')
 
-  // 计算预计接收的eHKD（银行免手续费）
+  // 计算预计接收的HK$（银行免手续费）
   const estimatedEHKD = useMemo(() => {
     if (!conversionAmount) return 0
     const amount = parseFloat(conversionAmount)
@@ -164,7 +164,7 @@ function BankCircleConversion({
                   {language === 'zh' ? 'Circle通道汇率' : 'Circle Channel Rate'}
                 </div>
                 <div className="text-lg font-bold text-blue-600">
-                  1 USDC = {exchangeRate.toFixed(4)} eHKD
+                  1 USDC = HK$ 
                 </div>
               </div>
               <div>
@@ -172,7 +172,7 @@ function BankCircleConversion({
                   {language === 'zh' ? '外汇池汇率' : 'Forex Pool Rate'}
                 </div>
                 <div className="text-lg font-bold text-gray-600">
-                  1 USDC = {forexPoolRate.toFixed(4)} eHKD
+                  1 USDC = HK$ 
                 </div>
               </div>
             </div>
@@ -191,14 +191,14 @@ function BankCircleConversion({
             </div>
           </div>
 
-          {/* 预计接收eHKD */}
+          {/* 预计接收HK$ */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               {t('fundRecovery.estimatedReceiveEHKD')}
             </label>
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <div className="text-2xl font-bold text-green-700">
-                {estimatedEHKD.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                {estimatedEHKD.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
               </div>
               <div className="text-sm text-gray-600 mt-1">
                 {language === 'zh' ? '免手续费（银行特权）' : 'Fee-free (Bank Privilege)'}
@@ -273,7 +273,7 @@ function BankCircleConversion({
                       {record.amount.toLocaleString('en-US')} USDC
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-900">
-                      1 USDC = {record.rate.toFixed(4)} eHKD
+                      1 USDC = HK$ 
                     </td>
                     <td className="px-4 py-3">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${

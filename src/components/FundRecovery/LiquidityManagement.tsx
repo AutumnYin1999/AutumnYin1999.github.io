@@ -52,7 +52,7 @@ function LiquidityManagement({ onLiquidityManage }: LiquidityManagementProps) {
           </h4>
           <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-4 border border-purple-200">
             <div className="text-3xl font-bold text-gray-800 mb-1">
-              {myLiquidity.total.toLocaleString('en-US')} eHKD
+              HK$ 
             </div>
             <div className="text-sm text-gray-600">
               {language === 'zh' ? '占总池子' : 'Pool Share'}: {myLiquidity.poolShare}%
@@ -71,7 +71,7 @@ function LiquidityManagement({ onLiquidityManage }: LiquidityManagementProps) {
                 {language === 'zh' ? '今日收益' : 'Today'}
               </div>
               <div className="text-lg font-bold text-green-700">
-                {myLiquidity.todayRevenue.toLocaleString('en-US')} eHKD
+                HK$ 
               </div>
             </div>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
@@ -79,7 +79,7 @@ function LiquidityManagement({ onLiquidityManage }: LiquidityManagementProps) {
                 {language === 'zh' ? '累计收益' : 'Cumulative'}
               </div>
               <div className="text-lg font-bold text-blue-700">
-                {myLiquidity.cumulativeRevenue.toLocaleString('en-US')} eHKD
+                HK$ 
               </div>
             </div>
             <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">

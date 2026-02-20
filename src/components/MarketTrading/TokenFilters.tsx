@@ -203,7 +203,7 @@ function TokenFilters({ filters, onFiltersChange }: TokenFiltersProps) {
         {/* 价格范围 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            {t('marketTrading.priceRange')}: {filters.priceRange[0].toLocaleString()} - {filters.priceRange[1].toLocaleString()} eHKD
+            {t('marketTrading.priceRange')}: {filters.priceRange[0].toLocaleString()} - HK$
           </label>
           <div className="flex items-center space-x-2">
             <input

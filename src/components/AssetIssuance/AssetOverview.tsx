@@ -34,7 +34,7 @@ function AssetOverview({
               <i className="fas fa-clock text-yellow-600"></i>
             </div>
             <div className="text-2xl font-bold text-gray-800">
-              ${(pendingReceivablesTotal / 1000).toFixed(1)}K eHKD
+              ${(pendingReceivablesTotal / 1000).toFixed(1)}K HK$
             </div>
           </div>
 
@@ -46,7 +46,7 @@ function AssetOverview({
               <i className="fas fa-wallet text-blue-600"></i>
             </div>
             <div className="text-2xl font-bold text-gray-800">
-              ${(receivedReceivablesTotal / 1000).toFixed(1)}K eHKD
+              ${(receivedReceivablesTotal / 1000).toFixed(1)}K HK$
             </div>
           </div>
 
@@ -58,7 +58,7 @@ function AssetOverview({
               <i className="fas fa-boxes text-purple-600"></i>
             </div>
             <div className="text-2xl font-bold text-gray-800">
-              ${(inventoryTotal / 1000).toFixed(1)}K eHKD
+              ${(inventoryTotal / 1000).toFixed(1)}K HK$
             </div>
           </div>
         </div>

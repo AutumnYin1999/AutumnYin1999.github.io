@@ -133,7 +133,7 @@ function BridgeConfig({
           <div className="flex items-center justify-between">
             <span className="text-gray-600">{t('bridge.selectedValue')}:</span>
             <span className="font-semibold text-gray-800">
-              {totalValue.toLocaleString()} eHKD
+              HK$ 
             </span>
           </div>
           <div className="flex items-center justify-between pt-2 border-t border-gray-200">
@@ -143,7 +143,7 @@ function BridgeConfig({
           <div className="flex items-center justify-between pt-2 border-t border-gray-200">
             <span className="text-gray-600">{t('bridge.estimatedReceived')}:</span>
             <span className="font-bold text-lg text-blue-600">
-              ~{estimatedReceived.toLocaleString()} eHKD
+              ~HK$ 
             </span>
           </div>
           <div className="flex items-center space-x-2 pt-2">
@@ -168,7 +168,7 @@ function BridgeConfig({
               </span>
             </span>
             <span className="font-semibold text-gray-800 font-mono">
-              {outboundFee.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+              {outboundFee.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
             </span>
           </div>
           <div className="flex items-center justify-between">
@@ -180,7 +180,7 @@ function BridgeConfig({
               </span>
             </span>
             <span className="font-semibold text-gray-800 font-mono">
-              {inboundFee.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+              {inboundFee.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
             </span>
           </div>
           <div className="flex items-center justify-between pt-2 border-t border-blue-200">
@@ -188,7 +188,7 @@ function BridgeConfig({
               {language === 'zh' ? '预估总费用' : 'Estimated Total Fee'}:
             </span>
             <span className="font-bold text-blue-600 font-mono">
-              {totalFee.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+              {totalFee.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
             </span>
           </div>
         </div>

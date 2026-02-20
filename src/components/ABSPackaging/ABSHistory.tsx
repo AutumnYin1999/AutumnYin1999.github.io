@@ -64,7 +64,7 @@ function ABSHistory({ absProducts }: ABSHistoryProps) {
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-600">{t('absPackaging.totalScale')}：</span>
                   <span className="font-semibold text-gray-800">
-                    {product.totalSize.toLocaleString('en-US')} eHKD
+                    HK$ 
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">

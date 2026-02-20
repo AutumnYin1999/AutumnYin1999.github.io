@@ -95,7 +95,7 @@ function BridgeDetailModal({ bridge, onClose }: BridgeDetailModalProps) {
               <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <span className="text-gray-600">{t('bridge.totalValue')}:</span>
                 <span className="font-medium text-gray-800">
-                  {bridge.value.toLocaleString()} eHKD
+                  HK$ 
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">

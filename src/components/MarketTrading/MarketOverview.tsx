@@ -12,7 +12,7 @@ function MarketOverview() {
           <i className="fas fa-chart-line text-blue-600"></i>
         </div>
         <div className="text-2xl font-bold text-gray-800">1,245,800</div>
-        <div className="text-sm text-gray-500 mt-1">eHKD</div>
+        <div className="text-sm text-gray-500 mt-1">HK$</div>
       </div>
 
       {/* 活跃代币数量 */}
@@ -42,7 +42,7 @@ function MarketOverview() {
           <i className="fas fa-dollar-sign text-yellow-600"></i>
         </div>
         <div className="text-2xl font-bold text-gray-800">62,290</div>
-        <div className="text-sm text-gray-500 mt-1">eHKD {t('marketTrading.today')}</div>
+        <div className="text-sm text-gray-500 mt-1">HK$ {t('marketTrading.today')}</div>
       </div>
 
       {/* 24小时市场变化 */}

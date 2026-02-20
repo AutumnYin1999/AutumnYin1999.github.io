@@ -251,7 +251,7 @@ function InventoryForm({ onSuccess }: InventoryFormProps) {
                 errors.valuation ? 'border-red-500' : 'border-gray-300'
               }`}
             />
-            <span className="absolute right-3 top-3.5 text-gray-500 text-sm">eHKD</span>
+            <span className="absolute right-3 top-3.5 text-gray-500 text-sm">HK$</span>
           </div>
           {errors.valuation && (
             <p className="mt-1 text-sm text-red-500">{errors.valuation}</p>

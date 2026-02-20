@@ -51,7 +51,7 @@ function MarketData() {
                   color: '#fff',
                   fontSize: '12px',
                 }}
-                formatter={(value: number) => `${value.toLocaleString('en-US')} eHKD`}
+                formatter={(value: number) => `$HK$ `}
               />
               <Legend 
                 wrapperStyle={{ fontSize: '12px' }}
@@ -155,7 +155,7 @@ function MarketData() {
                   color: '#fff',
                   fontSize: '12px',
                 }}
-                formatter={(value: number) => `${value.toLocaleString('en-US')} eHKD`}
+                formatter={(value: number) => `$HK$ `}
               />
               <Line 
                 type="monotone" 

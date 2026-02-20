@@ -67,10 +67,9 @@ function BatchPurchaseModal({ tokens, selectedTokenIds, onConfirm, onClose }: Ba
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-2">
                           <span className="font-semibold text-gray-800">{token.id}</span>
-                          <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-                            token.type === 'receivable' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
-                          }`}>
-                            {token.type === 'receivable' 
+                          <span className={`px-2 py-0.5 rounded text-xs font-medium ${token.type === 'receivable' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
+                            }`}>
+                            {token.type === 'receivable'
                               ? (language === 'zh' ? '应收账款' : 'Receivable')
                               : (language === 'zh' ? '库存' : 'Inventory')}
                           </span>

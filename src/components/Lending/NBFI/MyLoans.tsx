@@ -104,12 +104,12 @@ function MyLoans({ loans, onViewDetail }: MyLoansProps) {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-semibold text-gray-900">
-                      {loan.collateralValue.toLocaleString('en-US')} eHKD
+                      HK$ 
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-semibold text-gray-900">
-                      {loan.loanAmount.toLocaleString('en-US')} eHKD
+                      HK$ 
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">

@@ -231,7 +231,7 @@ function InventoryIssuanceContent() {
                   <i className="fas fa-dollar-sign text-purple-600"></i>
                 </div>
                 <div className="text-xl font-bold text-gray-800">
-                  ${(stats.total / 1000).toFixed(1)}K eHKD
+                  ${(stats.total / 1000).toFixed(1)}K HK$
                 </div>
               </div>
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
@@ -316,7 +316,7 @@ function InventoryIssuanceContent() {
                           </div>
                           <div className="text-xs text-gray-600 mb-1">{token.description}</div>
                           <div className="text-xs text-gray-500">
-                            {token.valuation.toLocaleString()} eHKD · {token.location}
+                            HK$  · {token.location}
                           </div>
                         </div>
                       </div>
@@ -368,15 +368,15 @@ function InventoryIssuanceContent() {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between p-2 bg-gray-50 rounded">
                 <span className="text-gray-600">{language === 'zh' ? '钢材（100吨）' : 'Steel (100 tons)'}</span>
-                <span className="font-medium text-gray-800">$480K - $520K eHKD</span>
+                <span className="font-medium text-gray-800">$480K - $520K HK$</span>
               </div>
               <div className="flex justify-between p-2 bg-gray-50 rounded">
                 <span className="text-gray-600">{language === 'zh' ? '在建办公楼' : 'Office Building (WIP)'}</span>
-                <span className="font-medium text-gray-800">$1.1M - $1.3M eHKD</span>
+                <span className="font-medium text-gray-800">$1.1M - $1.3M HK$</span>
               </div>
               <div className="flex justify-between p-2 bg-gray-50 rounded">
                 <span className="text-gray-600">{language === 'zh' ? '已完工住宅' : 'Completed Residential'}</span>
-                <span className="font-medium text-gray-800">$750K - $850K eHKD</span>
+                <span className="font-medium text-gray-800">$750K - $850K HK$</span>
               </div>
             </div>
           </div>
@@ -391,7 +391,7 @@ function InventoryIssuanceContent() {
                   <span className="text-gray-500 text-xs">2小时前</span>
                 </div>
                 <div className="text-gray-600 text-xs">
-                  {language === 'zh' ? '询价：$1.15M eHKD' : 'Inquiry: $1.15M eHKD'}
+                  {language === 'zh' ? '询价：$1.15M HK$' : 'Inquiry: $1.15M HK$'}
                 </div>
               </div>
               <div className="p-2 bg-gray-50 rounded">
@@ -400,7 +400,7 @@ function InventoryIssuanceContent() {
                   <span className="text-gray-500 text-xs">5小时前</span>
                 </div>
                 <div className="text-gray-600 text-xs">
-                  {language === 'zh' ? '询价：$490K eHKD' : 'Inquiry: $490K eHKD'}
+                  {language === 'zh' ? '询价：$490K HK$' : 'Inquiry: $490K HK$'}
                 </div>
               </div>
             </div>

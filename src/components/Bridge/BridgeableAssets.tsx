@@ -190,7 +190,7 @@ function BridgeableAssets({
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-600">{t('bridge.tokenValue')}:</span>
                 <span className="font-medium text-gray-800">
-                  {asset.value.toLocaleString()} eHKD
+                  HK$ 
                 </span>
               </div>
               {asset.selected && bridgeable && (
@@ -233,7 +233,7 @@ function BridgeableAssets({
           <div className="flex items-center justify-between">
             <span className="text-gray-600">{t('bridge.selectedValue')}:</span>
             <span className="font-semibold text-gray-800">
-              {selectedValue.toLocaleString()} eHKD
+              HK$ 
             </span>
           </div>
         </div>

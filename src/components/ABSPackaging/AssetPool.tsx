@@ -239,7 +239,7 @@ function AssetPool({ selectedAssets, onAssetSelect, onSelectAll, totalValue, ave
                       </span>
                     </td>
                     <td className="px-3 py-2 font-mono text-xs">
-                      {asset.faceValue.toLocaleString('en-US')} eHKD
+                      HK$ 
                     </td>
                     <td className="px-3 py-2">
                       <span className={`px-1.5 py-0.5 rounded text-xs border ${getRiskColor(asset.riskRating)}`}>
@@ -270,7 +270,7 @@ function AssetPool({ selectedAssets, onAssetSelect, onSelectAll, totalValue, ave
         <div className="flex items-center justify-between text-sm">
           <span className="text-gray-600">{language === 'zh' ? '资产池总价值' : 'Total Pool Value'}</span>
           <span className="font-semibold text-gray-800 font-mono">
-            {totalValue.toLocaleString('en-US')} eHKD
+            HK$ 
           </span>
         </div>
         <div className="flex items-center justify-between text-sm">

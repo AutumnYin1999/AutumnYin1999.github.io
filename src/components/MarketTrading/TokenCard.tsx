@@ -18,21 +18,19 @@ function TokenCard({ token, onPurchase, onToggleWatchlist, isWatched }: TokenCar
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-2">
           <span className="font-semibold text-gray-800">{token.id}</span>
-          <span className={`px-2 py-1 rounded text-xs font-medium ${
-            isReceivable
-              ? 'bg-blue-100 text-blue-700'
-              : 'bg-green-100 text-green-700'
-          }`}>
+          <span className={`px-2 py-1 rounded text-xs font-medium ${isReceivable
+            ? 'bg-blue-100 text-blue-700'
+            : 'bg-green-100 text-green-700'
+            }`}>
             {isReceivable ? t('marketTrading.receivable') : t('marketTrading.inventory')}
           </span>
         </div>
         <button
           onClick={onToggleWatchlist}
-          className={`p-2 rounded-lg transition-colors ${
-            isWatched
-              ? 'text-yellow-500 hover:bg-yellow-50'
-              : 'text-gray-400 hover:bg-gray-100'
-          }`}
+          className={`p-2 rounded-lg transition-colors ${isWatched
+            ? 'text-yellow-500 hover:bg-yellow-50'
+            : 'text-gray-400 hover:bg-gray-100'
+            }`}
           title={isWatched ? t('marketTrading.removeFromWatchlist') || '从观察列表移除' : t('marketTrading.addToWatchlist') || '添加到观察列表'}
         >
           <i className={`fas ${isWatched ? 'fa-star' : 'fa-star'}`}></i>
@@ -64,13 +62,12 @@ function TokenCard({ token, onPurchase, onToggleWatchlist, isWatched }: TokenCar
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-600">{t('marketTrading.riskRating') || '风险评级'}:</span>
-              <span className={`px-2 py-1 rounded text-xs font-medium ${
-                token.riskRating?.startsWith('A')
-                  ? 'bg-green-100 text-green-700'
-                  : token.riskRating?.startsWith('B')
+              <span className={`px-2 py-1 rounded text-xs font-medium ${token.riskRating?.startsWith('A')
+                ? 'bg-green-100 text-green-700'
+                : token.riskRating?.startsWith('B')
                   ? 'bg-yellow-100 text-yellow-700'
                   : 'bg-red-100 text-red-700'
-              }`}>
+                }`}>
                 {token.riskRating}
               </span>
             </div>
@@ -102,17 +99,16 @@ function TokenCard({ token, onPurchase, onToggleWatchlist, isWatched }: TokenCar
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-600">{t('marketTrading.qualityStatus')}:</span>
-              <span className={`text-sm font-medium ${
-                token.qualityStatus === t('marketTrading.qualityStatuses.certified') || 
-                token.qualityStatus === '已认证' || 
+              <span className={`text-sm font-medium ${token.qualityStatus === t('marketTrading.qualityStatuses.certified') ||
+                token.qualityStatus === '已认证' ||
                 token.qualityStatus === 'Certified'
-                  ? 'text-green-600'
-                  : 'text-yellow-600'
-              }`}>
-                {token.qualityStatus === t('marketTrading.qualityStatuses.certified') || 
-                 token.qualityStatus === '已认证' || 
-                 token.qualityStatus === 'Certified'
-                  ? `✅ ${t('marketTrading.certified')}` 
+                ? 'text-green-600'
+                : 'text-yellow-600'
+                }`}>
+                {token.qualityStatus === t('marketTrading.qualityStatuses.certified') ||
+                  token.qualityStatus === '已认证' ||
+                  token.qualityStatus === 'Certified'
+                  ? `✅ ${t('marketTrading.certified')}`
                   : `⏳ ${t('marketTrading.pendingCertification')}`}
               </span>
             </div>
@@ -130,9 +126,8 @@ function TokenCard({ token, onPurchase, onToggleWatchlist, isWatched }: TokenCar
         </div>
         <div className="flex items-center justify-between">
           <span className="text-xs text-gray-500">{t('marketTrading.discount')}:</span>
-          <span className={`text-sm font-semibold ${
-            token.discount > 0 ? 'text-red-600' : 'text-green-600'
-          }`}>
+          <span className={`text-sm font-semibold ${token.discount > 0 ? 'text-red-600' : 'text-green-600'
+            }`}>
             {token.discount > 0 ? '-' : '+'}{Math.abs(token.discount)}%
           </span>
         </div>

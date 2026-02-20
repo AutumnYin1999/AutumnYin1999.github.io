@@ -102,7 +102,7 @@ function RecentIssuances({ issuances }: RecentIssuancesProps) {
                       </span>
                     </div>
                     <div className="text-sm text-gray-600">
-                      {formatAmount(issuance.amount)} eHKD
+                      HK$ 
                     </div>
                   </div>
                   <span

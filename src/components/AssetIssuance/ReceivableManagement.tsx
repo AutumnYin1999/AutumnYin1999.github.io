@@ -205,7 +205,7 @@ function ReceivableManagement({ onReceive, onList }: ReceivableManagementProps) 
                             {language === 'zh' ? '金额：' : 'Amount: '}
                           </span>
                           <span className="font-medium text-gray-800">
-                            {receivable.amount.toLocaleString()} eHKD
+                            HK$ 
                           </span>
                         </div>
                         <div className="col-span-2">
@@ -261,7 +261,7 @@ function ReceivableManagement({ onReceive, onList }: ReceivableManagementProps) 
                             {language === 'zh' ? '金额：' : 'Amount: '}
                           </span>
                           <span className="font-medium text-gray-800">
-                            {receivable.amount.toLocaleString()} eHKD
+                            HK$ 
                           </span>
                         </div>
                         <div>

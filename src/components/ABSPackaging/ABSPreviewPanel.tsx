@@ -68,7 +68,7 @@ function ABSPreviewPanel({
                 </Pie>
                 <Tooltip
                   formatter={(value: number, name: string, props: any) => [
-                    `${props.payload.amount.toLocaleString('en-US')} eHKD (${value.toFixed(1)}%)`,
+                    `$HK$  (${value.toFixed(1)}%)`,
                     name,
                   ]}
                 />
@@ -91,7 +91,7 @@ function ABSPreviewPanel({
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-600">{language === 'zh' ? '总规模' : 'Total Size'}</span>
               <span className="font-semibold text-gray-800 font-mono">
-                {packagingSize.toLocaleString('en-US')} eHKD
+                HK$ 
               </span>
             </div>
             <div className="flex items-center justify-between text-sm">
@@ -101,7 +101,7 @@ function ABSPreviewPanel({
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-600">{language === 'zh' ? '预估总发行费' : 'Estimated Total Fee'}</span>
               <span className="font-semibold text-gray-800 font-mono">
-                {totalFee.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
+                {totalFee.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
               </span>
             </div>
           </div>
@@ -122,7 +122,7 @@ function ABSPreviewPanel({
                 </span>
               </div>
               <div className="text-xs text-gray-600 font-mono">
-                {tranche.amount.toLocaleString('en-US')} eHKD
+                HK$ 
               </div>
             </div>
           ))}

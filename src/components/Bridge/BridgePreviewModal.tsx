@@ -104,7 +104,7 @@ function BridgePreviewModal({
                         {asset.bridgeQuantity}
                       </div>
                       <div className="text-sm text-gray-600">
-                        {(asset.value * asset.bridgeQuantity).toLocaleString()} eHKD
+                        HK$ 
                       </div>
                     </div>
                   </div>
@@ -120,19 +120,19 @@ function BridgePreviewModal({
               <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <span className="text-gray-600">{t('bridge.assetValue')}:</span>
                 <span className="font-medium text-gray-800">
-                  {totalValue.toLocaleString()} eHKD
+                  HK$ 
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <span className="text-gray-600">{t('bridge.bridgeFee')} (0.15%):</span>
                 <span className="font-medium text-gray-800">
-                  {bridgeFee.toLocaleString()} eHKD
+                  HK$ 
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
                 <span className="font-semibold text-gray-800">{t('bridge.estimatedArrival')}:</span>
                 <span className="font-bold text-lg text-blue-600">
-                  ~{estimatedReceived.toLocaleString()} eHKD
+                  ~HK$ 
                 </span>
               </div>
             </div>
