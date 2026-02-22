@@ -69,9 +69,9 @@ export default function LedgerTable() {
 
     const getStatusBadge = (status: LedgerRecord['status']) => {
         switch (status) {
-            case 'settled': return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700">✅ {zh ? '已结算' : 'Settled'}</span>
-            case 'settling': return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-amber-50 text-amber-600">⏳ {zh ? '结算中' : 'Settling'}</span>
-            case 'error': return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-red-50 text-red-600">❗ {zh ? '异常' : 'Error'}</span>
+            case 'settled': return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-sm font-medium bg-emerald-50 text-emerald-700">✅ {zh ? '已结算' : 'Settled'}</span>
+            case 'settling': return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-sm font-medium bg-amber-50 text-amber-600">⏳ {zh ? '结算中' : 'Settling'}</span>
+            case 'error': return <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-sm font-medium bg-red-50 text-red-600">❗ {zh ? '异常' : 'Error'}</span>
         }
     }
 
@@ -87,10 +87,10 @@ export default function LedgerTable() {
             {/* ── Header ── */}
             <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 rounded-t-xl">
                 <div>
-                    <h4 className="text-sm font-semibold text-gray-800">
+                    <h4 className="text-base font-semibold text-gray-800">
                         {zh ? '全平台分账记录' : 'Platform Distribution Records'}
                     </h4>
-                    <p className="text-[11px] text-gray-400 mt-0.5">
+                    <p className="text-xs text-gray-400 mt-0.5">
                         {zh ? '最近的融资业务及对应节点分账' : 'Latest financing & corresponding node distributions'}
                     </p>
                 </div>
@@ -101,8 +101,8 @@ export default function LedgerTable() {
 
                 {/* Time Range Pills */}
                 <div className="flex items-center gap-1.5">
-                    <span className="text-[11px] text-gray-400 font-medium mr-1 flex items-center gap-1">
-                        <i className="fas fa-calendar-alt text-[10px]" />
+                    <span className="text-xs text-gray-400 font-medium mr-1 flex items-center gap-1">
+                        <i className="fas fa-calendar-alt text-xs" />
                         {zh ? '时间' : 'Time'}
                     </span>
                     <div className="flex items-center bg-white border border-gray-200 rounded-lg p-0.5 shadow-sm">
@@ -110,7 +110,7 @@ export default function LedgerTable() {
                             <button
                                 key={opt.key}
                                 onClick={() => setTimeRange(opt.key)}
-                                className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all duration-200 whitespace-nowrap
+                                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all duration-200 whitespace-nowrap
                                     ${timeRange === opt.key
                                         ? 'bg-indigo-600 text-white shadow-sm'
                                         : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
@@ -127,15 +127,15 @@ export default function LedgerTable() {
 
                 {/* Node Dropdown */}
                 <div className="flex items-center gap-1.5">
-                    <span className="text-[11px] text-gray-400 font-medium flex items-center gap-1">
-                        <i className="fas fa-sitemap text-[10px]" />
+                    <span className="text-xs text-gray-400 font-medium flex items-center gap-1">
+                        <i className="fas fa-sitemap text-xs" />
                         {zh ? '节点' : 'Node'}
                     </span>
                     <div className="relative">
                         <select
                             value={nodeFilter}
                             onChange={e => setNodeFilter(e.target.value as NodeFilter)}
-                            className="appearance-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 pr-7 text-[11px] font-medium text-gray-700 shadow-sm cursor-pointer hover:border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
+                            className="appearance-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 pr-7 text-xs font-medium text-gray-700 shadow-sm cursor-pointer hover:border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
                         >
                             {nodeOptions.map(opt => (
                                 <option key={opt.key} value={opt.key}>
@@ -152,15 +152,15 @@ export default function LedgerTable() {
 
                 {/* Status Dropdown */}
                 <div className="flex items-center gap-1.5">
-                    <span className="text-[11px] text-gray-400 font-medium flex items-center gap-1">
-                        <i className="fas fa-flag text-[10px]" />
+                    <span className="text-xs text-gray-400 font-medium flex items-center gap-1">
+                        <i className="fas fa-flag text-xs" />
                         {zh ? '状态' : 'Status'}
                     </span>
                     <div className="relative">
                         <select
                             value={statusFilter}
                             onChange={e => setStatusFilter(e.target.value as StatusFilter)}
-                            className="appearance-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 pr-7 text-[11px] font-medium text-gray-700 shadow-sm cursor-pointer hover:border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
+                            className="appearance-none bg-white border border-gray-200 rounded-lg px-3 py-1.5 pr-7 text-xs font-medium text-gray-700 shadow-sm cursor-pointer hover:border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all"
                         >
                             {statusOptions.map(opt => (
                                 <option key={opt.key} value={opt.key}>
@@ -177,9 +177,9 @@ export default function LedgerTable() {
                 {(statusFilter !== 'all' || nodeFilter !== 'all' || timeRange !== 'month') && (
                     <button
                         onClick={() => { setTimeRange('month'); setNodeFilter('all'); setStatusFilter('all') }}
-                        className="text-[11px] text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1 transition-colors"
+                        className="text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1 transition-colors"
                     >
-                        <i className="fas fa-undo text-[9px]" />
+                        <i className="fas fa-undo text-xs" />
                         {zh ? '重置筛选' : 'Reset Filters'}
                     </button>
                 )}
@@ -187,7 +187,7 @@ export default function LedgerTable() {
 
             {/* ── Table ── */}
             <div className="flex-1 overflow-x-auto overflow-y-auto">
-                <table className="w-full text-sm">
+                <table className="w-full text-lg">
                     <thead className="bg-gray-50 sticky top-0 z-10">
                         <tr>
                             {[
@@ -202,7 +202,7 @@ export default function LedgerTable() {
                             ].map((col, i) => (
                                 <th
                                     key={i}
-                                    className="px-4 py-2.5 text-left text-xs font-semibold text-gray-500 tracking-wide whitespace-nowrap"
+                                    className="px-4 py-3 text-left text-base font-semibold text-gray-500 tracking-wide whitespace-nowrap"
                                 >
                                     {zh ? col.zh : col.en}
                                 </th>
@@ -212,17 +212,17 @@ export default function LedgerTable() {
                     <tbody className="divide-y divide-gray-100">
                         {filteredRecords.map((r, i) => (
                             <tr key={i} className="hover:bg-indigo-50/40 transition-colors group">
-                                <td className="px-4 py-3 font-mono text-xs font-medium text-gray-600 whitespace-nowrap">{r.txId}</td>
-                                <td className="px-4 py-3 text-xs text-gray-500 whitespace-nowrap">{r.date}</td>
-                                <td className="px-4 py-3 font-mono text-xs font-medium text-indigo-700 whitespace-nowrap">{r.arId}</td>
-                                <td className="px-4 py-3 text-xs text-gray-700 whitespace-nowrap">{fmt(r.financingAmount)}</td>
-                                <td className="px-4 py-3 text-xs font-semibold text-gray-700 whitespace-nowrap">{fmt(r.platformEarnings)}</td>
-                                <td className="px-4 py-3 text-xs font-bold text-indigo-600 whitespace-nowrap">{fmt(r.nodeTotalDistribution)}</td>
+                                <td className="px-4 py-4 font-mono text-base font-medium text-gray-600 whitespace-nowrap">{r.txId}</td>
+                                <td className="px-4 py-4 text-base text-gray-500 whitespace-nowrap">{r.date}</td>
+                                <td className="px-4 py-4 font-mono text-base font-medium text-indigo-700 whitespace-nowrap">{r.arId}</td>
+                                <td className="px-4 py-4 text-base text-gray-700 whitespace-nowrap">{fmt(r.financingAmount)}</td>
+                                <td className="px-4 py-4 text-base font-semibold text-gray-700 whitespace-nowrap">{fmt(r.platformEarnings)}</td>
+                                <td className="px-4 py-4 text-base font-bold text-indigo-600 whitespace-nowrap">{fmt(r.nodeTotalDistribution)}</td>
                                 <td className="px-4 py-3 whitespace-nowrap">{getStatusBadge(r.status)}</td>
                                 <td className="px-4 py-3 whitespace-nowrap">
                                     <button
                                         onClick={() => setSelectedRecord(r)}
-                                        className="text-indigo-600 hover:text-indigo-800 text-xs font-medium underline"
+                                        className="text-indigo-600 hover:text-indigo-800 text-base font-medium underline"
                                     >
                                         [{zh ? '查看' : 'View'}]
                                     </button>
@@ -234,7 +234,7 @@ export default function LedgerTable() {
             </div>
 
             {/* ── Footer totals & Pagination ── */}
-            <div className="px-5 py-3 border-t border-gray-100 bg-gray-50/50 rounded-b-xl flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+            <div className="px-5 py-4 border-t border-gray-100 bg-gray-50/50 rounded-b-xl flex flex-col sm:flex-row items-center justify-between gap-4 text-base text-gray-500">
                 <span>{zh ? '共 1,245 笔记录' : '1,245 records total'}</span>
 
                 {/* Pagination (Visual only) */}
@@ -254,7 +254,7 @@ export default function LedgerTable() {
 
                 <span className="font-semibold text-gray-700 whitespace-nowrap">
                     {zh ? '累计分账总额：' : 'Total Distributed: '}
-                    <span className="text-emerald-600 text-sm">
+                    <span className="text-emerald-600 text-lg">
                         HK$ 8,245,800
                     </span>
                 </span>
@@ -265,33 +265,33 @@ export default function LedgerTable() {
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
                     <div className="bg-white rounded-xl shadow-xl w-full max-w-sm overflow-hidden flex flex-col">
                         <div className="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-                            <h3 className="font-semibold text-gray-800">
+                            <h3 className="font-bold text-gray-800 text-base">
                                 {zh ? '分账明细' : 'Distribution Details'} ({selectedRecord.txId})
                             </h3>
                             <button onClick={() => setSelectedRecord(null)} className="text-gray-400 hover:text-gray-600 transition-colors">
-                                <i className="fas fa-times text-lg"></i>
+                                <i className="fas fa-times text-xl"></i>
                             </button>
                         </div>
                         <div className="p-5 flex flex-col gap-4">
                             <div className="flex justify-between items-center pb-2 border-b border-gray-100">
-                                <span className="text-sm text-gray-500">{zh ? '银行节点' : 'Bank Node'}</span>
-                                <span className="font-semibold text-gray-800">{fmt(selectedRecord.distributionDetail.bank)}</span>
+                                <span className="text-base text-gray-500">{zh ? '银行节点' : 'Bank Node'}</span>
+                                <span className="font-semibold text-gray-800 text-base">{fmt(selectedRecord.distributionDetail.bank)}</span>
                             </div>
                             <div className="flex justify-between items-center pb-2 border-b border-gray-100">
-                                <span className="text-sm text-gray-500">{zh ? '审计节点' : 'Audit Node'}</span>
-                                <span className="font-semibold text-gray-800">{fmt(selectedRecord.distributionDetail.audit)}</span>
+                                <span className="text-base text-gray-500">{zh ? '审计节点' : 'Audit Node'}</span>
+                                <span className="font-semibold text-gray-800 text-base">{fmt(selectedRecord.distributionDetail.audit)}</span>
                             </div>
                             <div className="flex justify-between items-center pb-2 border-b border-gray-100">
-                                <span className="text-sm text-gray-500">{zh ? '合规节点(CIC)' : 'CIC Node'}</span>
-                                <span className="font-semibold text-gray-800">{fmt(selectedRecord.distributionDetail.cic)}</span>
+                                <span className="text-base text-gray-500">{zh ? '合规节点(CIC)' : 'CIC Node'}</span>
+                                <span className="font-semibold text-gray-800 text-base">{fmt(selectedRecord.distributionDetail.cic)}</span>
                             </div>
                             <div className="flex justify-between items-center pt-2 mt-2 bg-indigo-50/50 p-3 rounded-lg border border-indigo-100">
-                                <span className="text-sm font-bold text-indigo-700">{zh ? '节点分账总额' : 'Total Distribution'}</span>
-                                <span className="text-sm font-bold text-indigo-700">{fmt(selectedRecord.nodeTotalDistribution)}</span>
+                                <span className="text-base font-bold text-indigo-700">{zh ? '节点分账总额' : 'Total Distribution'}</span>
+                                <span className="text-base font-bold text-indigo-700">{fmt(selectedRecord.nodeTotalDistribution)}</span>
                             </div>
                         </div>
                         <div className="px-5 py-3 border-t border-gray-100 bg-gray-50/50 text-right">
-                            <button onClick={() => setSelectedRecord(null)} className="px-4 py-2 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            <button onClick={() => setSelectedRecord(null)} className="px-4 py-2 bg-white border border-gray-300 rounded text-base font-medium text-gray-700 hover:bg-gray-50 transition-colors">
                                 {zh ? '关闭' : 'Close'}
                             </button>
                         </div>

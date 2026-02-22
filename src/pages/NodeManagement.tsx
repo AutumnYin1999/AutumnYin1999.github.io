@@ -154,7 +154,7 @@ function NodeManagementPage() {
           {/* 代币列表 */}
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-800">
+              <h3 className="text-xl font-semibold text-gray-800">
                 {language === 'zh' ? '验证节点列表' : 'Validator Nodes'} ({filteredTokens.length})
               </h3>
             </div>
@@ -179,17 +179,17 @@ function NodeManagementPage() {
                   <button className="p-2 border border-gray-300 rounded-md text-gray-500 hover:bg-gray-50 disabled:opacity-50" disabled>
                     <i className="fas fa-chevron-left"></i>
                   </button>
-                  <button className="px-4 py-2 border border-blue-600 bg-blue-50 text-blue-600 font-medium rounded-md">
+                  <button className="px-4 py-2 border border-blue-600 bg-blue-50 text-blue-600 font-medium rounded-md text-base">
                     1
                   </button>
-                  <button className="px-4 py-2 border border-gray-300 text-gray-600 hover:bg-gray-50 font-medium rounded-md">
+                  <button className="px-4 py-2 border border-gray-300 text-gray-600 hover:bg-gray-50 font-medium rounded-md text-base">
                     2
                   </button>
-                  <button className="px-4 py-2 border border-gray-300 text-gray-600 hover:bg-gray-50 font-medium rounded-md">
+                  <button className="px-4 py-2 border border-gray-300 text-gray-600 hover:bg-gray-50 font-medium rounded-md text-base">
                     3
                   </button>
-                  <span className="text-gray-500 px-2">...</span>
-                  <button className="px-4 py-2 border border-gray-300 text-gray-600 hover:bg-gray-50 font-medium rounded-md">
+                  <span className="text-gray-500 px-2 text-base">...</span>
+                  <button className="px-4 py-2 border border-gray-300 text-gray-600 hover:bg-gray-50 font-medium rounded-md text-base">
                     12
                   </button>
                   <button className="p-2 border border-gray-300 rounded-md text-gray-500 hover:bg-gray-50">
@@ -201,9 +201,9 @@ function NodeManagementPage() {
 
             {filteredTokens.length === 0 && (
               <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-                <i className="fas fa-search text-4xl text-gray-300 mb-4"></i>
-                <p className="text-gray-600">没有找到匹配的代币</p>
-                <p className="text-sm text-gray-500 mt-2">请尝试调整筛选条件</p>
+                <i className="fas fa-search text-5xl text-gray-300 mb-4"></i>
+                <p className="text-lg text-gray-600">没有找到匹配的代币</p>
+                <p className="text-base text-gray-500 mt-2">请尝试调整筛选条件</p>
               </div>
             )}
           </div>

@@ -286,25 +286,25 @@ function MyListingsContent() {
 
           {/* 近期成交记录 */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
               {language === 'zh' ? '近期成交记录' : 'Recent Sales'}
             </h3>
             <div className="space-y-4 max-h-96 overflow-y-auto">
               {saleRecords.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">
                   <i className="fas fa-inbox text-3xl mb-2 text-gray-300"></i>
-                  <p className="text-xs">{language === 'zh' ? '暂无成交记录' : 'No sales records'}</p>
+                  <p className="text-sm">{language === 'zh' ? '暂无成交记录' : 'No sales records'}</p>
                 </div>
               ) : (
                 saleRecords.map((record, index) => (
                   <div key={index} className="border-b border-gray-100 last:border-0 pb-4 last:pb-0">
-                    <div className="font-bold text-gray-800 text-base mb-2">{record.tokenId}</div>
-                    <div className="text-sm text-gray-600 space-y-1">
+                    <div className="font-bold text-gray-800 text-lg mb-2">{record.tokenId}</div>
+                    <div className="text-base text-gray-600 space-y-1">
                       <div className="flex flex-wrap items-center">
                         <span className="mr-1">{language === 'zh' ? '买方' : 'Buyer'}:</span>
                         <span className="font-medium text-gray-800 mr-2">{record.buyer}</span>
                       </div>
-                      <div className="flex items-center text-xs text-gray-500">
+                      <div className="flex items-center text-sm text-gray-500">
                         <span>{language === 'zh' ? '成交价' : 'Price'}: HK${record.salePrice.toLocaleString()}</span>
                         <span className="mx-2">|</span>
                         <span>{language === 'zh' ? '佣金' : 'Comm'}: HK${record.commission.toLocaleString()}</span>

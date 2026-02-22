@@ -192,20 +192,20 @@ export function LedgerStatCards() {
                     {/* icon + label */}
                     <div className="flex items-center gap-2">
                         <div className={`w-8 h-8 rounded-full ${c.iconBg} flex items-center justify-center flex-shrink-0`}>
-                            <i className={`fas ${c.icon} ${c.iconColor} text-sm`} />
+                            <i className={`fas ${c.icon} ${c.iconColor} text-base`} />
                         </div>
-                        <span className="text-xs text-gray-500 leading-tight">
+                        <span className="text-sm text-gray-500 leading-tight">
                             {zh ? c.labelZh : c.labelEn}
                         </span>
                     </div>
 
                     {/* value */}
-                    <div className="text-xl font-bold text-gray-900 leading-none">
+                    <div className="text-2xl font-bold text-gray-900 leading-none">
                         {c.value}
                     </div>
 
                     {/* change badge */}
-                    <div className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full w-fit
+                    <div className={`inline-flex items-center gap-1 text-sm font-semibold px-2 py-0.5 rounded-full w-fit
               ${c.changeUp ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500'}`}>
                         {c.change}
                         <span className="text-gray-400 font-normal">{zh ? ' 环比' : ' MoM'}</span>
@@ -224,14 +224,14 @@ export function LedgerTrendChart() {
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 h-full flex flex-col justify-center">
             {/* Header */}
             <div className="flex items-center justify-between mb-1">
-                <h4 className="text-sm font-semibold text-gray-800">
+                <h4 className="text-base font-semibold text-gray-800">
                     {zh ? '平台分账趋势（近30天）' : 'Platform Distribution Trend (Last 30 Days)'}
                 </h4>
-                <span className="text-[10px] text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
                     {zh ? '模拟数据仅供演示' : 'Simulated data – demo only'}
                 </span>
             </div>
-            <p className="text-[11px] text-gray-400 mb-3">
+            <p className="text-xs text-gray-400 mb-3">
                 {zh ? '单位：港元 / 天' : 'unit: HK$ / day'}
             </p>
 

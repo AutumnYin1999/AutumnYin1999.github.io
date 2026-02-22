@@ -192,7 +192,7 @@ function MarketSidebar({ watchlist, tokens, recentTransactions, onRemoveFromWatc
         {/* 最近成交记录 */}
         <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
           <div className="p-4 border-b border-gray-200">
-            <h3 className="font-semibold text-gray-800 flex items-center">
+            <h3 className="text-lg font-semibold text-gray-800 flex items-center">
               <i className="fas fa-exchange-alt mr-2 text-blue-500"></i>
               {language === 'zh' ? '资本方实时成交' : 'Live Transactions'}
             </h3>
@@ -201,12 +201,12 @@ function MarketSidebar({ watchlist, tokens, recentTransactions, onRemoveFromWatc
             {nbfiTransactions.map((tx, idx) => (
               <div key={idx} className="flex justify-between items-center pb-3 border-b border-gray-100 last:border-0 last:pb-0">
                 <div>
-                  <div className="text-sm font-medium text-gray-800">{tx.tokenId}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">{tx.time}</div>
+                  <div className="text-base font-medium text-gray-800">{tx.tokenId}</div>
+                  <div className="text-sm text-gray-400 mt-0.5">{tx.time}</div>
                 </div>
                 <div className="text-right">
-                  <div className="text-xs text-gray-500 mb-0.5">{language === 'zh' ? '成交量' : 'Vol'}</div>
-                  <div className="text-sm font-semibold text-gray-700">HK$ {tx.amount}</div>
+                  <div className="text-sm text-gray-500 mb-0.5">{language === 'zh' ? '成交量' : 'Vol'}</div>
+                  <div className="text-base font-semibold text-gray-700">HK$ {tx.amount}</div>
                 </div>
               </div>
             ))}
@@ -271,7 +271,7 @@ function MarketSidebar({ watchlist, tokens, recentTransactions, onRemoveFromWatc
       {/* 最近交易 */}
       <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
         <div className="p-4 border-b border-gray-200">
-          <h3 className="font-semibold text-gray-800 flex items-center">
+          <h3 className="text-lg font-semibold text-gray-800 flex items-center">
             <i className="fas fa-history mr-2 text-blue-600"></i>
             {t('marketTrading.recentTransactions')}
           </h3>
@@ -290,10 +290,10 @@ function MarketSidebar({ watchlist, tokens, recentTransactions, onRemoveFromWatc
                   className="border-b border-gray-100 pb-3 last:border-0 last:pb-0"
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-semibold text-gray-800">{tx.tokenId}</span>
-                    <span className="text-xs text-gray-500">{tx.timestamp}</span>
+                    <span className="text-base font-semibold text-gray-800">{tx.tokenId}</span>
+                    <span className="text-sm text-gray-500">{tx.timestamp}</span>
                   </div>
-                  <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center justify-between text-sm">
                     <span className="text-gray-600">{t('marketTrading.quantity')}: {tx.quantity}</span>
                     <span className="text-gray-800 font-medium">
                       {tx.totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$

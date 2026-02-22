@@ -48,6 +48,7 @@ export interface Translations {
     retry: string
     reportIssue: string
     description: string
+    amount: string
   }
 
   // 角色
@@ -864,6 +865,7 @@ const translations: Record<Language, Translations> = {
       retry: '重试',
       reportIssue: '报告问题',
       description: '说明',
+      amount: '金额',
     },
     roles: {
       admin: '平台管理员',
@@ -1769,6 +1771,7 @@ const translations: Record<Language, Translations> = {
       value: 'Value',
       chainConfirming: 'Chain Confirming',
       blocks: 'blocks',
+      amount: 'Amount',
     },
     roles: {
       admin: 'Platform Admin',

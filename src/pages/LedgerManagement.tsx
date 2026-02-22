@@ -45,8 +45,8 @@ function EarningsDonut({ lang }: { lang: string }) {
                     />
                 ))}
                 {/* centre label */}
-                <text x={cx} y={cy - 5} textAnchor="middle" fontSize="11" fontWeight="bold" fill="#1f2937">100%</text>
-                <text x={cx} y={cy + 10} textAnchor="middle" fontSize="8" fill="#9ca3af">
+                <text x={cx} y={cy - 5} textAnchor="middle" fontSize="15" fontWeight="bold" fill="#1f2937">100%</text>
+                <text x={cx} y={cy + 10} textAnchor="middle" fontSize="12" fill="#9ca3af">
                     {lang === 'zh' ? '收益来源' : 'Source'}
                 </text>
             </svg>
@@ -57,11 +57,11 @@ function EarningsDonut({ lang }: { lang: string }) {
                     <div key={i} className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-1.5">
                             <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0`} style={{ background: s.color }} />
-                            <span className="text-[11px] text-gray-600 leading-tight">
+                            <span className="text-sm text-gray-600 leading-tight">
                                 {lang === 'zh' ? s.labelZh : s.labelEn}
                             </span>
                         </div>
-                        <span className={`text-xs font-bold ${s.textColor}`}>{s.pct}%</span>
+                        <span className={`text-base font-bold ${s.textColor}`}>{s.pct}%</span>
                     </div>
                 ))}
             </div>
@@ -80,8 +80,8 @@ function LedgerManagement() {
             fallback={
                 <div className="p-6 min-h-[calc(100vh-4rem)]">
                     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
-                        <i className="fas fa-exclamation-triangle text-yellow-600 text-3xl mb-3" />
-                        <p className="text-yellow-800 font-medium">
+                        <i className="fas fa-exclamation-triangle text-yellow-600 text-5xl mb-3" />
+                        <p className="text-yellow-800 font-medium text-lg">
                             {language === 'zh'
                                 ? '您没有权限访问此功能'
                                 : 'You do not have permission to access this feature'}
@@ -105,10 +105,10 @@ function LedgerManagement() {
                     {/* Right (33%): Earnings source distribution donut */}
                     <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex flex-col justify-center">
                         <div className="flex items-center justify-between mb-5">
-                            <h4 className="text-sm font-semibold text-gray-800">
+                            <h4 className="text-lg font-semibold text-gray-800">
                                 {language === 'zh' ? '收益来源分布' : 'Earnings Source Distribution'}
                             </h4>
-                            <span className="text-[10px] text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                            <span className="text-sm text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
                                 {language === 'zh' ? '模拟数据' : 'Demo data'}
                             </span>
                         </div>
