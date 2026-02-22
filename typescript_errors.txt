@@ -1,0 +1,77 @@
+src/components/ABSPackaging/ABSBuilder.tsx(39,3): error TS6133: 'canPackage' is declared but its value is never read.
+src/components/ABSPackaging/ABSBuilder.tsx(41,11): error TS6133: 't' is declared but its value is never read.
+src/components/ABSPackaging/ABSBuilder.tsx(44,9): error TS6133: 'seniorAmount' is declared but its value is never read.
+src/components/ABSPackaging/ABSBuilder.tsx(45,9): error TS6133: 'mezzanineAmount' is declared but its value is never read.
+src/components/ABSPackaging/ABSBuilder.tsx(46,9): error TS6133: 'juniorAmount' is declared but its value is never read.
+src/components/ABSPackaging/ABSPreviewModal.tsx(245,64): error TS6133: 'props' is declared but its value is never read.
+src/components/ABSPackaging/ABSPreviewPanel.tsx(22,3): error TS6133: 'estimatedFee' is declared but its value is never read.
+src/components/ABSPackaging/ABSPreviewPanel.tsx(70,60): error TS6133: 'props' is declared but its value is never read.
+src/components/ABSPackaging/AssetPool.tsx(14,66): error TS6133: 'totalValue' is declared but its value is never read.
+src/components/ABSPackaging/AssetPool.tsx(15,11): error TS6133: 't' is declared but its value is never read.
+src/components/AssetIssuance/AssetIssuancePage.tsx(13,39): error TS2322: Type '{ isOpen: boolean; currentPage: string; }' is not assignable to type 'IntrinsicAttributes & SidebarProps'.
+  Property 'currentPage' does not exist on type 'IntrinsicAttributes & SidebarProps'.
+src/components/AssetIssuance/InventoryIssuanceContent.tsx(59,10): error TS6133: 'inventoryTotal' is declared but its value is never read.
+src/components/AssetIssuance/RecentIssuances.tsx(56,9): error TS6133: 'formatAmount' is declared but its value is never read.
+src/components/Bridge/BridgeableAssets.tsx(32,3): error TS6133: 'selectedValue' is declared but its value is never read.
+src/components/Bridge/BridgeConfig.tsx(37,3): error TS6133: 'bridgeFee' is declared but its value is never read.
+src/components/Bridge/BridgePreviewModal.tsx(30,3): error TS6133: 'totalValue' is declared but its value is never read.
+src/components/Bridge/BridgePreviewModal.tsx(31,3): error TS6133: 'bridgeFee' is declared but its value is never read.
+src/components/Bridge/BridgePreviewModal.tsx(32,3): error TS6133: 'estimatedReceived' is declared but its value is never read.
+src/components/FundRecovery/BankCircleConversion.tsx(19,31): error TS6133: 'setCircleAccountStatus' is declared but its value is never read.
+src/components/FundRecovery/ConversionConfirmModal.tsx(14,3): error TS6133: 'exchangeRate' is declared but its value is never read.
+src/components/FundRecovery/ConversionPanel.tsx(44,9): error TS6133: 'remainingLimit' is declared but its value is never read.
+src/components/FundRecovery/ForexPoolPanel.tsx(9,37): error TS6133: 'exchangeRate' is declared but its value is never read.
+src/components/FundRecovery/MarketData.tsx(54,29): error TS6133: 'value' is declared but its value is never read.
+src/components/FundRecovery/MarketData.tsx(158,29): error TS6133: 'value' is declared but its value is never read.
+src/components/FundRecovery/RecoveryHistory.tsx(20,26): error TS6133: 'userRole' is declared but its value is never read.
+src/components/Lending/Bank/BankSidebar.tsx(2,52): error TS6133: 'Legend' is declared but its value is never read.
+src/components/Lending/Bank/BankSidebar.tsx(13,24): error TS6133: 'totalLentAmount' is declared but its value is never read.
+src/components/Lending/Bank/BankSidebar.tsx(14,11): error TS6133: 't' is declared but its value is never read.
+src/components/Lending/Bank/BankSidebar.tsx(17,62): error TS2367: This comparison appears to be unintentional because the types '"预警" | "逾期"' and '"Normal"' have no overlap.
+src/components/Lending/Bank/BankSidebar.tsx(18,63): error TS2367: This comparison appears to be unintentional because the types '"正常" | "逾期"' and '"Warning"' have no overlap.
+src/components/Lending/Bank/BankSidebar.tsx(19,63): error TS2367: This comparison appears to be unintentional because the types '"正常" | "预警"' and '"Overdue"' have no overlap.
+src/components/Lending/Bank/BankSidebar.tsx(77,64): error TS2322: Type 'string' is not assignable to type '"up" | "down"'.
+src/components/Lending/Bank/BankSidebar.tsx(86,62): error TS2322: Type 'string' is not assignable to type '"up" | "down"'.
+src/components/Lending/Bank/BankSidebar.tsx(95,60): error TS2322: Type 'string' is not assignable to type '"up" | "down"'.
+src/components/Lending/Bank/LoanMarket.tsx(12,11): error TS6133: 't' is declared but its value is never read.
+src/components/Lending/Bank/LoanMarket.tsx(68,57): error TS2367: This comparison appears to be unintentional because the types '"投标中" | "已匹配"' and '"Pending Bid"' have no overlap.
+src/components/Lending/Bank/MyLending.tsx(160,49): error TS2367: This comparison appears to be unintentional because the types '"正常" | "预警"' and '"Overdue"' have no overlap.
+src/components/Lending/Bank/MyLending.tsx(160,102): error TS2367: This comparison appears to be unintentional because the types '"正常"' and '"Warning"' have no overlap.
+src/components/Lending/BankView.tsx(96,19): error TS6133: 'setMyLoans' is declared but its value is never read.
+src/components/Lending/BankView.tsx(262,65): error TS6133: 'amount' is declared but its value is never read.
+src/components/Lending/BidModal.tsx(3,33): error TS2307: Cannot find module './Bank/BankView' or its corresponding type declarations.
+src/components/Lending/LoanDetailModal.tsx(2,22): error TS2307: Cannot find module './NBFI/NBFIView' or its corresponding type declarations.
+src/components/Lending/LoanDetailModal.tsx(3,26): error TS2307: Cannot find module './Bank/BankView' or its corresponding type declarations.
+src/components/Lending/LoanDetailModal.tsx(141,49): error TS7006: Parameter 'token' implicitly has an 'any' type.
+src/components/Lending/LoanDetailModal.tsx(141,56): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/components/Lending/NBFI/NewLoanApplication.tsx(3,10): error TS2614: Module '"../NBFIView"' has no exported member 'Loan'. Did you mean to use 'import Loan from "../NBFIView"' instead?
+src/components/MarketTrading/MarketSidebar.tsx(339,29): error TS6133: 'value' is declared but its value is never read.
+src/components/NodeManagement/MarketSidebar.tsx(339,29): error TS6133: 'value' is declared but its value is never read.
+src/pages/Bridge.tsx(35,37): error TS6133: 'displayName' is declared but its value is never read.
+src/pages/Bridge.tsx(37,10): error TS6133: 'selectedAssets' is declared but its value is never read.
+src/pages/Bridge.tsx(37,26): error TS6133: 'setSelectedAssets' is declared but its value is never read.
+src/pages/Bridge.tsx(193,42): error TS2367: This comparison appears to be unintentional because the types '"核心企业" | "admin" | "NBFI" | "建筑公司"' and '"Bank"' have no overlap.
+src/pages/FundRecovery.tsx(76,9): error TS6133: 'currentRole' is declared but its value is never read.
+src/pages/MarketTrading.tsx(72,9): error TS6133: 'getDebtorName' is declared but its value is never read.
+src/pages/MarketTrading.tsx(82,9): error TS6133: 'getInventoryType' is declared but its value is never read.
+src/pages/MarketTrading.tsx(92,9): error TS6133: 'getInventoryItem' is declared but its value is never read.
+src/pages/MarketTrading.tsx(102,9): error TS6133: 'getStorageLocation' is declared but its value is never read.
+src/pages/MarketTrading.tsx(112,9): error TS6133: 'getQualityStatus' is declared but its value is never read.
+src/pages/MarketTrading.tsx(372,9): error TS6133: 'toggleTokenSelection' is declared but its value is never read.
+src/pages/NodeManagement.tsx(6,20): error TS6133: 'NodeItem' is declared but its value is never read.
+src/pages/NodeManagement.tsx(55,6): error TS6196: 'SortOption' is declared but never used.
+src/pages/NodeManagement.tsx(62,7): error TS2304: Cannot find name 'currentRole'.
+src/pages/NodeManagement.tsx(63,13): error TS2304: Cannot find name 'MyListingsContent'.
+src/pages/NodeManagement.tsx(67,7): error TS2304: Cannot find name 'currentRole'.
+src/pages/NodeManagement.tsx(68,13): error TS2304: Cannot find name 'ValidatorPendingReviews'.
+src/pages/NodeManagement.tsx(72,9): error TS6133: 'getDebtorName' is declared but its value is never read.
+src/pages/NodeManagement.tsx(82,9): error TS6133: 'getInventoryType' is declared but its value is never read.
+src/pages/NodeManagement.tsx(92,9): error TS6133: 'getInventoryItem' is declared but its value is never read.
+src/pages/NodeManagement.tsx(102,9): error TS6133: 'getStorageLocation' is declared but its value is never read.
+src/pages/NodeManagement.tsx(112,9): error TS6133: 'getQualityStatus' is declared but its value is never read.
+src/utils/i18n.ts(1175,7): error TS2353: Object literal may only specify known properties, and 'bridgePreview' does not exist in type '{ title: string; bankDescription: string; nbfiDescription: string; bridgeTotal: string; bridgeFee: string; bridgeableAssets: string; bridgeConfig: string; bridgeHistory: string; selectedAssets: string; ... 42 more ...; finish: string; }'.
+src/utils/i18n.ts(1235,7): error TS2353: Object literal may only specify known properties, and 'forexPoolStatus' does not exist in type '{ title: string; description: string; usdcBalanceOverview: string; currentBalance: string; todayConvertibleQuota: string; unlimited: string; currentExchangeRate: string; conversionForm: string; ... 38 more ...; failed: string; }'.
+src/utils/i18n.ts(1441,9): error TS2353: Object literal may only specify known properties, and 'transactionSuccess' does not exist in type '{ title: string; tokenInfo: string; purchaseQuantity: string; totalAmount: string; confirmPurchase: string; purchaseSuccess: string; }'.
+src/utils/i18n.ts(2080,7): error TS2353: Object literal may only specify known properties, and 'bridgePreview' does not exist in type '{ title: string; bankDescription: string; nbfiDescription: string; bridgeTotal: string; bridgeFee: string; bridgeableAssets: string; bridgeConfig: string; bridgeHistory: string; selectedAssets: string; ... 42 more ...; finish: string; }'.
+src/utils/i18n.ts(2118,7): error TS2353: Object literal may only specify known properties, and 'convertNow' does not exist in type '{ title: string; description: string; usdcBalanceOverview: string; currentBalance: string; todayConvertibleQuota: string; unlimited: string; currentExchangeRate: string; conversionForm: string; ... 38 more ...; failed: string; }'.
+src/utils/i18n.ts(2342,9): error TS2353: Object literal may only specify known properties, and 'transactionSuccess' does not exist in type '{ title: string; tokenInfo: string; purchaseQuantity: string; totalAmount: string; confirmPurchase: string; purchaseSuccess: string; }'.

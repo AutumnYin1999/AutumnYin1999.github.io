@@ -7,48 +7,71 @@ interface SidebarProps {
   isOpen: boolean
 }
 
+// ── Menu item type with bilingual labels ──────────────────────────────────────
+interface MenuItem {
+  id: string
+  labelZh: string
+  labelEn: string
+  icon: string
+  path: string
+  permission: string
+}
+
 function Sidebar({ isOpen }: SidebarProps) {
   const location = useLocation()
   const { currentRole } = useRole()
-  const { t } = useLanguage()
+  const { language } = useLanguage()
+  const zh = language === 'zh'
 
-  // 基础菜单项
-  const baseMenuItems = [
-    { id: 'dashboard', labelKey: 'navigation.dashboard', icon: 'fa-chart-line', path: '/app/dashboard', permission: 'dashboard' },
-    { id: 'node-management', labelKey: 'Node Management', icon: 'fa-server', path: '/app/node-management', permission: 'nodeManagement' },
-    { id: 'market-trading', labelKey: currentRole === '银行' ? 'navigation.pendingReviews' : 'Asset Marketplace', icon: 'fa-exchange-alt', path: '/app/market-trading', permission: 'marketTrading' },
-    { id: 'lending', labelKey: 'My Portfolio', icon: 'fa-hand-holding-usd', path: '/app/lending', permission: 'lending' },
-    { id: 'abs-packaging', labelKey: 'marketTrading.validationHistory', icon: 'fa-history', path: '/app/abs-packaging', permission: 'absPackaging' },
-    { id: 'fund-recovery', labelKey: 'navigation.nodeEarnings', icon: 'fa-coins', path: '/app/fund-recovery', permission: 'fundRecovery' },
-    { id: 'bridge', labelKey: 'navigation.bridge', icon: 'fa-bridge', path: '/app/bridge', permission: 'bridge' },
+  // ── Admin-only menu (Dashboard + Node Management + Ledger Management) ──
+  const adminMenuItems: MenuItem[] = [
+    { id: 'dashboard', labelZh: '仪表盘', labelEn: 'Dashboard', icon: 'fa-chart-line', path: '/app/dashboard', permission: 'dashboard' },
+    { id: 'node-management', labelZh: '节点管理', labelEn: 'Node Management', icon: 'fa-server', path: '/app/node-management', permission: 'nodeManagement' },
+    { id: 'ledger-management', labelZh: '账本管理', labelEn: 'Ledger Management', icon: 'fa-book-open', path: '/app/ledger-management', permission: 'nodeManagement' },
+  ]
+
+  // ── Full menu for other roles ──
+  const baseMenuItems: MenuItem[] = [
+    { id: 'dashboard', labelZh: '仪表盘', labelEn: 'Dashboard', icon: 'fa-chart-line', path: '/app/dashboard', permission: 'dashboard' },
+    { id: 'market-trading', labelZh: currentRole === '银行' ? '待审核' : '资产市场', labelEn: currentRole === '银行' ? 'Pending Reviews' : 'Asset Marketplace', icon: 'fa-exchange-alt', path: '/app/market-trading', permission: 'marketTrading' },
+    { id: 'lending', labelZh: '我的投资组合', labelEn: 'My Portfolio', icon: 'fa-hand-holding-usd', path: '/app/lending', permission: 'lending' },
+    { id: 'abs-packaging', labelZh: '验证历史', labelEn: 'Validation History', icon: 'fa-history', path: '/app/abs-packaging', permission: 'absPackaging' },
+    { id: 'fund-recovery', labelZh: '节点收益', labelEn: 'Node Earnings', icon: 'fa-coins', path: '/app/fund-recovery', permission: 'fundRecovery' },
+    { id: 'bridge', labelZh: '跨链桥', labelEn: 'Bridge', icon: 'fa-bridge', path: '/app/bridge', permission: 'bridge' },
   ]
 
   // 根据角色决定资产发行相关菜单项
-  let assetIssuanceItems: typeof baseMenuItems = []
+  let assetIssuanceItems: MenuItem[] = []
   if (currentRole === '建筑公司') {
-    // 建筑公司显示两个独立菜单项
     assetIssuanceItems = [
-      { id: 'receivables-management', labelKey: 'navigation.receivablesManagement', icon: 'fa-file-invoice-dollar', path: '/app/receivables-management', permission: 'assetIssuanceReceivable' },
+      { id: 'receivables-management', labelZh: '应收账款管理', labelEn: 'Receivables Management', icon: 'fa-file-invoice-dollar', path: '/app/receivables-management', permission: 'assetIssuanceReceivable' },
     ]
-  } else {
-    // 其他角色显示原来的资产发行菜单
+  } else if (currentRole !== 'admin') {
     assetIssuanceItems = [
-      { id: 'asset-issuance', labelKey: 'navigation.assetIssuance', icon: 'fa-coins', path: '/app/asset-issuance', permission: 'assetIssuance' },
+      { id: 'asset-issuance', labelZh: '确权管理', labelEn: 'AR Confirmation', icon: 'fa-coins', path: '/app/asset-issuance', permission: 'assetIssuance' },
     ]
   }
 
-  // 合并菜单项：仪表盘 -> 资产发行相关 -> 其他
-  const menuItems = [
-    baseMenuItems[0], // dashboard
-    ...assetIssuanceItems,
-    ...baseMenuItems.slice(1), // 其他菜单项
-  ]
+  // ── Build final menu ──
+  let menuItems: MenuItem[]
+
+  if (currentRole === 'admin') {
+    // Admin only sees 3 items
+    menuItems = adminMenuItems
+  } else {
+    // Other roles: dashboard -> asset items -> rest
+    menuItems = [
+      baseMenuItems[0], // dashboard
+      ...assetIssuanceItems,
+      ...baseMenuItems.slice(1), // other items
+    ]
+  }
 
   if (!isOpen) return null
 
-  const visibleMenuItems = menuItems.filter((item) =>
-    hasPermission(currentRole, item.permission as any)
-  )
+  const visibleMenuItems = menuItems.filter((item) => {
+    return hasPermission(currentRole, item.permission as any)
+  })
 
   return (
     <aside className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-white border-r border-gray-200 shadow-sm z-40">
@@ -65,7 +88,7 @@ function Sidebar({ isOpen }: SidebarProps) {
                 }`}
             >
               <i className={`fas ${item.icon} w-5 text-center`}></i>
-              <span>{item.labelKey === 'Node Management' ? (t('common.language') === '中文' ? 'Node Management' : '节点管理') : item.labelKey === 'Asset Marketplace' || item.labelKey === 'My Portfolio' ? item.labelKey : t(item.labelKey)}</span>
+              <span>{zh ? item.labelZh : item.labelEn}</span>
             </NavLink>
           )
         })}
@@ -73,6 +96,5 @@ function Sidebar({ isOpen }: SidebarProps) {
     </aside>
   )
 }
-
 
 export default Sidebar

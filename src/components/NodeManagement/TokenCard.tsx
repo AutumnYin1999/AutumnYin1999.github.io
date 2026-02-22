@@ -1,202 +1,159 @@
-import { Token } from '../../pages/MarketTrading'
 import { useLanguage } from '../../hooks/useLanguage'
 
-interface TokenCardProps {
-  token: Token
-  onPurchase: () => void
-  onToggleWatchlist: () => void
-  isWatched: boolean
+export interface NodeItem {
+  id: string
+  type: 'bank' | 'audit' | 'cic'
+  name: string
+  address: string
+  status: 'online' | 'offline' | 'maintenance'
+  joinDate: string
+  cumulativeRevenue: number
+  monthlyTasks: number
 }
 
-function TokenCard({ token, onPurchase, onToggleWatchlist, isWatched }: TokenCardProps) {
-  const { t, language } = useLanguage()
-  const isReceivable = token.type === 'receivable'
-  const isABS = token.type === 'abs'
-  const isInventory = token.type === 'inventory'
+interface NodeCardProps {
+  node: NodeItem
+  onViewDetails?: () => void
+  onEdit?: () => void
+  onRemove?: () => void
+}
+
+function NodeCard({ node, onViewDetails, onEdit, onRemove }: NodeCardProps) {
+  const { language } = useLanguage()
+
+  const getTypeStyle = (type: string) => {
+    switch (type) {
+      case 'bank': return 'bg-blue-100 text-blue-700'
+      case 'audit': return 'bg-purple-100 text-purple-700'
+      case 'cic': return 'bg-orange-100 text-orange-700'
+      default: return 'bg-gray-100 text-gray-700'
+    }
+  }
+
+  const getTypeName = (type: string) => {
+    if (language === 'zh') {
+      switch (type) {
+        case 'bank': return '银行'
+        case 'audit': return '审计'
+        case 'cic': return 'CIC'
+        default: return type
+      }
+    } else {
+      switch (type) {
+        case 'bank': return 'Bank'
+        case 'audit': return 'Audit'
+        case 'cic': return 'CIC'
+        default: return type
+      }
+    }
+  }
+
+  const getStatusDisplay = (status: string) => {
+    if (status === 'online') {
+      return (
+        <span className="flex items-center text-green-600 font-medium">
+          <span className="w-2.5 h-2.5 rounded-full bg-green-500 mr-2 shadow-sm shadow-green-200"></span>
+          {language === 'zh' ? '在线' : 'Online'}
+        </span>
+      )
+    }
+    if (status === 'maintenance') {
+      return (
+        <span className="flex items-center text-yellow-600 font-medium">
+          <span className="w-2.5 h-2.5 rounded-full bg-yellow-500 mr-2 shadow-sm shadow-yellow-200"></span>
+          {language === 'zh' ? '维护中' : 'Maintenance'}
+        </span>
+      )
+    }
+    return (
+      <span className="flex items-center text-gray-400 font-medium">
+        <span className="w-2.5 h-2.5 rounded-full bg-gray-400 mr-2"></span>
+        {language === 'zh' ? '离线' : 'Offline'}
+      </span>
+    )
+  }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow h-full flex flex-col">
-      {/* 头部：代币ID和类型标签 */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-2">
-          <span className="font-semibold text-gray-800">{token.id}</span>
-          <span className={`px-2 py-1 rounded text-xs font-medium ${isReceivable
-            ? 'bg-blue-100 text-blue-700'
-            : isABS
-              ? 'bg-purple-100 text-purple-700'
-              : 'bg-green-100 text-green-700'
-            }`}>
-            {isReceivable ? 'AR' : isABS ? 'ABS' : t('marketTrading.inventory')}
+    <div className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-all duration-300 h-full flex flex-col group relative overflow-hidden">
+      {/* 装饰性背景 */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-50 to-transparent rounded-bl-full opacity-50 -z-10 group-hover:scale-110 transition-transform duration-500"></div>
+
+      {/* 头部：类型标签和名称 */}
+      <div className="flex items-start justify-between mb-5 z-10">
+        <div className="flex flex-col space-y-2">
+          <span className={`px-2.5 py-1 rounded-md text-xs font-bold tracking-wide w-fit ${getTypeStyle(node.type)}`}>
+            {getTypeName(node.type).toUpperCase()}
           </span>
+          <span className="font-bold text-gray-900 text-xl">{node.name}</span>
         </div>
+      </div>
+
+      <div className="flex-1 space-y-4 z-10">
+        {/* 地址和加入时间 */}
+        <div className="flex flex-col space-y-1">
+          <span className="text-gray-500 text-xs uppercase tracking-wider font-semibold">{language === 'zh' ? '节点地址' : 'Node Address'}</span>
+          <div className="flex items-center text-sm font-mono text-gray-700 bg-gray-50 px-3 py-1.5 rounded-md border border-gray-100">
+            <i className="fas fa-link text-gray-400 mr-2 text-xs"></i>
+            {node.address.substring(0, 10)}...{node.address.substring(node.address.length - 8)}
+          </div>
+        </div>
+
+        {/* 状态 和 加入时间 */}
+        <div className="flex items-center justify-between text-sm py-3 border-y border-gray-100">
+          <div className="flex flex-col space-y-1">
+            <span className="text-gray-500 text-xs uppercase tracking-wider font-semibold">{language === 'zh' ? '状态' : 'Status'}</span>
+            {getStatusDisplay(node.status)}
+          </div>
+          <div className="flex flex-col space-y-1 items-end">
+            <span className="text-gray-500 text-xs uppercase tracking-wider font-semibold">{language === 'zh' ? '加入时间' : 'Join Date'}</span>
+            <span className="font-medium text-gray-800 flex items-center">
+              <i className="far fa-calendar-alt text-gray-400 mr-1.5 text-xs"></i>
+              {node.joinDate}
+            </span>
+          </div>
+        </div>
+
+        {/* 收益和审核量 */}
+        <div className="flex items-center justify-between text-sm pt-2">
+          <div className="flex flex-col space-y-1">
+            <span className="text-gray-500 text-xs uppercase tracking-wider font-semibold">{language === 'zh' ? '累计收益' : 'Cumulative Revenue'}</span>
+            <span className="font-bold text-gray-900 text-lg">HK$ {node.cumulativeRevenue.toLocaleString('en-US')}</span>
+          </div>
+          <div className="flex flex-col space-y-1 items-end">
+            <span className="text-gray-500 text-xs uppercase tracking-wider font-semibold">{language === 'zh' ? '本月审核量' : 'Monthly Tasks'}</span>
+            <span className="font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">
+              {node.monthlyTasks} {language === 'zh' ? '笔' : 'tasks'}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* 操作按钮组 */}
+      <div className="mt-6 pt-5 grid grid-cols-3 gap-3 border-t border-gray-100 z-10">
         <button
-          onClick={onToggleWatchlist}
-          className={`p-2 rounded-lg transition-colors ${isWatched
-            ? 'text-yellow-500 hover:bg-yellow-50'
-            : 'text-gray-400 hover:bg-gray-100'
-            }`}
-          title={isWatched ? 'Remove from watchlist' : 'Add to watchlist'}
+          onClick={onViewDetails}
+          className="col-span-1 py-2 px-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors flex items-center justify-center"
         >
-          <i className={`fas fa-star`}></i>
+          <i className="fas fa-info-circle mr-1.5 opacity-70"></i>
+          {language === 'zh' ? '详情' : 'Details'}
         </button>
-      </div>
-
-      <div className="flex-1">
-        {/* AR 内容 */}
-        {isReceivable && (
-          <div className="space-y-3 mb-2">
-            <div className="text-sm">
-              <span className="text-gray-500">{language === 'zh' ? '核心企业' : 'Core Enterprise'}:</span>
-              <span className="font-medium text-gray-800 ml-2">{token.issuer}</span>
-            </div>
-            <div className="flex flex-wrap items-center justify-between text-sm">
-              <div>
-                <span className="text-gray-500">{language === 'zh' ? '面值' : 'Face Value'}:</span>
-                <span className="font-medium text-gray-800 ml-2">HK$ {token.faceValue.toLocaleString('en-US')}</span>
-              </div>
-              <div className="text-gray-300">|</div>
-              <div>
-                <span className="text-gray-500">{language === 'zh' ? '到期' : 'Due'}:</span>
-                <span className="font-medium text-gray-800 ml-2">{token.dueDate}</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center justify-between text-sm">
-              <div>
-                <span className="text-gray-500">{language === 'zh' ? '年化收益率' : 'Yield'}:</span>
-                <span className="font-bold text-green-600 ml-2">{token.annualYield}%</span>
-              </div>
-              <div className="text-gray-300">|</div>
-              <div className="flex items-center">
-                <span className="text-gray-500 mr-2">{language === 'zh' ? '风险评级' : 'Rating'}:</span>
-                <span className={`px-1.5 py-0.5 rounded text-xs font-bold ${token.riskRating?.startsWith('A')
-                  ? 'bg-green-100 text-green-700'
-                  : token.riskRating?.startsWith('B')
-                    ? 'bg-yellow-100 text-yellow-700'
-                    : 'bg-red-100 text-red-700'
-                  }`}>
-                  {token.riskRating}
-                </span>
-              </div>
-            </div>
-
-            <div className="pt-3 mt-3 border-t border-gray-100 flex flex-wrap items-center justify-between text-sm bg-gray-50/50 -mx-2 px-2 py-2 rounded">
-              <div>
-                <span className="text-gray-500">{language === 'zh' ? '挂牌价' : 'Price'}:</span>
-                <span className="font-bold text-gray-800 ml-2">HK$ {token.currentPrice.toLocaleString('en-US')}</span>
-              </div>
-              <div className="text-gray-300">|</div>
-              <div>
-                <span className="text-gray-500">{language === 'zh' ? '折扣' : 'Discount'}:</span>
-                <span className={`font-semibold ml-2 ${token.discount > 0 ? 'text-red-600' : 'text-green-600'}`}>
-                  {token.discount > 0 ? `+${token.discount}` : token.discount}%
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ABS 内容 */}
-        {isABS && (
-          <div className="space-y-3 mb-2">
-            <div className="text-sm">
-              <span className="text-gray-500">{language === 'zh' ? '资产池' : 'Asset Pool'}:</span>
-              <span className="font-medium text-gray-800 ml-2">{token.assetPool}</span>
-            </div>
-            <div className="flex flex-wrap items-center justify-between text-sm">
-              <div>
-                <span className="text-gray-500">{language === 'zh' ? '规模' : 'Scale'}:</span>
-                <span className="font-medium text-gray-800 ml-2">HK$ {token.scale?.toLocaleString('en-US')}</span>
-              </div>
-              <div className="text-gray-300">|</div>
-              <div>
-                <span className="text-gray-500">{language === 'zh' ? '分层' : 'Tranche'}:</span>
-                <span className="font-medium text-gray-800 ml-2">{token.tranche}</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center justify-between text-sm">
-              <div>
-                <span className="text-gray-500">{language === 'zh' ? '预期收益率' : 'Exp. Yield'}:</span>
-                <span className="font-bold text-green-600 ml-2">{token.expectedYield}%</span>
-              </div>
-              <div className="text-gray-300">|</div>
-              <div className="flex items-center">
-                <span className="text-gray-500 mr-2">{language === 'zh' ? '风险评级' : 'Rating'}:</span>
-                <span className={`px-1.5 py-0.5 rounded text-xs font-bold ${token.riskRating?.startsWith('A')
-                  ? 'bg-green-100 text-green-700'
-                  : token.riskRating?.startsWith('B')
-                    ? 'bg-yellow-100 text-yellow-700'
-                    : 'bg-red-100 text-red-700'
-                  }`}>
-                  {token.riskRating}
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 库存代币内容 */}
-        {isInventory && (
-          <div className="space-y-3 mb-2">
-            <div className="text-sm">
-              <span className="text-gray-500">{t('marketTrading.inventoryType') || '库存类型'}:</span>
-              <span className="font-medium text-gray-800 ml-2">{token.inventoryType}</span>
-            </div>
-            <div className="text-sm">
-              <span className="text-gray-500">{t('marketTrading.item') || '物品'}:</span>
-              <span className="font-medium text-gray-800 ml-2">{token.inventoryItem}</span>
-            </div>
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-500">{t('marketTrading.valuation') || '估值'}:</span>
-              <span className="font-semibold text-gray-800">
-                HK$ {token.faceValue.toLocaleString('en-US')}
-              </span>
-            </div>
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-500">{t('marketTrading.storageLocation') || '存储位置'}:</span>
-              <span className="text-gray-800">{token.storageLocation}</span>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* 操作按钮组 (AR 和 ABS 以及 INV 统一用底部布局，ABS有两个按钮) */}
-      <div className="mt-4 pt-4 flex space-x-3">
-        {isABS ? (
-          <>
-            <button
-              className="flex-1 py-2 px-4 border border-blue-600 text-blue-600 rounded-lg text-sm font-medium hover:bg-blue-50 transition-colors"
-            >
-              <i className="fas fa-file-alt mr-2"></i>
-              {language === 'zh' ? '查看详情' : 'Details'}
-            </button>
-            <button
-              onClick={onPurchase}
-              className="flex-1 py-2 px-4 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-            >
-              <i className="fas fa-coins mr-2"></i>
-              {language === 'zh' ? '投资' : 'Invest'}
-            </button>
-          </>
-        ) : (
-          <>
-            <button
-              onClick={onPurchase}
-              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-            >
-              <i className={isInventory ? "fas fa-shopping-cart mr-2" : "fas fa-coins mr-2"}></i>
-              {isInventory ? t('marketTrading.buyNow') : (language === 'zh' ? '投资' : 'Invest')}
-            </button>
-            <button
-              className="p-2 px-3 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
-              title="Alert"
-            >
-              <i className="fas fa-bell"></i>
-            </button>
-          </>
-        )}
+        <button
+          onClick={onEdit}
+          className="col-span-1 py-2 px-2 border border-gray-200 text-gray-700 bg-white shadow-sm rounded-lg text-sm font-medium hover:bg-gray-50 hover:text-blue-600 hover:border-blue-200 transition-colors flex items-center justify-center"
+        >
+          <i className="fas fa-edit mr-1.5 opacity-70"></i>
+          {language === 'zh' ? '编辑' : 'Edit'}
+        </button>
+        <button
+          onClick={onRemove}
+          className="col-span-1 py-2 px-2 border border-red-100 text-red-600 bg-red-50 rounded-lg text-sm font-medium hover:bg-red-100 hover:border-red-200 transition-colors flex items-center justify-center"
+        >
+          <i className="fas fa-trash-alt mr-1.5 opacity-70"></i>
+          {language === 'zh' ? '移除' : 'Remove'}
+        </button>
       </div>
     </div>
   )
 }
 
-export default TokenCard
+export default NodeCard

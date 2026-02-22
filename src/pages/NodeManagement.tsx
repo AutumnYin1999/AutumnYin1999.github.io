@@ -1,37 +1,11 @@
 import { useState, useMemo } from 'react'
 import { useLanguage } from '../hooks/useLanguage'
-import { useRole } from '../hooks/useRole'
 import MarketOverview from '../components/NodeManagement/MarketOverview'
 import TokenFilters from '../components/NodeManagement/TokenFilters'
-import TokenCard from '../components/NodeManagement/TokenCard'
-import MarketSidebar from '../components/NodeManagement/MarketSidebar'
-import PurchaseModal from '../components/NodeManagement/PurchaseModal'
-import BatchPurchaseModal from '../components/NodeManagement/BatchPurchaseModal'
-import MyListingsContent from '../components/NodeManagement/MyListingsContent'
-import ValidatorPendingReviews from '../components/NodeManagement/ValidatorPendingReviews'
+import NodeCard from '../components/NodeManagement/TokenCard'
+import PendingApplicationsSidebar from '../components/NodeManagement/PendingApplicationsSidebar'
 
-export interface Token {
-  id: string
-  type: 'receivable' | 'inventory' | 'abs'
-  debtor?: string
-  inventoryType?: string
-  inventoryItem?: string
-  faceValue: number
-  currentPrice: number
-  dueDate?: string
-  daysRemaining?: number
-  annualYield?: number
-  riskRating?: string
-  storageLocation?: string
-  qualityStatus?: string
-  issuer: string
-  discount: number
-  priceChange: number
-  assetPool?: string
-  tranche?: string
-  scale?: number
-  expectedYield?: number
-}
+
 
 export interface FilterState {
   tokenTypes: string[]
@@ -50,73 +24,13 @@ export interface FilterState {
   creditRating?: string
   taskTypes?: string[]
   taskStatus?: string
+  nodeType?: string
+  nodeStatus?: string
+  searchQuery?: string
 }
 
-type SortOption = 'yield' | 'daysRemaining' | 'discount' | 'price' | 'none'
-
 function NodeManagementPage() {
-  const { t, language } = useLanguage()
-  const { currentRole } = useRole()
-
-  // 建筑公司显示"我的在售资产"管理面板
-  if (currentRole === '建筑公司') {
-    return <MyListingsContent />
-  }
-
-  // 银行角色显示"待处理审核"面板
-  if (currentRole === '银行') {
-    return <ValidatorPendingReviews />
-  }
-
-  // 创建公司名称映射函数
-  const getDebtorName = (debtorKey: string) => {
-    const debtorMap: Record<string, string> = {
-      'ABC科技有限公司': t('nodeManagement.sampleDebtors.abcTech'),
-      'XYZ工程集团': t('nodeManagement.sampleDebtors.xyzEngineering'),
-      'DEF建设股份公司': t('nodeManagement.sampleDebtors.defConstruction'),
-    }
-    return debtorMap[debtorKey] || debtorKey
-  }
-
-  // 创建库存类型映射函数
-  const getInventoryType = (typeKey: string) => {
-    const typeMap: Record<string, string> = {
-      '成品': t('nodeManagement.inventoryTypes.finishedProduct'),
-      '原材料': t('nodeManagement.inventoryTypes.rawMaterial'),
-      '在制品': t('nodeManagement.inventoryTypes.workInProgress'),
-    }
-    return typeMap[typeKey] || typeKey
-  }
-
-  // 创建库存物品映射函数
-  const getInventoryItem = (itemKey: string) => {
-    const itemMap: Record<string, string> = {
-      '建筑钢材': t('nodeManagement.inventoryItems.constructionSteel'),
-      '水泥': t('nodeManagement.inventoryItems.cement'),
-      '预制构件': t('nodeManagement.inventoryItems.precastComponents'),
-    }
-    return itemMap[itemKey] || itemKey
-  }
-
-  // 创建存储位置映射函数
-  const getStorageLocation = (locationKey: string) => {
-    const locationMap: Record<string, string> = {
-      '深圳仓库A': t('nodeManagement.storageLocations.shenzhenWarehouseA'),
-      '广州仓库B': t('nodeManagement.storageLocations.guangzhouWarehouseB'),
-      '东莞工厂C': t('nodeManagement.storageLocations.dongguanFactoryC'),
-    }
-    return locationMap[locationKey] || locationKey
-  }
-
-  // 创建质量状态映射函数
-  const getQualityStatus = (statusKey: string) => {
-    const statusMap: Record<string, string> = {
-      '已认证': t('nodeManagement.qualityStatuses.certified'),
-      '待认证': t('nodeManagement.qualityStatuses.pendingCertification'),
-    }
-    return statusMap[statusKey] || statusKey
-  }
-
+  const { language } = useLanguage()
   const [filters, setFilters] = useState<FilterState>({
     tokenTypes: ['receivable', 'abs'],
     riskLevel: 'all',
@@ -133,161 +47,74 @@ function NodeManagementPage() {
     creditRating: undefined,
     taskTypes: [],
     taskStatus: 'all',
+    nodeType: 'all',
+    nodeStatus: 'all',
+    searchQuery: '',
   })
 
-  const [sortOption, setSortOption] = useState<SortOption>('none')
-  const [selectedTokens, setSelectedTokens] = useState<string[]>([])
-  const [showBatchModal, setShowBatchModal] = useState(false)
-  const [selectedToken, setSelectedToken] = useState<Token | null>(null)
-  const [showPurchaseModal, setShowPurchaseModal] = useState(false)
-  const [watchlist, setWatchlist] = useState<string[]>([])
-  const [recentTransactions, setRecentTransactions] = useState<any[]>([])
 
-  // 模拟代币数据 - 使用 useMemo 确保语言变化时更新
-  // 模拟代币数据 - 使用 useMemo 确保语言变化时更新
-  const tokens: Token[] = useMemo(() => [
+  const tokens: any[] = useMemo(() => [
     {
-      id: 'AR-2025-021',
-      type: 'receivable',
-      issuer: t('nodeManagement.sampleIssuers.coreEnterpriseA'),
-      faceValue: 500000,
-      currentPrice: 498500,
-      dueDate: '2025-06-30',
-      daysRemaining: 101, // approximate
-      annualYield: 24.5,
-      riskRating: 'B+',
-      discount: -0.3,
-      priceChange: 0,
+      id: 'node-1',
+      type: 'bank',
+      name: language === 'zh' ? '汇丰银行' : 'HSBC',
+      address: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+      status: 'online',
+      joinDate: '2025-01-15',
+      cumulativeRevenue: 1240000,
+      monthlyTasks: 245,
     },
     {
-      id: 'ABS-2025-001',
-      type: 'abs',
-      issuer: t('nodeManagement.sampleIssuers.coreEnterpriseA'),
-      assetPool: language === 'zh' ? '核心企业A、B、C 共 5 笔 AR' : '5 ARs from Core Enterprise A, B, C',
-      scale: 2500000,
-      faceValue: 2500000, // For scaling/rendering purposes
-      currentPrice: 2500000, // Placeholders
-      tranche: 'Senior 70%',
-      expectedYield: 21.2,
-      annualYield: 21.2, // map to annual yield for sorting
-      riskRating: 'AAA',
-      discount: 0,
-      priceChange: 0,
+      id: 'node-2',
+      type: 'audit',
+      name: language === 'zh' ? '普华永道' : 'PwC',
+      address: '0x883b25Cc6634C0532925a3b844Bc454e4438fa1b',
+      status: 'online',
+      joinDate: '2025-01-20',
+      cumulativeRevenue: 850000,
+      monthlyTasks: 180,
     },
     {
-      id: 'AR-2025-022',
-      type: 'receivable',
-      issuer: t('nodeManagement.sampleIssuers.coreEnterpriseB'),
-      faceValue: 800000,
-      currentPrice: 790400,
-      dueDate: '2025-08-15',
-      daysRemaining: 147,
-      annualYield: 26.8,
-      riskRating: 'A-',
-      discount: -1.2,
-      priceChange: 0,
+      id: 'node-3',
+      type: 'cic',
+      name: language === 'zh' ? '建造业议会' : 'CIC',
+      address: '0x992c35Cc6634C0532925a3b844Bc454e4438f22c',
+      status: 'maintenance',
+      joinDate: '2025-02-01',
+      cumulativeRevenue: 420000,
+      monthlyTasks: 95,
     },
     {
-      id: 'ABS-2025-002',
-      type: 'abs',
-      issuer: t('nodeManagement.sampleIssuers.coreEnterpriseB'),
-      assetPool: language === 'zh' ? '建筑公司X、Y 共 12 笔 AR' : '12 ARs from Construction X, Y',
-      scale: 5000000,
-      faceValue: 5000000,
-      currentPrice: 5000000,
-      tranche: 'Senior 80%',
-      expectedYield: 22.0,
-      annualYield: 22.0,
-      riskRating: 'AA+',
-      discount: 0,
-      priceChange: 0,
+      id: 'node-4',
+      type: 'bank',
+      name: language === 'zh' ? '渣打银行' : 'Standard Chartered',
+      address: '0x114d35Cc6634C0532925a3b844Bc454e4438f88d',
+      status: 'offline',
+      joinDate: '2025-02-10',
+      cumulativeRevenue: 310000,
+      monthlyTasks: 62,
     },
-  ], [t, language])
+  ], [language])
 
-  // 筛选逻辑
   const filteredTokens = useMemo(() => {
-    let result = tokens.filter(token => {
-      // 代币类型筛选
-      if (filters.tokenTypes.length > 0 && !filters.tokenTypes.includes(token.type)) {
-        return false
+    let result = tokens.filter(node => {
+      // 节点类型筛选
+      if (filters.nodeType && filters.nodeType !== 'all') {
+        if (node.type !== filters.nodeType) return false
       }
 
-      // 风险等级筛选
-      if (filters.riskLevel !== 'all' && token.riskRating) {
-        if (!token.riskRating.startsWith(filters.riskLevel)) {
-          return false
-        }
+      // 节点状态筛选
+      if (filters.nodeStatus && filters.nodeStatus !== 'all') {
+        if (node.status !== filters.nodeStatus) return false
       }
 
-      // 收益率范围筛选
-      if (token.annualYield !== undefined) {
-        if (filters.yieldRangeMin && filters.yieldRangeMin !== '') {
-          if (token.annualYield < parseFloat(filters.yieldRangeMin)) return false
-        }
-        if (filters.yieldRangeMax && filters.yieldRangeMax !== '') {
-          if (token.annualYield > parseFloat(filters.yieldRangeMax)) return false
-        }
-      }
-
-      // 到期日范围筛选
-      if (token.dueDate !== undefined) {
-        if (filters.dueDateStart && filters.dueDateStart !== '') {
-          if (new Date(token.dueDate) < new Date(filters.dueDateStart)) return false
-        }
-        if (filters.dueDateEnd && filters.dueDateEnd !== '') {
-          if (new Date(token.dueDate) > new Date(filters.dueDateEnd)) return false
-        }
-      }
-
-      // 发行方筛选
-      if (filters.issuer !== 'all' && token.issuer !== filters.issuer) {
-        return false
-      }
-
-      // 价格范围筛选 (仅为了兼容其他场景，原为必有条件)
-      // 在新过滤视图中可能被隐藏，但仍存在
-      if (token.currentPrice < filters.priceRange[0] || token.currentPrice > filters.priceRange[1]) {
-        return false
-      }
-
-      // 到期时间筛选（仅应收账款）
-      if (filters.dueTime && token.type === 'receivable' && token.daysRemaining) {
-        const days = parseInt(filters.dueTime)
-        if (token.daysRemaining > days) {
-          return false
-        }
-      }
-
-      // 库存类型筛选（仅库存）
-      if (filters.inventoryType && token.type === 'inventory' && token.inventoryType !== filters.inventoryType) {
-        return false
-      }
-
-      // 年化收益率范围筛选（仅应收账款，银行专用）
-      if (filters.yieldRange && token.type === 'receivable' && token.annualYield) {
-        const [min, max] = filters.yieldRange
-        if (token.annualYield < min || token.annualYield > max) {
-          return false
-        }
-      }
-
-      // 剩余期限筛选（仅应收账款，银行专用）
-      if (filters.remainingDays && token.type === 'receivable' && token.daysRemaining) {
-        const days = parseInt(filters.remainingDays)
-        if (token.daysRemaining > days) {
-          return false
-        }
-      }
-
-      // 信用评级筛选（仅应收账款，银行专用）
-      if (filters.creditRating && token.type === 'receivable' && token.riskRating) {
-        if (filters.creditRating === 'A+' && !token.riskRating.startsWith('A')) {
-          return false
-        }
-        if (filters.creditRating === 'A' && !['A', 'A-'].includes(token.riskRating)) {
-          return false
-        }
-        if (filters.creditRating === 'B+' && !['B+', 'B'].includes(token.riskRating)) {
+      // 搜索框搜索
+      if (filters.searchQuery) {
+        const query = filters.searchQuery.toLowerCase()
+        if (
+          !node.name.toLowerCase().includes(query) &&
+          !node.address.toLowerCase().includes(query)
+        ) {
           return false
         }
       }
@@ -295,87 +122,22 @@ function NodeManagementPage() {
       return true
     })
 
-    // 排序逻辑
-    if (sortOption !== 'none') {
-      result = [...result].sort((a, b) => {
-        switch (sortOption) {
-          case 'yield':
-            if (a.type === 'receivable' && b.type === 'receivable') {
-              return (b.annualYield || 0) - (a.annualYield || 0)
-            }
-            return 0
-          case 'daysRemaining':
-            if (a.type === 'receivable' && b.type === 'receivable') {
-              return (a.daysRemaining || 0) - (b.daysRemaining || 0)
-            }
-            return 0
-          case 'discount':
-            return b.discount - a.discount
-          case 'price':
-            return a.currentPrice - b.currentPrice
-          default:
-            return 0
-        }
-      })
-    }
+    // Sorting logic (if needed, add here)
+    // For now, let's assume no sorting is applied or it's handled elsewhere
+    // if (sortOption === 'yield') {
+    //   result.sort((a, b) => (b.annualYield || 0) - (a.annualYield || 0));
+    // } else if (sortOption === 'daysRemaining') {
+    //   result.sort((a, b) => (a.daysRemaining || 0) - (b.daysRemaining || 0));
+    // } else if (sortOption === 'discount') {
+    //   result.sort((a, b) => (b.discount || 0) - (a.discount || 0));
+    // } else if (sortOption === 'price') {
+    //   result.sort((a, b) => a.currentPrice - b.currentPrice);
+    // }
 
     return result
-  }, [filters, tokens, sortOption])
+  }, [filters, tokens])
 
-  const handlePurchase = (token: Token) => {
-    setSelectedToken(token)
-    setShowPurchaseModal(true)
-  }
 
-  const handlePurchaseConfirm = (tokenId: string, quantity: number, totalPrice: number) => {
-    // 模拟交易处理
-    const transaction = {
-      tokenId,
-      quantity,
-      totalPrice,
-      timestamp: new Date().toLocaleString('zh-CN'),
-      hash: '0x' + Array.from({ length: 64 }, () =>
-        Math.floor(Math.random() * 16).toString(16)
-      ).join(''),
-    }
-
-    setRecentTransactions(prev => [transaction, ...prev].slice(0, 10))
-    setShowPurchaseModal(false)
-    setSelectedToken(null)
-  }
-
-  const toggleWatchlist = (tokenId: string) => {
-    setWatchlist(prev =>
-      prev.includes(tokenId)
-        ? prev.filter(id => id !== tokenId)
-        : [...prev, tokenId]
-    )
-  }
-
-  const handleBatchPurchase = () => {
-    setShowBatchModal(true)
-  }
-
-  const handleBatchPurchaseConfirm = (purchases: { tokenId: string; quantity: number }[]) => {
-    // 批量购买逻辑
-    console.log('Batch purchase confirmed:', purchases)
-    purchases.forEach(purchase => {
-      const token = tokens.find(t => t.id === purchase.tokenId)
-      if (token) {
-        handlePurchaseConfirm(purchase.tokenId, purchase.quantity, token.currentPrice * purchase.quantity)
-      }
-    })
-    setShowBatchModal(false)
-    setSelectedTokens([])
-  }
-
-  const toggleTokenSelection = (tokenId: string) => {
-    setSelectedTokens(prev =>
-      prev.includes(tokenId)
-        ? prev.filter(id => id !== tokenId)
-        : [...prev, tokenId]
-    )
-  }
 
   return (
     <div className="p-6 min-h-[calc(100vh-4rem)]">
@@ -393,44 +155,18 @@ function NodeManagementPage() {
           <div>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-800">
-                {t('nodeManagement.tradableTokens')} ({filteredTokens.length})
+                {language === 'zh' ? '验证节点列表' : 'Validator Nodes'} ({filteredTokens.length})
               </h3>
-              <div className="flex items-center space-x-3">
-                {/* 排序选择 */}
-                <select
-                  value={sortOption}
-                  onChange={(e) => setSortOption(e.target.value as SortOption)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                >
-                  <option value="none">{language === 'zh' ? '默认排序' : 'Default Sort'}</option>
-                  <option value="yield">{language === 'zh' ? '按收益率排序' : 'Sort by Yield'}</option>
-                  <option value="daysRemaining">{language === 'zh' ? '按剩余期限排序' : 'Sort by Days Remaining'}</option>
-                  <option value="discount">{language === 'zh' ? '按折扣率排序' : 'Sort by Discount'}</option>
-                  <option value="price">{language === 'zh' ? '按价格排序' : 'Sort by Price'}</option>
-                </select>
-                <button
-                  onClick={handleBatchPurchase}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-                >
-                  <i className="fas fa-shopping-cart mr-2"></i>
-                  {t('nodeManagement.batchPurchase')}
-                  {selectedTokens.length > 0 && (
-                    <span className="ml-2 px-2 py-0.5 bg-blue-500 rounded-full text-xs">
-                      {selectedTokens.length}
-                    </span>
-                  )}
-                </button>
-              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {filteredTokens.map(token => (
-                <div key={token.id} className="relative">
-                  <TokenCard
-                    token={token}
-                    onPurchase={() => handlePurchase(token)}
-                    onToggleWatchlist={() => toggleWatchlist(token.id)}
-                    isWatched={watchlist.includes(token.id)}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+              {filteredTokens.map((token: any) => (
+                <div key={token.id}>
+                  <NodeCard
+                    node={token}
+                    onViewDetails={() => console.log('view', token.id)}
+                    onEdit={() => console.log('edit', token.id)}
+                    onRemove={() => console.log('remove', token.id)}
                   />
                 </div>
               ))}
@@ -473,41 +209,11 @@ function NodeManagementPage() {
           </div>
         </div>
 
-        {/* 右侧：侧边面板 */}
+        {/* 右侧：待审核节点申请面板 */}
         <div className="lg:col-span-1">
-          <MarketSidebar
-            watchlist={watchlist}
-            tokens={tokens}
-            recentTransactions={recentTransactions}
-            onRemoveFromWatchlist={toggleWatchlist}
-          />
+          <PendingApplicationsSidebar />
         </div>
       </div>
-
-      {/* 购买确认模态框 */}
-      {showPurchaseModal && selectedToken && (
-        <PurchaseModal
-          token={selectedToken}
-          onConfirm={handlePurchaseConfirm}
-          onClose={() => {
-            setShowPurchaseModal(false)
-            setSelectedToken(null)
-          }}
-        />
-      )}
-
-      {/* 批量购买模态框 */}
-      {showBatchModal && (
-        <BatchPurchaseModal
-          tokens={tokens}
-          selectedTokenIds={selectedTokens}
-          onConfirm={handleBatchPurchaseConfirm}
-          onClose={() => {
-            setShowBatchModal(false)
-            setSelectedTokens([])
-          }}
-        />
-      )}
     </div>
   )
 }
