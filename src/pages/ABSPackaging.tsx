@@ -60,8 +60,8 @@ function ABSPackaging() {
               <i className={`fas ${s.icon} ${s.iconColor}`} />
             </div>
             <div>
-              <div className="text-xs text-gray-500 leading-tight">{zh ? s.label.zh : s.label.en}</div>
-              <div className="text-xl font-bold text-gray-900 leading-tight mt-0.5">{s.value}</div>
+              <div className="text-sm text-gray-500 leading-tight">{zh ? s.label.zh : s.label.en}</div>
+              <div className="text-2xl font-bold text-gray-900 leading-tight mt-0.5">{s.value}</div>
             </div>
           </div>
         ))}
@@ -87,7 +87,7 @@ function ABSPackaging() {
       {/* NBFI: read-only view */}
       <PermissionGuard permission="absPackagingPurchase">
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">
             {zh ? '可购买的 ABS 产品' : 'Purchasable ABS Products'}
           </h3>
           <ABSHistory absProducts={[]} />

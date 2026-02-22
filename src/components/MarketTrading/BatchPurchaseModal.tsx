@@ -40,7 +40,7 @@ function BatchPurchaseModal({ tokens, selectedTokenIds, onConfirm, onClose }: Ba
       <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h3 className="text-xl font-bold text-gray-800">
+            <h3 className="text-2xl font-bold text-gray-800">
               {language === 'zh' ? '批量采购' : 'Batch Purchase'}
             </h3>
             <button
@@ -94,7 +94,7 @@ function BatchPurchaseModal({ tokens, selectedTokenIds, onConfirm, onClose }: Ba
                         />
                       </div>
                     </div>
-                    <div className="text-sm text-gray-600">
+                    <div className="text-base text-gray-600">
                       {language === 'zh' ? '小计：' : 'Subtotal: '}
                       <span className="font-semibold text-gray-800">
                         {((token.currentPrice * (quantities[token.id] || 1))).toLocaleString()} eHKD
@@ -105,15 +105,15 @@ function BatchPurchaseModal({ tokens, selectedTokenIds, onConfirm, onClose }: Ba
               </div>
 
               <div className="border-t border-gray-200 pt-4 space-y-2">
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-base">
                   <span className="text-gray-600">{language === 'zh' ? '总金额：' : 'Total Amount: '}</span>
                   <span className="font-medium text-gray-800">{totalAmount.toLocaleString()} eHKD</span>
                 </div>
-                <div className="flex justify-between text-sm">
+                <div className="flex justify-between text-base">
                   <span className="text-gray-600">{language === 'zh' ? '平台费（1%）：' : 'Platform Fee (1%): '}</span>
                   <span className="font-medium text-gray-800">{platformFee.toLocaleString()} eHKD</span>
                 </div>
-                <div className="flex justify-between text-lg font-bold border-t border-gray-200 pt-2">
+                <div className="flex justify-between text-xl font-bold border-t border-gray-200 pt-2">
                   <span className="text-gray-800">{language === 'zh' ? '总计：' : 'Final Total: '}</span>
                   <span className="text-blue-600">{finalTotal.toLocaleString()} eHKD</span>
                 </div>
@@ -125,14 +125,14 @@ function BatchPurchaseModal({ tokens, selectedTokenIds, onConfirm, onClose }: Ba
         <div className="p-6 border-t border-gray-200 flex space-x-3">
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-base font-medium hover:bg-gray-50 transition-colors"
           >
             {language === 'zh' ? '取消' : 'Cancel'}
           </button>
           <button
             onClick={handleConfirm}
             disabled={selectedTokens.length === 0}
-            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg text-base font-medium hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
             {language === 'zh' ? '确认批量购买' : 'Confirm Batch Purchase'}
           </button>

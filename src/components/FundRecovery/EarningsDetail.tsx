@@ -40,15 +40,15 @@ export default function EarningsDetail() {
             {/* ── Header ── */}
             <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
                 <div>
-                    <h4 className="text-sm font-semibold text-gray-800">
+                    <h4 className="text-base font-semibold text-gray-800">
                         {zh ? '收益分账明细' : 'Earnings Distribution Detail'}
                     </h4>
-                    <p className="text-[11px] text-gray-400 mt-0.5">
+                    <p className="text-sm text-gray-400 mt-0.5">
                         {zh ? '最近8笔分账记录' : 'Latest 8 distribution records'}
                     </p>
                 </div>
                 {/* summary pills */}
-                <div className="flex items-center gap-2 text-xs flex-shrink-0">
+                <div className="flex items-center gap-2 text-sm flex-shrink-0">
                     <span className="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
                         ✅ {fmt(totalSettled)}
                     </span>
@@ -72,7 +72,7 @@ export default function EarningsDetail() {
                             ].map((col, i) => (
                                 <th
                                     key={i}
-                                    className="px-4 py-2.5 text-left text-xs font-semibold text-gray-500 tracking-wide whitespace-nowrap"
+                                    className="px-4 py-2.5 text-left text-sm font-semibold text-gray-500 tracking-wide whitespace-nowrap"
                                 >
                                     {zh ? col.zh : col.en}
                                 </th>
@@ -84,33 +84,33 @@ export default function EarningsDetail() {
                             <tr key={i} className="hover:bg-indigo-50/40 transition-colors group">
 
                                 {/* Date */}
-                                <td className="px-4 py-3 text-xs text-gray-500 whitespace-nowrap">
+                                <td className="px-4 py-3 text-sm text-gray-500 whitespace-nowrap">
                                     {r.date}
                                 </td>
 
                                 {/* AR ID */}
-                                <td className="px-4 py-3 font-mono text-xs font-medium text-indigo-700 whitespace-nowrap">
+                                <td className="px-4 py-3 font-mono text-sm font-medium text-indigo-700 whitespace-nowrap">
                                     {r.arId}
                                 </td>
 
                                 {/* Financing Amount */}
-                                <td className="px-4 py-3 text-xs text-gray-700 whitespace-nowrap">
+                                <td className="px-4 py-3 text-sm text-gray-700 whitespace-nowrap">
                                     {fmt(r.financingAmount)}
                                 </td>
 
                                 {/* Earnings Amount */}
-                                <td className="px-4 py-3 text-xs font-semibold text-emerald-700 whitespace-nowrap">
+                                <td className="px-4 py-3 text-sm font-semibold text-emerald-700 whitespace-nowrap">
                                     {fmt(r.earningsAmount)}
                                 </td>
 
                                 {/* Status badge */}
                                 <td className="px-4 py-3">
                                     {r.status === 'settled' ? (
-                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700">
+                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-sm font-medium bg-emerald-50 text-emerald-700">
                                             ✅ {zh ? '已结算' : 'Settled'}
                                         </span>
                                     ) : (
-                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-amber-50 text-amber-600">
+                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-sm font-medium bg-amber-50 text-amber-600">
                                             ⏳ {zh ? '结算中' : 'Settling'}
                                         </span>
                                     )}
@@ -123,11 +123,11 @@ export default function EarningsDetail() {
             </div>
 
             {/* ── Footer totals ── */}
-            <div className="px-5 py-3 border-t border-gray-100 bg-gray-50 rounded-b-xl flex items-center justify-between text-xs text-gray-500">
+            <div className="px-5 py-3 border-t border-gray-100 bg-gray-50 rounded-b-xl flex items-center justify-between text-sm text-gray-500">
                 <span>{zh ? `共 ${records.length} 笔记录` : `${records.length} records total`}</span>
                 <span className="font-semibold text-gray-700">
                     {zh ? '累计收益：' : 'Total Earnings: '}
-                    <span className="text-emerald-600">
+                    <span className="text-emerald-600 text-lg">
                         {fmt(records.reduce((s, r) => s + r.earningsAmount, 0))}
                     </span>
                 </span>

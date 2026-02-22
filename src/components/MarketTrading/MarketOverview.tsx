@@ -12,51 +12,51 @@ function MarketOverview() {
         {/* 可投资 AR 总额 */}
         <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">{t('marketTrading.totalInvestableAR')}</span>
+            <span className="text-base text-gray-600">{t('marketTrading.totalInvestableAR')}</span>
             <i className="fas fa-wallet text-blue-600"></i>
           </div>
-          <div className="text-2xl font-bold text-gray-800">18.5M</div>
-          <div className="text-sm text-gray-500 mt-1">HK$</div>
+          <div className="text-3xl font-bold text-gray-800">18.5M</div>
+          <div className="text-base text-gray-500 mt-1">HK$</div>
         </div>
 
         {/* ABS 产品数量 */}
         <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">{t('marketTrading.absProducts')}</span>
+            <span className="text-base text-gray-600">{t('marketTrading.absProducts')}</span>
             <i className="fas fa-cubes text-purple-600"></i>
           </div>
-          <div className="text-2xl font-bold text-gray-800">5</div>
-          <div className="text-sm text-gray-500 mt-1">{t('marketTrading.activeTokenCount') ? t('marketTrading.activeTokenCount').replace('Active Token Count', 'Products').replace('活跃代币数量', '个') : '个'}</div>
+          <div className="text-3xl font-bold text-gray-800">5</div>
+          <div className="text-base text-gray-500 mt-1">{t('marketTrading.activeTokenCount') ? t('marketTrading.activeTokenCount').replace('Active Token Count', 'Products').replace('活跃代币数量', '个') : '个'}</div>
         </div>
 
         {/* 平均收益率 */}
         <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">{t('marketTrading.averageYield')}</span>
+            <span className="text-base text-gray-600">{t('marketTrading.averageYield')}</span>
             <i className="fas fa-percentage text-green-600"></i>
           </div>
-          <div className="text-2xl font-bold text-gray-800">6.8%</div>
-          <div className="text-sm text-gray-500 mt-1">{language === 'zh' ? '年化收益率' : 'Annualized Yield'}</div>
+          <div className="text-3xl font-bold text-gray-800">6.8%</div>
+          <div className="text-base text-gray-500 mt-1">{language === 'zh' ? '年化收益率' : 'Annualized Yield'}</div>
         </div>
 
         {/* 今日新增资产 */}
         <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">{t('marketTrading.newAssetsToday')}</span>
+            <span className="text-base text-gray-600">{t('marketTrading.newAssetsToday')}</span>
             <i className="fas fa-plus-circle text-orange-600"></i>
           </div>
-          <div className="text-2xl font-bold text-gray-800">2.3M</div>
-          <div className="text-sm text-gray-500 mt-1">HK$ (8 {t('dashboard.activeInvestments').replace('Active Investments', 'pieces').replace('活跃投资', '笔')})</div>
+          <div className="text-3xl font-bold text-gray-800">2.3M</div>
+          <div className="text-base text-gray-500 mt-1">HK$ (8 {t('dashboard.activeInvestments').replace('Active Investments', 'pieces').replace('活跃投资', '笔')})</div>
         </div>
 
         {/* 最低折扣 */}
         <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">{t('marketTrading.lowestDiscount')}</span>
+            <span className="text-base text-gray-600">{t('marketTrading.lowestDiscount')}</span>
             <i className="fas fa-tags text-red-600"></i>
           </div>
-          <div className="text-2xl font-bold text-green-600">-1.2%</div>
-          <div className="text-sm text-gray-500 mt-1">{language === 'zh' ? '相对面值' : 'Relative to face value'}</div>
+          <div className="text-3xl font-bold text-green-600">-1.2%</div>
+          <div className="text-base text-gray-500 mt-1">{language === 'zh' ? '相对面值' : 'Relative to face value'}</div>
         </div>
       </div>
     )

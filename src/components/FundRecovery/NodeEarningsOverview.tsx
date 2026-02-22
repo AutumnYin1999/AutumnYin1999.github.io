@@ -109,8 +109,8 @@ function ThirtyDayLineChart({ lang }: { lang: string }) {
             {/* Watermark */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
                 <span
-                    className="text-gray-200 font-bold text-sm rotate-[-20deg] tracking-widest"
-                    style={{ fontSize: '11px', letterSpacing: '0.15em' }}
+                    className="text-gray-200 font-bold text-base rotate-[-20deg] tracking-widest"
+                    style={{ fontSize: '13px', letterSpacing: '0.15em' }}
                 >
                     {lang === 'zh' ? '模拟数据仅供演示' : 'SIMULATED DATA – DEMO ONLY'}
                 </span>
@@ -133,7 +133,7 @@ function ThirtyDayLineChart({ lang }: { lang: string }) {
                     return (
                         <g key={i}>
                             <line x1={PAD.l} y1={y} x2={W - PAD.r} y2={y} stroke="#e5e7eb" strokeWidth="1" strokeDasharray="3 3" />
-                            <text x={PAD.l - 6} y={y + 4} textAnchor="end" fontSize="9" fill="#9ca3af">
+                            <text x={PAD.l - 6} y={y + 4} textAnchor="end" fontSize="11" fill="#9ca3af">
                                 {v.toLocaleString()}
                             </text>
                         </g>
@@ -155,7 +155,7 @@ function ThirtyDayLineChart({ lang }: { lang: string }) {
                 {xLabels.map((d) => {
                     const idx = data.indexOf(d)
                     return (
-                        <text key={d.day} x={xScale(idx)} y={H - 8} textAnchor="middle" fontSize="9" fill="#9ca3af">
+                        <text key={d.day} x={xScale(idx)} y={H - 8} textAnchor="middle" fontSize="11" fill="#9ca3af">
                             {lang === 'zh' ? `${d.day}日` : `D${d.day}`}
                         </text>
                     )
@@ -187,18 +187,18 @@ export default function NodeEarningsOverview() {
                             <div className={`w-8 h-8 rounded-full ${c.iconBg} flex items-center justify-center flex-shrink-0`}>
                                 <i className={`fas ${c.icon} ${c.iconColor} text-sm`} />
                             </div>
-                            <span className="text-xs text-gray-500 leading-tight">
+                            <span className="text-sm text-gray-500 leading-tight">
                                 {zh ? c.labelZh : c.labelEn}
                             </span>
                         </div>
 
                         {/* value */}
-                        <div className="text-xl font-bold text-gray-900 leading-none">
+                        <div className="text-2xl font-bold text-gray-900 leading-none">
                             {c.value}
                         </div>
 
                         {/* change badge */}
-                        <div className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full w-fit
+                        <div className={`inline-flex items-center gap-1 text-sm font-semibold px-2 py-0.5 rounded-full w-fit
               ${c.changeUp ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500'}`}>
                             {c.change}
                             <span className="text-gray-400 font-normal">{zh ? ' 环比' : ' MoM'}</span>
@@ -211,14 +211,14 @@ export default function NodeEarningsOverview() {
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-1">
-                    <h4 className="text-sm font-semibold text-gray-800">
+                    <h4 className="text-base font-semibold text-gray-800">
                         {zh ? '近30天收益趋势' : 'Earnings Trend – Last 30 Days'}
                     </h4>
-                    <span className="text-[10px] text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                    <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
                         {zh ? '模拟数据仅供演示' : 'Simulated data – demo only'}
                     </span>
                 </div>
-                <p className="text-[11px] text-gray-400 mb-3">
+                <p className="text-sm text-gray-400 mb-3">
                     {zh ? '单位：港元 / 天' : 'unit: HK$ / day'}
                 </p>
 

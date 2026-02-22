@@ -277,7 +277,7 @@ function DashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-6">
             {/* 左侧：待验证任务概览 (40%) */}
             <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col h-full">
-              <h3 className="text-lg font-semibold text-gray-800 mb-6 flex items-center">
+              <h3 className="text-xl font-semibold text-gray-800 mb-6 flex items-center">
                 <i className="fas fa-tasks mr-2 text-blue-500"></i>
                 {t('dashboard.pendingTasksOverview')}
               </h3>
@@ -289,9 +289,9 @@ function DashboardPage() {
                     <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
                       <i className="fas fa-user-shield"></i>
                     </div>
-                    <span className="text-gray-700 font-medium">{t('dashboard.kycPending')}</span>
+                    <span className="text-gray-700 font-medium text-lg">{t('dashboard.kycPending')}</span>
                   </div>
-                  <span className="text-xl font-bold text-gray-800">8</span>
+                  <span className="text-2xl font-bold text-gray-800">8</span>
                 </div>
 
                 {/* AR Verification */}
@@ -300,9 +300,9 @@ function DashboardPage() {
                     <div className="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center">
                       <i className="fas fa-file-contract"></i>
                     </div>
-                    <span className="text-gray-700 font-medium">{t('dashboard.arPending')}</span>
+                    <span className="text-gray-700 font-medium text-lg">{t('dashboard.arPending')}</span>
                   </div>
-                  <span className="text-xl font-bold text-gray-800">14</span>
+                  <span className="text-2xl font-bold text-gray-800">14</span>
                 </div>
 
                 {/* Compliance */}
@@ -311,13 +311,13 @@ function DashboardPage() {
                     <div className="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center">
                       <i className="fas fa-search-dollar"></i>
                     </div>
-                    <span className="text-gray-700 font-medium">{t('dashboard.complianceCheck')}</span>
+                    <span className="text-gray-700 font-medium text-lg">{t('dashboard.complianceCheck')}</span>
                   </div>
-                  <span className="text-xl font-bold text-gray-800">2</span>
+                  <span className="text-2xl font-bold text-gray-800">2</span>
                 </div>
               </div>
 
-              <button className="w-full mt-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors shadow-md text-lg">
+              <button className="w-full mt-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors shadow-md text-xl">
                 {t('dashboard.viewAllPending')}
               </button>
             </div>
@@ -325,11 +325,11 @@ function DashboardPage() {
             {/* 右侧：节点收益趋势 (60%) */}
             <div className="lg:col-span-3 bg-white rounded-xl shadow-sm border border-gray-200 p-6 h-full">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-800">
+                <h3 className="text-xl font-semibold text-gray-800">
                   <i className="fas fa-chart-line mr-2 text-green-500"></i>
                   {t('dashboard.nodeEarningsTrend')}
                 </h3>
-                <div className="flex space-x-4 text-sm">
+                <div className="flex space-x-4 text-base">
                   <div className="flex items-center">
                     <div className="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
                     <span className="text-gray-600">{t('dashboard.monthlyAccumulated')}: <span className="font-bold text-gray-800">HK$ 42.8K</span></span>
@@ -349,12 +349,13 @@ function DashboardPage() {
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
-                  <XAxis dataKey="date" stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} tickMargin={10} minTickGap={30} />
-                  <YAxis stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `HK$${(value / 1000).toFixed(0)}K`} domain={['auto', 'auto']} />
+                  <XAxis dataKey="date" stroke="#9ca3af" fontSize={14} tickLine={false} axisLine={false} tickMargin={10} minTickGap={30} />
+                  <YAxis stroke="#9ca3af" fontSize={14} tickLine={false} axisLine={false} tickFormatter={(value) => `HK$${(value / 1000).toFixed(0)}K`} domain={['auto', 'auto']} />
                   <Tooltip
-                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)', fontSize: '14px' }}
                     formatter={(value: any) => [`HK$ ${value.toLocaleString()}`, t('dashboard.nodeEarnings')]}
-                    labelStyle={{ color: '#6b7280', marginBottom: '4px' }}
+                    labelStyle={{ color: '#6b7280', marginBottom: '4px', fontSize: '14px' }}
+                    itemStyle={{ fontSize: '14px' }}
                   />
                   <Area type="monotone" dataKey="earnings" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorEarnings)" activeDot={{ r: 6 }} />
                 </AreaChart>
@@ -368,7 +369,7 @@ function DashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* 左侧图表：核心企业显示确权趋势，NBFI显示投资组合分布，其他显示交易趋势 */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className={`${isPlatformAdmin ? 'text-xl' : 'text-lg'} font-semibold text-gray-800 mb-4`}>
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">
                 {currentRole === '核心企业' ? t('dashboard.confirmationTrend') :
                   currentRole === 'NBFI' ? t('dashboard.portfolioDistribution') : (language === 'zh' ? '平台累计分账收益趋势' : 'Platform Cumulative Distributed Revenue Trend')}
               </h3>
@@ -376,12 +377,13 @@ function DashboardPage() {
                 {currentRole === '核心企业' ? (
                   <LineChart data={confirmationTrendData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                    <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} />
-                    <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
+                    <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '14px' }} />
+                    <YAxis stroke="#6b7280" style={{ fontSize: '14px' }} />
                     <Tooltip
-                      contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                      contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px', fontSize: '14px' }}
+                      itemStyle={{ fontSize: '14px' }}
                     />
-                    <Legend />
+                    <Legend wrapperStyle={{ fontSize: '16px' }} />
                     <Line type="monotone" dataKey="confirmed" name={t('dashboard.confirmedAmount')} stroke="#10b981" strokeWidth={2} />
                     <Line type="monotone" dataKey="pending" name={t('dashboard.pendingConfirmationAmount')} stroke="#f59e0b" strokeWidth={2} strokeDasharray="5 5" />
                   </LineChart>
@@ -411,6 +413,7 @@ function DashboardPage() {
                     <Legend
                       formatter={(_value, entry: any) => t(entry.payload.nameKey)}
                       verticalAlign="bottom"
+                      wrapperStyle={{ fontSize: '14px' }}
                     />
                   </PieChart>
                 ) : (
@@ -469,7 +472,7 @@ function DashboardPage() {
             {/* 右侧图表：核心企业显示待确权AR分布，NBFI显示收益趋势，其他显示资产分布 */}
             {!isPlatformAdmin && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">
                   {currentRole === '核心企业' ? t('dashboard.pendingARDistribution') :
                     currentRole === 'NBFI' ? t('dashboard.revenueTrend') : t('dashboard.assetDistribution')}
                 </h3>
@@ -500,6 +503,7 @@ function DashboardPage() {
                         cy="50%"
                         labelLine={false}
                         label={({ nameKey, percent }) => `${t(nameKey)} ${(percent * 100).toFixed(0)}%`}
+                        style={{ fontSize: '14px' }}
                         outerRadius={100}
                         fill="#8884d8"
                         dataKey="value"
@@ -512,7 +516,12 @@ function DashboardPage() {
                         formatter={(value: number, _name: string, props: any) => {
                           return [`${value}%`, t(props.payload.nameKey)]
                         }}
-                        contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                        contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px', fontSize: '14px' }}
+                      />
+                      <Legend
+                        formatter={(_value, entry: any) => t(entry.payload.nameKey)}
+                        verticalAlign="bottom"
+                        wrapperStyle={{ fontSize: '16px', paddingTop: '10px' }}
                       />
                     </PieChart>
                   )}
@@ -530,33 +539,33 @@ function DashboardPage() {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead>
                   <tr className="bg-gray-50">
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.time')}</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.assetId')}</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.investmentType')}</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.investmentAmount')}</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.yieldRate')}</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.investmentStatus')}</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.operations')}</th>
+                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.time')}</th>
+                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.assetId')}</th>
+                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.investmentType')}</th>
+                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.investmentAmount')}</th>
+                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.yieldRate')}</th>
+                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.investmentStatus')}</th>
+                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.operations')}</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {nbfiRecentInvestments.map((item, index) => (
                     <tr key={index} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.date}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.id}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${item.type === 'AR' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}`}>
+                      <td className="px-6 py-4 whitespace-nowrap text-base text-gray-500">{item.date}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900">{item.id}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-base text-gray-500">
+                        <span className={`px-2 py-1 inline-flex text-sm leading-5 font-semibold rounded-full ${item.type === 'AR' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}`}>
                           {item.type}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.amount}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.yield}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${item.status === 'holding' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                      <td className="px-6 py-4 whitespace-nowrap text-base text-gray-900">{item.amount}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-base text-gray-900">{item.yield}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-base">
+                        <span className={`px-2 py-1 inline-flex text-sm leading-5 font-semibold rounded-full ${item.status === 'holding' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
                           {t(`dashboard.${item.status}` as any)}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <td className="px-6 py-4 whitespace-nowrap text-base font-medium">
                         <button className="text-blue-600 hover:text-blue-900" onClick={(e) => { e.preventDefault() }}>{t('dashboard.viewDetails')}</button>
                       </td>
                     </tr>
@@ -574,11 +583,11 @@ function DashboardPage() {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead>
                   <tr className="bg-gray-50">
-                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.arId')}</th>
-                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.receivableAmount')}</th>
-                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.coreEnterprise')}</th>
-                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.status')}</th>
-                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.operations')}</th>
+                    <th className="px-6 py-3 text-left text-base font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.arId')}</th>
+                    <th className="px-6 py-3 text-left text-base font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.receivableAmount')}</th>
+                    <th className="px-6 py-3 text-left text-base font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.coreEnterprise')}</th>
+                    <th className="px-6 py-3 text-left text-base font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.status')}</th>
+                    <th className="px-6 py-3 text-left text-base font-medium text-gray-500 uppercase tracking-wider">{t('dashboard.operations')}</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -590,12 +599,12 @@ function DashboardPage() {
                     { id: 'AR-0237', amount: 'HK$ 2.1M', enterprise: 'Core Enterprise B', status: 'financing', date: '2023-10-18' },
                   ].map((item, index) => (
                     <tr key={index} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-base font-medium text-blue-600">{item.id}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-base text-gray-900">{item.amount}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-base text-gray-500">{t(`marketTrading.sampleIssuers.coreEnterprise${item.enterprise.split(' ')[2] || 'A'}`)}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-lg font-medium text-blue-600">{item.id}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-lg text-gray-900">{item.amount}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-lg text-gray-500">{t(`marketTrading.sampleIssuers.coreEnterprise${item.enterprise.split(' ')[2] || 'A'}`)}</td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex flex-col">
-                          <span className={`px-2 inline-flex text-sm leading-5 font-semibold rounded-full w-fit ${item.status === 'pendingVerification' ? 'bg-yellow-100 text-yellow-800' :
+                          <span className={`px-2 inline-flex text-base leading-5 font-semibold rounded-full w-fit ${item.status === 'pendingVerification' ? 'bg-yellow-100 text-yellow-800' :
                             item.status === 'financing' ? 'bg-purple-100 text-purple-800' :
                               item.status === 'pendingConfirmation' ? 'bg-orange-100 text-orange-800' :
                                 'bg-green-100 text-green-800'
@@ -604,7 +613,7 @@ function DashboardPage() {
                           </span>
                           {/* 节点验证进度条 (示例) */}
                           {item.id === 'AR-0241' && (
-                            <div className="flex items-center space-x-2 mt-1 text-sm text-gray-500">
+                            <div className="flex items-center space-x-2 mt-1 text-base text-gray-500">
                               <span title="Bank Verification"><i className="fas fa-university text-green-500"></i> <i className="fas fa-check"></i></span>
                               <span title="Audit Verification"><i className="fas fa-file-contract text-yellow-500"></i> <i className="fas fa-hourglass-half"></i></span>
                               <span title="CIC Verification"><i className="fas fa-globe text-blue-500"></i> <i className="fas fa-hourglass-half"></i></span>
@@ -612,7 +621,7 @@ function DashboardPage() {
                           )}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-base text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-lg text-gray-500">
                         <button
                           className="text-blue-600 hover:text-blue-900"
                           onClick={() => setSelectedAR(item)}
@@ -707,17 +716,17 @@ function DashboardPage() {
         ) : currentRole === '核心企业' ? (
           /* 核心企业：确权效率对比 */
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('dashboard.confirmationEfficiency')}</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">{t('dashboard.confirmationEfficiency')}</h3>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={efficiencyData} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" horizontal={false} />
-                <XAxis type="number" stroke="#6b7280" style={{ fontSize: '12px' }} />
-                <YAxis dataKey="name" type="category" stroke="#6b7280" style={{ fontSize: '12px' }} width={150} />
+                <XAxis type="number" stroke="#6b7280" style={{ fontSize: '14px' }} />
+                <YAxis dataKey="name" type="category" stroke="#6b7280" style={{ fontSize: '14px' }} width={150} />
                 <Tooltip
                   cursor={{ fill: 'transparent' }}
-                  contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                  contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px', fontSize: '14px' }}
                 />
-                <Legend />
+                <Legend wrapperStyle={{ fontSize: '16px' }} />
                 <Bar dataKey="value" name={t('dashboard.avgConfirmationTime')} radius={[0, 4, 4, 0]} barSize={20}>
                   {efficiencyData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -731,7 +740,7 @@ function DashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
             {/* Left: Node Online Status (List) - 40% */}
             <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('dashboard.nodeStatus')}</h3>
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">{t('dashboard.nodeStatus')}</h3>
               <div className="space-y-4 flex-1">
                 {[
                   { nameKey: 'dashboard.hsbc', status: 'online', color: 'bg-green-500' },
@@ -744,11 +753,11 @@ function DashboardPage() {
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-sm ${node.bold ? 'bg-blue-100 text-blue-600' : 'bg-white text-gray-400'}`}>
                         <i className="fas fa-server"></i>
                       </div>
-                      <span className={`text-base ${node.bold ? 'font-bold text-gray-800' : 'font-medium text-gray-700'}`}>{t(node.nameKey)}</span>
+                      <span className={`text-lg ${node.bold ? 'font-bold text-gray-800' : 'font-medium text-gray-700'}`}>{t(node.nameKey)}</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <span className={`w-2.5 h-2.5 rounded-full ${node.color} animate-pulse shadow-sm shadow-green-200`}></span>
-                      <span className="text-sm font-medium text-green-600 bg-green-50 px-2 py-1 rounded-md">{t('dashboard.online')}</span>
+                      <span className="text-base font-medium text-green-600 bg-green-50 px-2 py-1 rounded-md">{t('dashboard.online')}</span>
                     </div>
                   </div>
                 ))}
@@ -757,7 +766,7 @@ function DashboardPage() {
 
             {/* Right: Verification Distribution (Pie Chart) - 60% */}
             <div className="lg:col-span-3 bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col items-center">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 w-full">{t('dashboard.verificationTaskDistribution')}</h3>
+              <h3 className="text-xl font-semibold text-gray-800 mb-4 w-full">{t('dashboard.verificationTaskDistribution')}</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie
@@ -777,11 +786,11 @@ function DashboardPage() {
                     formatter={(value: number, _name: string, props: any) => {
                       return [`${value}%`, t(props.payload.nameKey)]
                     }}
-                    contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                    contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px', fontSize: '14px' }}
                   />
                   <Legend
                     formatter={(_value, entry: any) => t(entry.payload.nameKey)}
-                    wrapperStyle={{ paddingTop: '20px' }}
+                    wrapperStyle={{ paddingTop: '20px', fontSize: '16px' }}
                     verticalAlign="bottom"
                   />
                 </PieChart>

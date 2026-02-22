@@ -1,5 +1,5 @@
 import { BankLoan } from '../BankView'
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts'
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 import { useLanguage } from '../../../hooks/useLanguage'
 
 interface BankSidebarProps {
@@ -10,30 +10,30 @@ interface BankSidebarProps {
   onViewWarningLoans?: () => void
 }
 
-function BankSidebar({ totalLentAmount, totalInterest, badDebtRate, loans, onViewWarningLoans }: BankSidebarProps) {
-  const { t, language } = useLanguage()
+function BankSidebar({ totalInterest, badDebtRate, loans, onViewWarningLoans }: Omit<BankSidebarProps, 'totalLentAmount'>) {
+  const { language } = useLanguage()
 
   // 按状态分组
-  const normalLoans = loans.filter(l => l.status === '正常' || l.status === 'Normal')
-  const warningLoans = loans.filter(l => l.status === '预警' || l.status === 'Warning')
-  const overdueLoans = loans.filter(l => l.status === '逾期' || l.status === 'Overdue')
+  const normalLoans = loans.filter(l => (l.status as any) === '正常' || (l.status as any) === 'Normal')
+  const warningLoans = loans.filter(l => (l.status as any) === '预警' || (l.status as any) === 'Warning')
+  const overdueLoans = loans.filter(l => (l.status as any) === '逾期' || (l.status as any) === 'Overdue')
 
   const statusData = [
-    { 
-      name: language === 'zh' ? '正常' : 'Normal', 
-      value: normalLoans.length, 
+    {
+      name: language === 'zh' ? '正常' : 'Normal',
+      value: normalLoans.length,
       color: '#10b981',
       percentage: loans.length > 0 ? Math.round((normalLoans.length / loans.length) * 100) : 0
     },
-    { 
-      name: language === 'zh' ? '预警' : 'Warning', 
-      value: warningLoans.length, 
+    {
+      name: language === 'zh' ? '预警' : 'Warning',
+      value: warningLoans.length,
       color: '#f59e0b',
       percentage: loans.length > 0 ? Math.round((warningLoans.length / loans.length) * 100) : 0
     },
-    { 
-      name: language === 'zh' ? '逾期' : 'Overdue', 
-      value: overdueLoans.length, 
+    {
+      name: language === 'zh' ? '逾期' : 'Overdue',
+      value: overdueLoans.length,
       color: '#ef4444',
       percentage: loans.length > 0 ? Math.round((overdueLoans.length / loans.length) * 100) : 0
     },
@@ -50,7 +50,7 @@ function BankSidebar({ totalLentAmount, totalInterest, badDebtRate, loans, onVie
   const highestLTVLoan = loans.length > 0 ? loans[0] : null // 简化，实际应该计算最高LTV
 
   // 模拟趋势数据
-  const trends = {
+  const trends: Record<string, { value: number; direction: 'up' | 'down' }> = {
     totalLentAmount: { value: 2.5, direction: 'up' },
     totalInterest: { value: 1.8, direction: 'up' },
     badDebtRate: { value: 0.3, direction: 'down' },
@@ -66,35 +66,35 @@ function BankSidebar({ totalLentAmount, totalInterest, badDebtRate, loans, onVie
     <div className="space-y-6">
       {/* 贷款统计 */}
       <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-        <h3 className="font-semibold text-gray-800 mb-4">
+        <h3 className="text-xl font-semibold text-gray-800 mb-4">
           <i className="fas fa-chart-bar mr-2 text-blue-600"></i>
           {language === 'zh' ? '贷款统计' : 'Loan Statistics'}
         </h3>
         <div className="space-y-4">
           <div>
-            <div className="text-sm text-gray-600 mb-1 flex items-center">
+            <div className="text-base text-gray-600 mb-1 flex items-center">
               {language === 'zh' ? '累计放贷总额' : 'Total Lent Amount'}
               <TrendArrow value={trends.totalLentAmount.value} direction={trends.totalLentAmount.direction} />
             </div>
-            <div className="text-2xl font-bold text-gray-800 font-mono">
-              HK$ 
+            <div className="text-3xl font-bold text-gray-800 font-mono">
+              HK$
             </div>
           </div>
           <div className="border-t border-gray-200 pt-4">
-            <div className="text-sm text-gray-600 mb-1 flex items-center">
+            <div className="text-base text-gray-600 mb-1 flex items-center">
               {language === 'zh' ? '累计利息收入' : 'Total Interest Income'}
               <TrendArrow value={trends.totalInterest.value} direction={trends.totalInterest.direction} />
             </div>
-            <div className="text-2xl font-bold text-green-600 font-mono">
+            <div className="text-3xl font-bold text-green-600 font-mono">
               {totalInterest.toLocaleString('en-US', { minimumFractionDigits: 2 })} HK$
             </div>
           </div>
           <div className="border-t border-gray-200 pt-4">
-            <div className="text-sm text-gray-600 mb-1 flex items-center">
+            <div className="text-base text-gray-600 mb-1 flex items-center">
               {language === 'zh' ? '坏账率' : 'Bad Debt Rate'}
               <TrendArrow value={trends.badDebtRate.value} direction={trends.badDebtRate.direction} />
             </div>
-            <div className="text-2xl font-bold text-gray-800 font-mono">
+            <div className="text-3xl font-bold text-gray-800 font-mono">
               {badDebtRate.toFixed(2)}%
             </div>
           </div>
@@ -103,7 +103,7 @@ function BankSidebar({ totalLentAmount, totalInterest, badDebtRate, loans, onVie
 
       {/* 贷款分布环形图 */}
       <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-        <h3 className="font-semibold text-gray-800 mb-4">
+        <h3 className="text-xl font-semibold text-gray-800 mb-4">
           <i className="fas fa-chart-pie mr-2 text-blue-600"></i>
           {language === 'zh' ? '贷款分布' : 'Loan Distribution'}
         </h3>
@@ -152,30 +152,29 @@ function BankSidebar({ totalLentAmount, totalInterest, badDebtRate, loans, onVie
 
       {/* 抵押品健康度监控 */}
       <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-        <h3 className="font-semibold text-gray-800 mb-4">
+        <h3 className="text-xl font-semibold text-gray-800 mb-4">
           <i className="fas fa-shield-alt mr-2 text-blue-600"></i>
           {language === 'zh' ? '抵押品健康度监控' : 'Collateral Health Monitor'}
         </h3>
         <div className="space-y-4">
           <div className="p-3 bg-gray-50 rounded-lg">
-            <div className="text-sm text-gray-600 mb-1">
+            <div className="text-base text-gray-600 mb-1">
               {language === 'zh' ? '当前整体抵押率' : 'Current Overall LTV'}
             </div>
             <div className="flex items-center justify-between">
-              <div className="text-xl font-bold text-gray-800 font-mono">{overallLTV}%</div>
-              <span className={`px-2 py-1 rounded text-xs font-medium ${
-                overallLTV > 80 ? 'bg-red-100 text-red-700' :
+              <div className="text-2xl font-bold text-gray-800 font-mono">{overallLTV}%</div>
+              <span className={`px-2 py-1 rounded text-xs font-medium ${overallLTV > 80 ? 'bg-red-100 text-red-700' :
                 overallLTV > 70 ? 'bg-yellow-100 text-yellow-700' :
-                'bg-green-100 text-green-700'
-              }`}>
+                  'bg-green-100 text-green-700'
+                }`}>
                 {overallLTV > 80 ? (language === 'zh' ? '危险' : 'Danger') :
-                 overallLTV > 70 ? (language === 'zh' ? '警告' : 'Warning') :
-                 (language === 'zh' ? '安全' : 'Safe')}
+                  overallLTV > 70 ? (language === 'zh' ? '警告' : 'Warning') :
+                    (language === 'zh' ? '安全' : 'Safe')}
               </span>
             </div>
           </div>
           <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-            <div className="text-sm text-gray-600 mb-1">
+            <div className="text-base text-gray-600 mb-1">
               {language === 'zh' ? '触发预警的贷款' : 'Warning Loans'}
             </div>
             <div className="flex items-center justify-between">
@@ -194,7 +193,7 @@ function BankSidebar({ totalLentAmount, totalInterest, badDebtRate, loans, onVie
           </div>
           {highestLTVLoan && (
             <div className="p-3 bg-red-50 rounded-lg border border-red-200">
-              <div className="text-sm text-gray-600 mb-1">
+              <div className="text-base text-gray-600 mb-1">
                 {language === 'zh' ? '最高抵押率贷款' : 'Highest LTV Loan'}
               </div>
               <div className="text-sm font-semibold text-gray-800 font-mono mb-1">

@@ -49,11 +49,11 @@ function Lending() {
       {isAdmin && (
         <div className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('lending.nbfiView') || 'NBFI视图（借款方）'}</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">{t('lending.nbfiView') || 'NBFI视图（借款方）'}</h3>
             <NBFIView />
           </div>
           <div className="border-t border-gray-200 pt-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('lending.bankView') || '银行视图（贷款方）'}</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">{t('lending.bankView') || '银行视图（贷款方）'}</h3>
             <BankView />
           </div>
         </div>
@@ -70,7 +70,7 @@ function Lending() {
               <p className="text-yellow-800 font-medium">
                 {language === 'zh' ? '您没有权限访问此功能' : 'You do not have permission to access this feature'}
               </p>
-              <p className="text-sm text-yellow-700 mt-2">
+              <p className="text-base text-yellow-700 mt-2">
                 {t('lending.switchRoleHint') || '请在顶部导航栏切换用户角色为"NBFI"或"Bank"'}
               </p>
             </div>

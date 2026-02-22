@@ -61,10 +61,10 @@ const rolePermissionsMap: Record<UserRole, RolePermissions> = {
     absPackaging: true, // Bundle ABS: Yes
     absPackagingCreate: true,
     absPackagingPurchase: false, // Buy ABS: N/A (表格显示N/A，理解为不能购买)
-    lending: true, // Collateral Lending: Yes (Lender)
+    lending: false, // Collateral Lending: Yes (Lender)
     lendingBorrow: false,
     lendingLend: true,
-    bridge: true, // Bridge ABS: Yes
+    bridge: false, // Bridge ABS: Yes
     bridgeOwnABS: true,
     bridgePurchasedABS: false,
     fundRecovery: true,
@@ -82,16 +82,16 @@ const rolePermissionsMap: Record<UserRole, RolePermissions> = {
     marketTrading: true,
     marketTradingPurchase: true,
     marketTradingViewOwn: false,
-    absPackaging: true,
+    absPackaging: false,
     absPackagingCreate: false,
     absPackagingPurchase: true,
     lending: true,
     lendingBorrow: true,
     lendingLend: false,
-    bridge: true,
+    bridge: false,
     bridgeOwnABS: false,
     bridgePurchasedABS: true,
-    fundRecovery: true,
+    fundRecovery: false,
     fundRecoveryDirect: false,
     fundRecoveryForexPool: true,
     userManagement: false,

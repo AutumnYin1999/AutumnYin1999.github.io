@@ -99,20 +99,20 @@ export default function ValidatorPendingReviews() {
     const statusBadge = (status: ValidatorTask['status']) => {
         if (status === 'Urgent')
             return (
-                <span className="flex items-center font-bold text-sm text-red-600">
+                <span className="flex items-center font-bold text-base text-red-600">
                     <span className="w-2 h-2 rounded-full bg-red-600 mr-1.5 animate-pulse" />
                     Urgent
                 </span>
             )
         if (status === 'Pending')
             return (
-                <span className="flex items-center text-sm text-orange-500 font-semibold">
+                <span className="flex items-center text-base text-orange-500 font-semibold">
                     <span className="w-2 h-2 rounded-full bg-orange-500 mr-2" />
                     Pending
                 </span>
             )
         return (
-            <span className="flex items-center text-sm text-blue-500 font-semibold">
+            <span className="flex items-center text-base text-blue-500 font-semibold">
                 <span className="w-2 h-2 rounded-full bg-blue-500 mr-2" />
                 New
             </span>
@@ -130,10 +130,10 @@ export default function ValidatorPendingReviews() {
 
             {/* ── Page Header ───────────────────────────────────────────────────── */}
             <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-1">
+                <h2 className="text-4xl font-bold text-gray-800 mb-1">
                     {zh ? '待处理审核' : 'Pending Reviews'}
                 </h2>
-                <p className="text-gray-500 text-sm">
+                <p className="text-gray-500 text-lg">
                     {zh ? '查看和处理需要验证的申请任务' : 'View and process pending verification applications'}
                 </p>
             </div>
@@ -146,8 +146,8 @@ export default function ValidatorPendingReviews() {
                             <i className={`fas ${s.icon} ${s.iconColor}`} />
                         </div>
                         <div>
-                            <div className="text-xs text-gray-500 leading-tight">{zh ? s.label.zh : s.label.en}</div>
-                            <div className="text-xl font-bold text-gray-900 leading-tight mt-0.5">{s.value}</div>
+                            <div className="text-base text-gray-500 leading-tight">{zh ? s.label.zh : s.label.en}</div>
+                            <div className="text-3xl font-bold text-gray-900 leading-tight mt-0.5">{s.value}</div>
                         </div>
                     </div>
                 ))}
@@ -164,26 +164,26 @@ export default function ValidatorPendingReviews() {
                         <div className="flex items-center justify-between mb-6">
                             <div className="flex items-center gap-2">
                                 <i className="fas fa-filter text-blue-600" />
-                                <h3 className="font-bold text-gray-800">{zh ? '筛选条件' : 'Filter Conditions'}</h3>
+                                <h3 className="font-bold text-xl text-gray-800">{zh ? '筛选条件' : 'Filter Conditions'}</h3>
                             </div>
                             <button
                                 onClick={() => { setFilterType('All'); setFilterStatus('All'); }}
-                                className="text-sm text-gray-500 hover:text-blue-600 flex items-center gap-1 transition-colors"
+                                className="text-lg text-gray-500 hover:text-blue-600 flex items-center gap-1 transition-colors"
                             >
-                                <i className="fas fa-undo text-xs" />
+                                <i className="fas fa-undo text-sm" />
                                 {zh ? '重置' : 'Reset'}
                             </button>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
                             <div>
-                                <label className="block text-sm font-medium text-gray-600 mb-3">{zh ? '任务类型' : 'Task Type'}</label>
+                                <label className="block text-base font-medium text-gray-600 mb-3">{zh ? '任务类型' : 'Task Type'}</label>
                                 <div className="flex flex-wrap gap-2">
                                     {['All', 'KYC', 'AR', 'Compliance'].map(type => (
                                         <button
                                             key={type}
                                             onClick={() => setFilterType(type)}
-                                            className={`px-6 py-2 rounded-full text-sm font-medium border transition-all ${filterType === type
+                                            className={`px-6 py-2 rounded-full text-lg font-medium border transition-all ${filterType === type
                                                 ? 'bg-blue-600 text-white border-blue-600 shadow-md'
                                                 : 'bg-white text-gray-600 border-gray-200 hover:border-blue-300'
                                                 }`}
@@ -195,11 +195,11 @@ export default function ValidatorPendingReviews() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-600 mb-3">{zh ? '状态' : 'Status'}</label>
+                                <label className="block text-base font-medium text-gray-600 mb-3">{zh ? '状态' : 'Status'}</label>
                                 <select
                                     value={filterStatus}
                                     onChange={(e) => setFilterStatus(e.target.value)}
-                                    className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                    className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                 >
                                     <option value="All">{zh ? '全部' : 'All'}</option>
                                     <option value="Urgent">{zh ? '紧急' : 'Urgent'}</option>
@@ -213,7 +213,7 @@ export default function ValidatorPendingReviews() {
                     {/* ── Task Cards List (2 per row) ────────────────────────────── */}
                     <div>
                         <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-semibold text-gray-800">
+                            <h3 className="text-xl font-semibold text-gray-800">
                                 {zh ? '待处理任务' : 'Pending Tasks'} ({filteredTasks.length})
                             </h3>
                         </div>
@@ -229,24 +229,24 @@ export default function ValidatorPendingReviews() {
                                             {/* Row 1: [Type] ID Status */}
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-3">
-                                                    <span className={`px-2.5 py-0.5 rounded text-xs font-bold ${typeColor(task.type)}`}>
+                                                    <span className={`px-2.5 py-0.5 rounded text-base font-bold ${typeColor(task.type)}`}>
                                                         {typeLabel(task.type)}
                                                     </span>
-                                                    <span className="font-mono text-gray-500 text-sm font-medium">{task.id}</span>
+                                                    <span className="font-mono text-gray-500 text-lg font-medium">{task.id}</span>
                                                 </div>
                                                 {statusBadge(task.status)}
                                             </div>
 
                                             {/* Row 2: SME */}
                                             <div>
-                                                <span className="text-gray-400 text-xs block mb-0.5">SME</span>
-                                                <span className="font-bold text-gray-900 text-lg leading-tight">{task.sme}</span>
+                                                <span className="text-gray-400 text-base block mb-0.5">SME</span>
+                                                <span className="font-bold text-gray-900 text-2xl leading-tight">{task.sme}</span>
                                             </div>
 
                                             {/* Row 3: Core Field */}
                                             <div className="bg-gray-50 rounded-lg p-3 border border-gray-100 mb-2">
-                                                <span className="text-gray-400 text-xs block mb-1">{zh ? '核心字段' : 'Core Data'}</span>
-                                                <p className="text-gray-700 text-sm font-medium leading-relaxed">
+                                                <span className="text-gray-400 text-base block mb-1">{zh ? '核心字段' : 'Core Data'}</span>
+                                                <p className="text-gray-700 text-lg font-medium leading-relaxed">
                                                     {task.coreField}
                                                 </p>
                                             </div>
@@ -254,12 +254,12 @@ export default function ValidatorPendingReviews() {
                                             {/* Row 4: Submit Time & Risk Score & Priority */}
                                             <div className="grid grid-cols-2 gap-4 pt-2 border-t border-gray-50">
                                                 <div>
-                                                    <span className="text-gray-400 text-[10px] uppercase tracking-wider block">{zh ? '提交时间' : 'Submitted'}</span>
-                                                    <span className="text-gray-600 text-sm">{task.submitTime}</span>
+                                                    <span className="text-gray-400 text-sm uppercase tracking-wider block">{zh ? '提交时间' : 'Submitted'}</span>
+                                                    <span className="text-gray-600 text-lg">{task.submitTime}</span>
                                                 </div>
                                                 <div>
-                                                    <span className="text-gray-400 text-[10px] uppercase tracking-wider block">{zh ? '风险评分' : 'Risk Score'}</span>
-                                                    <span className={`text-sm font-bold ${task.riskScore >= 90 ? 'text-red-600' : task.riskScore >= 80 ? 'text-orange-500' : 'text-green-600'}`}>
+                                                    <span className="text-gray-400 text-sm uppercase tracking-wider block">{zh ? '风险评分' : 'Risk Score'}</span>
+                                                    <span className={`text-lg font-bold ${task.riskScore >= 90 ? 'text-red-600' : task.riskScore >= 80 ? 'text-orange-500' : 'text-green-600'}`}>
                                                         {task.riskScore}
                                                     </span>
                                                 </div>
@@ -268,10 +268,10 @@ export default function ValidatorPendingReviews() {
 
                                         {/* Action Buttons */}
                                         <div className="flex items-center gap-2 mt-2">
-                                            <button className="flex-1 px-4 py-2.5 text-sm font-medium text-blue-600 border border-blue-200 rounded-lg bg-white hover:bg-blue-50 transition-colors">
+                                            <button className="flex-1 px-4 py-2.5 text-lg font-medium text-blue-600 border border-blue-200 rounded-lg bg-white hover:bg-blue-50 transition-colors">
                                                 {task.type === 'AR' ? (zh ? '查看合同' : 'View Contract') : (zh ? '查看详情' : 'View Details')}
                                             </button>
-                                            <button className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                                            <button className="flex-1 px-4 py-2.5 text-lg font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
                                                 {zh ? '审核' : 'Review'}
                                             </button>
                                         </div>
@@ -295,7 +295,7 @@ export default function ValidatorPendingReviews() {
                     {/* Task Distribution Pie Chart */}
                     <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                         <div className="p-4 border-b border-gray-100 bg-gray-50/30">
-                            <h3 className="font-bold text-gray-800 flex items-center text-sm">
+                            <h3 className="font-bold text-gray-800 flex items-center text-base">
                                 <i className="fas fa-chart-pie mr-2 text-blue-500" />
                                 {zh ? '任务分布' : 'Task Distribution'}
                             </h3>
@@ -319,9 +319,9 @@ export default function ValidatorPendingReviews() {
                                         </Pie>
                                         <Tooltip
                                             formatter={(value: number) => [`${value}%`, zh ? '占比' : 'Percentage']}
-                                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)', fontSize: '14px' }}
                                         />
-                                        <Legend verticalAlign="bottom" height={36} iconType="circle" />
+                                        <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: '14px' }} />
                                     </PieChart>
                                 </ResponsiveContainer>
                             </div>
@@ -331,7 +331,7 @@ export default function ValidatorPendingReviews() {
                     {/* Task Trend Line Chart */}
                     <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                         <div className="p-4 border-b border-gray-100 bg-gray-50/30">
-                            <h3 className="font-bold text-gray-800 flex items-center text-sm">
+                            <h3 className="font-bold text-gray-800 flex items-center text-base">
                                 <i className="fas fa-chart-line mr-2 text-green-500" />
                                 {zh ? '近7天任务趋势' : 'Task Trend (Last 7 Days)'}
                             </h3>
@@ -343,13 +343,13 @@ export default function ValidatorPendingReviews() {
                                         <XAxis
                                             dataKey="day"
                                             stroke="#94a3b8"
-                                            fontSize={11}
+                                            fontSize={13}
                                             tickLine={false}
                                             axisLine={false}
                                             dy={10}
                                         />
                                         <Tooltip
-                                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)', fontSize: '14px' }}
                                             cursor={{ stroke: '#e2e8f0', strokeWidth: 2 }}
                                         />
                                         <Line

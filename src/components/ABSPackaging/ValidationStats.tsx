@@ -42,7 +42,7 @@ function LineChart({ data }: { data: { date: string; count: number }[] }) {
                 return (
                     <g key={t}>
                         <line x1={PAD.l} y1={y} x2={W - PAD.r} y2={y} stroke="#e5e7eb" strokeWidth="1" />
-                        <text x={PAD.l - 4} y={y + 4} textAnchor="end" fontSize="9" fill="#9ca3af">{val}</text>
+                        <text x={PAD.l - 4} y={y + 4} textAnchor="end" fontSize="11" fill="#9ca3af">{val}</text>
                     </g>
                 )
             })}
@@ -64,7 +64,7 @@ function LineChart({ data }: { data: { date: string; count: number }[] }) {
 
             {/* X labels */}
             {labelIndices.map(i => (
-                <text key={i} x={xScale(i)} y={H - 6} textAnchor="middle" fontSize="9" fill="#9ca3af">
+                <text key={i} x={xScale(i)} y={H - 6} textAnchor="middle" fontSize="11" fill="#9ca3af">
                     {data[i].date}
                 </text>
             ))}
@@ -99,14 +99,14 @@ function DonutChart({ passed, rejected, lang }: { passed: number; rejected: numb
             <svg viewBox="0 0 160 160" className="w-36 h-36 flex-shrink-0">
                 {arc(1 - passedPct, passedPct, '#fca5a5')}
                 {arc(passedPct, 0, '#6ee7b7')}
-                <text x={cx} y={cy - 6} textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1f2937">
+                <text x={cx} y={cy - 6} textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1f2937">
                     {Math.round(passedPct * 100)}%
                 </text>
-                <text x={cx} y={cy + 14} textAnchor="middle" fontSize="10" fill="#6b7280">
+                <text x={cx} y={cy + 10} textAnchor="middle" fontSize="12" fill="#6b7280">
                     {lang === 'zh' ? '通过率' : 'Pass Rate'}
                 </text>
             </svg>
-            <div className="space-y-3 text-sm">
+            <div className="space-y-3 text-base">
                 <div className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full bg-emerald-300 inline-block" />
                     <span className="text-gray-600">{lang === 'zh' ? '通过' : 'Passed'}</span>
@@ -169,8 +169,8 @@ export default function ValidationStats() {
                         <div className={`w-8 h-8 rounded-full ${c.bg} flex items-center justify-center`}>
                             <i className={`fas ${c.icon} ${c.iconColor} text-sm`} />
                         </div>
-                        <div className="text-[11px] text-gray-500 leading-tight">{c.label}</div>
-                        <div className="text-base font-bold text-gray-900">{c.value}</div>
+                        <div className="text-sm text-gray-500 leading-tight">{c.label}</div>
+                        <div className="text-lg font-bold text-gray-900">{c.value}</div>
                     </div>
                 ))}
             </div>
@@ -178,10 +178,10 @@ export default function ValidationStats() {
             {/* Line chart: 30-day daily completions */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex-1">
                 <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-sm font-semibold text-gray-800">
+                    <h4 className="text-base font-semibold text-gray-800">
                         {zh ? '近30天每日审核完成量' : 'Daily Reviews – Last 30 Days'}
                     </h4>
-                    <span className="text-xs text-gray-400">
+                    <span className="text-sm text-gray-400">
                         {zh ? '单位：笔' : 'unit: reviews'}
                     </span>
                 </div>
@@ -190,7 +190,7 @@ export default function ValidationStats() {
 
             {/* Pie/Donut chart: pass vs reject */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
-                <h4 className="text-sm font-semibold text-gray-800 mb-4">
+                <h4 className="text-base font-semibold text-gray-800 mb-4">
                     {zh ? '审核结果分布' : 'Review Result Distribution'}
                 </h4>
                 <DonutChart passed={1180} rejected={65} lang={language} />

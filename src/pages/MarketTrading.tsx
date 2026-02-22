@@ -68,55 +68,6 @@ function MarketTrading() {
     return <ValidatorPendingReviews />
   }
 
-  // 创建公司名称映射函数
-  const getDebtorName = (debtorKey: string) => {
-    const debtorMap: Record<string, string> = {
-      'ABC科技有限公司': t('marketTrading.sampleDebtors.abcTech'),
-      'XYZ工程集团': t('marketTrading.sampleDebtors.xyzEngineering'),
-      'DEF建设股份公司': t('marketTrading.sampleDebtors.defConstruction'),
-    }
-    return debtorMap[debtorKey] || debtorKey
-  }
-
-  // 创建库存类型映射函数
-  const getInventoryType = (typeKey: string) => {
-    const typeMap: Record<string, string> = {
-      '成品': t('marketTrading.inventoryTypes.finishedProduct'),
-      '原材料': t('marketTrading.inventoryTypes.rawMaterial'),
-      '在制品': t('marketTrading.inventoryTypes.workInProgress'),
-    }
-    return typeMap[typeKey] || typeKey
-  }
-
-  // 创建库存物品映射函数
-  const getInventoryItem = (itemKey: string) => {
-    const itemMap: Record<string, string> = {
-      '建筑钢材': t('marketTrading.inventoryItems.constructionSteel'),
-      '水泥': t('marketTrading.inventoryItems.cement'),
-      '预制构件': t('marketTrading.inventoryItems.precastComponents'),
-    }
-    return itemMap[itemKey] || itemKey
-  }
-
-  // 创建存储位置映射函数
-  const getStorageLocation = (locationKey: string) => {
-    const locationMap: Record<string, string> = {
-      '深圳仓库A': t('marketTrading.storageLocations.shenzhenWarehouseA'),
-      '广州仓库B': t('marketTrading.storageLocations.guangzhouWarehouseB'),
-      '东莞工厂C': t('marketTrading.storageLocations.dongguanFactoryC'),
-    }
-    return locationMap[locationKey] || locationKey
-  }
-
-  // 创建质量状态映射函数
-  const getQualityStatus = (statusKey: string) => {
-    const statusMap: Record<string, string> = {
-      '已认证': t('marketTrading.qualityStatuses.certified'),
-      '待认证': t('marketTrading.qualityStatuses.pendingCertification'),
-    }
-    return statusMap[statusKey] || statusKey
-  }
-
   const [filters, setFilters] = useState<FilterState>({
     tokenTypes: ['receivable', 'abs'],
     riskLevel: 'all',
@@ -369,13 +320,6 @@ function MarketTrading() {
     setSelectedTokens([])
   }
 
-  const toggleTokenSelection = (tokenId: string) => {
-    setSelectedTokens(prev =>
-      prev.includes(tokenId)
-        ? prev.filter(id => id !== tokenId)
-        : [...prev, tokenId]
-    )
-  }
 
   return (
     <div className="p-6 min-h-[calc(100vh-4rem)]">
@@ -392,7 +336,7 @@ function MarketTrading() {
           {/* 代币列表 */}
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-800">
+              <h3 className="text-xl font-semibold text-gray-800">
                 {t('marketTrading.tradableTokens')} ({filteredTokens.length})
               </h3>
               <div className="flex items-center space-x-3">
@@ -400,7 +344,7 @@ function MarketTrading() {
                 <select
                   value={sortOption}
                   onChange={(e) => setSortOption(e.target.value as SortOption)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="px-3 py-2 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="none">{language === 'zh' ? '默认排序' : 'Default Sort'}</option>
                   <option value="yield">{language === 'zh' ? '按收益率排序' : 'Sort by Yield'}</option>
@@ -410,7 +354,7 @@ function MarketTrading() {
                 </select>
                 <button
                   onClick={handleBatchPurchase}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-base font-medium"
                 >
                   <i className="fas fa-shopping-cart mr-2"></i>
                   {t('marketTrading.batchPurchase')}
@@ -465,9 +409,9 @@ function MarketTrading() {
 
             {filteredTokens.length === 0 && (
               <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-                <i className="fas fa-search text-4xl text-gray-300 mb-4"></i>
-                <p className="text-gray-600">没有找到匹配的代币</p>
-                <p className="text-sm text-gray-500 mt-2">请尝试调整筛选条件</p>
+                <i className="fas fa-search text-5xl text-gray-300 mb-4"></i>
+                <p className="text-lg text-gray-600">没有找到匹配的代币</p>
+                <p className="text-base text-gray-500 mt-2">请尝试调整筛选条件</p>
               </div>
             )}
           </div>

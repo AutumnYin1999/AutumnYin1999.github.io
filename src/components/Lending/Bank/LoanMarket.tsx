@@ -9,7 +9,7 @@ interface LoanMarketProps {
 }
 
 function LoanMarket({ applications, onBid, onViewDetail, onReject }: LoanMarketProps) {
-  const { t, language } = useLanguage()
+  const { language } = useLanguage()
 
   const getRiskColor = (score: number) => {
     if (score >= 90) return 'text-green-600 bg-green-100'
@@ -36,11 +36,11 @@ function LoanMarket({ applications, onBid, onViewDetail, onReject }: LoanMarketP
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
       <div className="p-6 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-800">
+        <h3 className="text-xl font-semibold text-gray-800">
           <i className="fas fa-hand-holding-usd mr-2 text-blue-600"></i>
           {language === 'zh' ? '可审批的贷款申请' : 'Loan Applications for Approval'}
         </h3>
-        <p className="text-sm text-gray-600 mt-1">
+        <p className="text-base text-gray-600 mt-1">
           {language === 'zh' ? '查看并审批新的贷款申请' : 'Review and approve new loan applications'}
         </p>
       </div>
@@ -63,56 +63,54 @@ function LoanMarket({ applications, onBid, onViewDetail, onReject }: LoanMarketP
                   {/* 第一行：申请编号 + 借款人 */}
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-2">
-                      <span className="font-semibold text-gray-800 text-lg">{application.id}</span>
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${
-                        application.status === '待投标' || application.status === 'Pending Bid'
-                          ? 'bg-yellow-100 text-yellow-700'
-                          : 'bg-blue-100 text-blue-700'
-                      }`}>
-                        {application.status === '待投标' ? (language === 'zh' ? '待审批' : 'Pending') : 
-                         application.status === '投标中' ? (language === 'zh' ? '审批中' : 'In Review') :
-                         application.status === '已匹配' ? (language === 'zh' ? '已匹配' : 'Matched') : application.status}
+                      <span className="font-bold text-gray-800 text-xl">{application.id}</span>
+                      <span className={`px-2 py-1 rounded text-sm font-medium ${(application.status as any) === '待投标' || (application.status as any) === 'Pending Bid'
+                        ? 'bg-yellow-100 text-yellow-700'
+                        : 'bg-blue-100 text-blue-700'
+                        }`}>
+                        {application.status === '待投标' ? (language === 'zh' ? '待审批' : 'Pending') :
+                          application.status === '投标中' ? (language === 'zh' ? '审批中' : 'In Review') :
+                            application.status === '已匹配' ? (language === 'zh' ? '已匹配' : 'Matched') : application.status}
                       </span>
                     </div>
-                    <div className="text-sm text-gray-600">
+                    <div className="text-base text-gray-600">
                       {language === 'zh' ? '借款人：' : 'Borrower: '}
-                      <span className="font-medium text-gray-800">{application.borrower}</span>
+                      <span className="font-semibold text-gray-800">{application.borrower}</span>
                     </div>
                   </div>
 
                   {/* 第二行：关键指标 */}
                   <div className="grid grid-cols-2 gap-3 mb-3 p-3 bg-gray-50 rounded-lg">
                     <div>
-                      <div className="text-xs text-gray-500 mb-1">
+                      <div className="text-sm text-gray-500 mb-1">
                         {language === 'zh' ? '抵押品总值' : 'Total Collateral'}
                       </div>
-                      <div className="font-semibold text-gray-800 font-mono">
-                        HK$ 
+                      <div className="font-bold text-gray-800 font-mono text-base">
+                        HK$
                       </div>
                     </div>
                     <div>
-                      <div className="text-xs text-gray-500 mb-1">
+                      <div className="text-sm text-gray-500 mb-1">
                         {language === 'zh' ? '申请金额' : 'Loan Amount'}
                       </div>
-                      <div className="font-semibold text-gray-800 font-mono">
-                        HK$ 
+                      <div className="font-bold text-gray-800 font-mono text-base">
+                        HK$
                       </div>
                     </div>
                     <div>
-                      <div className="text-xs text-gray-500 mb-1">
+                      <div className="text-sm text-gray-500 mb-1">
                         {language === 'zh' ? '抵押率 (LTV)' : 'LTV Ratio'}
                       </div>
-                      <div className={`font-semibold font-mono ${
-                        parseFloat(ltv) > 80 ? 'text-red-600' : parseFloat(ltv) > 70 ? 'text-yellow-600' : 'text-green-600'
-                      }`}>
+                      <div className={`font-bold font-mono text-base ${parseFloat(ltv) > 80 ? 'text-red-600' : parseFloat(ltv) > 70 ? 'text-yellow-600' : 'text-green-600'
+                        }`}>
                         {ltv}%
                       </div>
                     </div>
                     <div>
-                      <div className="text-xs text-gray-500 mb-1">
+                      <div className="text-sm text-gray-500 mb-1">
                         {language === 'zh' ? '期限' : 'Term'}
                       </div>
-                      <div className="font-semibold text-gray-800 font-mono">
+                      <div className="font-bold text-gray-800 font-mono text-base">
                         {application.term} {language === 'zh' ? '天' : 'days'}
                       </div>
                     </div>
@@ -121,24 +119,24 @@ function LoanMarket({ applications, onBid, onViewDetail, onReject }: LoanMarketP
                   {/* 第三行：风险信息 */}
                   <div className="mb-3 p-3 bg-blue-50 rounded-lg border border-blue-100">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs text-gray-600">
+                      <span className="text-sm text-gray-600">
                         {language === 'zh' ? '风险评分' : 'Risk Score'}
                       </span>
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${getRiskColor(application.riskScore)}`}>
+                      <span className={`px-2 py-1 rounded text-sm font-medium ${getRiskColor(application.riskScore)}`}>
                         {application.riskScore} ({getRiskLabel(application.riskScore)})
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-600">
+                      <span className="text-sm text-gray-600">
                         {language === 'zh' ? '建议利率范围' : 'Suggested Rate Range'}
                       </span>
-                      <span className="font-semibold text-blue-600 text-sm">
+                      <span className="font-bold text-blue-600 text-base">
                         {getSuggestedRateRange(application.riskScore)}
                       </span>
                     </div>
                     {application.currentLowestRate > 0 && (
                       <div className="flex items-center justify-between mt-1">
-                        <span className="text-xs text-gray-600">
+                        <span className="text-sm text-gray-600">
                           {language === 'zh' ? '当前最低报价' : 'Current Lowest Bid'}
                         </span>
                         <span className="font-medium text-gray-700 text-xs">
@@ -152,14 +150,14 @@ function LoanMarket({ applications, onBid, onViewDetail, onReject }: LoanMarketP
                   <div className="flex space-x-2">
                     <button
                       onClick={() => onViewDetail(application)}
-                      className="flex-1 px-3 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors text-sm"
+                      className="flex-1 px-3 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors text-base"
                     >
                       <i className="fas fa-eye mr-2"></i>
                       {language === 'zh' ? '查看详情' : 'View Details'}
                     </button>
                     <button
                       onClick={() => onBid(application)}
-                      className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm"
+                      className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-base"
                     >
                       <i className="fas fa-check-circle mr-2"></i>
                       {language === 'zh' ? '批准并报价' : 'Approve & Quote'}

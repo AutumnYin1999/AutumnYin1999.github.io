@@ -59,7 +59,7 @@ function MyLoans() {
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
       <div className="p-6 border-b border-gray-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <h3 className="text-lg font-semibold text-gray-800 flex items-center">
+        <h3 className="text-xl font-semibold text-gray-800 flex items-center">
           <i className="fas fa-list mr-2 text-blue-600"></i>
           {language === 'zh' ? '我的投资' : 'My Investments'}
         </h3>
@@ -103,28 +103,28 @@ function MyLoans() {
         <table className="w-full">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
                 {language === 'zh' ? '资产ID' : 'Asset ID'}
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
                 {language === 'zh' ? '类型' : 'Type'}
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
                 {language === 'zh' ? '面值' : 'Face Value'}
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
                 {language === 'zh' ? '投资金额' : 'Invested'}
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
                 {language === 'zh' ? '收益率' : 'Yield'}
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
                 {language === 'zh' ? '到期日' : 'Due Date'}
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
                 {language === 'zh' ? '状态' : 'Status'}
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
                 {language === 'zh' ? '操作' : 'Actions'}
               </th>
             </tr>
@@ -141,7 +141,7 @@ function MyLoans() {
               filteredInvestments.map(inv => (
                 <tr key={inv.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{inv.id}</div>
+                    <div className="text-base font-medium text-gray-900">{inv.id}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 py-0.5 rounded text-xs font-medium ${inv.type === 'AR' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'
@@ -150,27 +150,27 @@ function MyLoans() {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-600">
+                    <div className="text-base text-gray-600">
                       HK$ {inv.faceValue.toLocaleString('en-US')}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">
+                    <div className="text-base font-medium text-gray-900">
                       HK$ {inv.investAmount.toLocaleString('en-US')}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-bold text-green-600">
+                    <div className="text-base font-bold text-green-600">
                       {inv.yield}%
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-600">{inv.dueDate}</div>
+                    <div className="text-base text-gray-600">{inv.dueDate}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {getStatusDisplay(inv.status)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-6 py-4 whitespace-nowrap text-base font-medium">
                     <button className="text-blue-600 hover:text-blue-800 hover:underline transition-colors">
                       {language === 'zh' ? '[查看详情]' : '[Details]'}
                     </button>

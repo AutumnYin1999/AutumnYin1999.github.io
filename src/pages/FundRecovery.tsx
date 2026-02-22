@@ -1,4 +1,3 @@
-import { useRole } from '../hooks/useRole'
 import { useLanguage } from '../hooks/useLanguage'
 import PermissionGuard from '../components/Common/PermissionGuard'
 import NodeEarningsOverview from '../components/FundRecovery/NodeEarningsOverview'
@@ -46,8 +45,8 @@ function EarningsDonut({ lang }: { lang: string }) {
           />
         ))}
         {/* centre label */}
-        <text x={cx} y={cy - 5} textAnchor="middle" fontSize="11" fontWeight="bold" fill="#1f2937">100%</text>
-        <text x={cx} y={cy + 10} textAnchor="middle" fontSize="8" fill="#9ca3af">
+        <text x={cx} y={cy - 5} textAnchor="middle" fontSize="13" fontWeight="bold" fill="#1f2937">100%</text>
+        <text x={cx} y={cy + 10} textAnchor="middle" fontSize="10" fill="#9ca3af">
           {lang === 'zh' ? '收益来源' : 'Source'}
         </text>
       </svg>
@@ -58,11 +57,11 @@ function EarningsDonut({ lang }: { lang: string }) {
           <div key={i} className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-1.5">
               <span className={`w-2.5 h-2.5 rounded-full flex-shrink-0`} style={{ background: s.color }} />
-              <span className="text-[11px] text-gray-600 leading-tight">
+              <span className="text-sm text-gray-600 leading-tight">
                 {lang === 'zh' ? s.labelZh : s.labelEn}
               </span>
             </div>
-            <span className={`text-xs font-bold ${s.textColor}`}>{s.pct}%</span>
+            <span className={`text-base font-bold ${s.textColor}`}>{s.pct}%</span>
           </div>
         ))}
       </div>
@@ -73,7 +72,6 @@ function EarningsDonut({ lang }: { lang: string }) {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 function FundRecovery() {
-  const { currentRole } = useRole()
   const { t, language } = useLanguage()
 
   return (
@@ -96,10 +94,10 @@ function FundRecovery() {
 
         {/* Page title */}
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-1">
+          <h2 className="text-3xl font-bold text-gray-800 mb-1">
             {t('fundRecovery.title')}
           </h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-base text-gray-500">
             {language === 'zh'
               ? '节点运营收益统计与分账明细'
               : 'Node operation earnings statistics & distribution detail'}
@@ -122,10 +120,10 @@ function FundRecovery() {
             {/* Earnings source distribution donut */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4">
               <div className="flex items-center justify-between mb-3">
-                <h4 className="text-sm font-semibold text-gray-800">
+                <h4 className="text-base font-semibold text-gray-800">
                   {language === 'zh' ? '收益来源分布' : 'Earnings Source Distribution'}
                 </h4>
-                <span className="text-[10px] text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
                   {language === 'zh' ? '模拟数据' : 'Demo data'}
                 </span>
               </div>

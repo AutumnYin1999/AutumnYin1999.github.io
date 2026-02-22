@@ -19,8 +19,8 @@ function TokenCard({ token, onPurchase, onToggleWatchlist, isWatched }: TokenCar
       {/* 头部：代币ID和类型标签 */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-2">
-          <span className="font-semibold text-gray-800">{token.id}</span>
-          <span className={`px-2 py-1 rounded text-xs font-medium ${isReceivable
+          <span className="text-lg font-bold text-gray-800">{token.id}</span>
+          <span className={`px-2 py-1 rounded text-sm font-medium ${isReceivable
             ? 'bg-blue-100 text-blue-700'
             : isABS
               ? 'bg-purple-100 text-purple-700'
@@ -45,25 +45,25 @@ function TokenCard({ token, onPurchase, onToggleWatchlist, isWatched }: TokenCar
         {/* AR 内容 */}
         {isReceivable && (
           <div className="space-y-3 mb-2">
-            <div className="text-sm">
+            <div className="text-base">
               <span className="text-gray-500">{language === 'zh' ? '核心企业' : 'Core Enterprise'}:</span>
-              <span className="font-medium text-gray-800 ml-2">{token.issuer}</span>
+              <span className="font-semibold text-gray-800 ml-2">{token.issuer}</span>
             </div>
-            <div className="flex flex-wrap items-center justify-between text-sm">
+            <div className="flex flex-wrap items-center justify-between text-base">
               <div>
                 <span className="text-gray-500">{language === 'zh' ? '面值' : 'Face Value'}:</span>
-                <span className="font-medium text-gray-800 ml-2">HK$ {token.faceValue.toLocaleString('en-US')}</span>
+                <span className="font-semibold text-gray-800 ml-2">HK$ {token.faceValue.toLocaleString('en-US')}</span>
               </div>
               <div className="text-gray-300">|</div>
               <div>
                 <span className="text-gray-500">{language === 'zh' ? '到期' : 'Due'}:</span>
-                <span className="font-medium text-gray-800 ml-2">{token.dueDate}</span>
+                <span className="font-semibold text-gray-800 ml-2">{token.dueDate}</span>
               </div>
             </div>
-            <div className="flex flex-wrap items-center justify-between text-sm">
+            <div className="flex flex-wrap items-center justify-between text-base">
               <div>
                 <span className="text-gray-500">{language === 'zh' ? '年化收益率' : 'Yield'}:</span>
-                <span className="font-bold text-green-600 ml-2">{token.annualYield}%</span>
+                <span className="font-bold text-green-600 ml-2 text-lg">{token.annualYield}%</span>
               </div>
               <div className="text-gray-300">|</div>
               <div className="flex items-center">
@@ -79,15 +79,15 @@ function TokenCard({ token, onPurchase, onToggleWatchlist, isWatched }: TokenCar
               </div>
             </div>
 
-            <div className="pt-3 mt-3 border-t border-gray-100 flex flex-wrap items-center justify-between text-sm bg-gray-50/50 -mx-2 px-2 py-2 rounded">
+            <div className="pt-3 mt-3 border-t border-gray-100 flex flex-wrap items-center justify-between text-base bg-gray-50/50 -mx-2 px-2 py-2 rounded">
               <div>
                 <span className="text-gray-500">{language === 'zh' ? '挂牌价' : 'Price'}:</span>
-                <span className="font-bold text-gray-800 ml-2">HK$ {token.currentPrice.toLocaleString('en-US')}</span>
+                <span className="font-bold text-gray-800 ml-2 text-lg">HK$ {token.currentPrice.toLocaleString('en-US')}</span>
               </div>
               <div className="text-gray-300">|</div>
               <div>
                 <span className="text-gray-500">{language === 'zh' ? '折扣' : 'Discount'}:</span>
-                <span className={`font-semibold ml-2 ${token.discount > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                <span className={`font-bold ml-2 text-lg ${token.discount > 0 ? 'text-red-600' : 'text-green-600'}`}>
                   {token.discount > 0 ? `+${token.discount}` : token.discount}%
                 </span>
               </div>
@@ -181,7 +181,7 @@ function TokenCard({ token, onPurchase, onToggleWatchlist, isWatched }: TokenCar
           <>
             <button
               onClick={onPurchase}
-              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg text-base font-medium hover:bg-blue-700 transition-colors"
             >
               <i className={isInventory ? "fas fa-shopping-cart mr-2" : "fas fa-coins mr-2"}></i>
               {isInventory ? t('marketTrading.buyNow') : (language === 'zh' ? '投资' : 'Invest')}

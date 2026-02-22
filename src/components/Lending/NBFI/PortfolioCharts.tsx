@@ -36,7 +36,7 @@ function PortfolioCharts() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             {/* 投资组合分布 (饼图) */}
             <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-6 flex items-center">
+                <h3 className="text-xl font-semibold text-gray-800 mb-6 flex items-center">
                     <i className="fas fa-chart-pie mr-2 text-blue-600"></i>
                     {language === 'zh' ? '投资组合分布' : 'Portfolio Distribution'}
                 </h3>
@@ -57,10 +57,10 @@ function PortfolioCharts() {
                                     const mainName = parts[0];
                                     const subName = parts[1] ? `(${parts[1]}` : '';
                                     return (
-                                        <text x={x} y={y} fill="#475569" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" fontSize="12">
+                                        <text x={x} y={y} fill="#475569" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central" fontSize="14">
                                             <tspan x={x} dy={subName ? "-0.4em" : "0"} fontWeight="bold">{mainName}</tspan>
                                             <tspan dx="4" fontWeight="bold">{(percent * 100).toFixed(0)}%</tspan>
-                                            {subName && <tspan x={x} dy="1.2em" fontSize="10" fill="#94a3b8">{subName}</tspan>}
+                                            {subName && <tspan x={x} dy="1.2em" fontSize="12" fill="#94a3b8">{subName}</tspan>}
                                         </text>
                                     );
                                 }}
@@ -82,7 +82,7 @@ function PortfolioCharts() {
 
             {/* 收益趋势 (折线图) */}
             <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-6 flex items-center">
+                <h3 className="text-xl font-semibold text-gray-800 mb-6 flex items-center">
                     <i className="fas fa-chart-line mr-2 text-green-600"></i>
                     {language === 'zh' ? '近 6 个月收益趋势' : '6-Month Yield Trend'}
                 </h3>
@@ -94,13 +94,13 @@ function PortfolioCharts() {
                                 dataKey="month"
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#64748b', fontSize: 12 }}
+                                tick={{ fill: '#64748b', fontSize: 14 }}
                                 dy={10}
                             />
                             <YAxis
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#64748b', fontSize: 12 }}
+                                tick={{ fill: '#64748b', fontSize: 14 }}
                                 tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
                                 dx={-10}
                             />

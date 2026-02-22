@@ -52,7 +52,7 @@ export default function HistoryList() {
     return (
         <div className="bg-white rounded-lg border border-gray-200 shadow-sm h-full flex flex-col">
             <div className="p-4 border-b border-gray-200">
-                <h3 className="font-semibold text-gray-800">
+                <h3 className="text-lg font-semibold text-gray-800">
                     {language === 'zh' ? '历史记录' : 'History'}
                 </h3>
             </div>
@@ -60,26 +60,26 @@ export default function HistoryList() {
                 <table className="w-full text-sm">
                     <thead className="bg-gray-50 sticky top-0">
                         <tr>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-700">Task ID</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-700">Type</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-700">SME</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-700">Submit Time</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-700">Review Time</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-700">Result</th>
-                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-700">Action</th>
+                            <th className="px-3 py-2 text-left text-sm font-medium text-gray-700">Task ID</th>
+                            <th className="px-3 py-2 text-left text-sm font-medium text-gray-700">Type</th>
+                            <th className="px-3 py-2 text-left text-sm font-medium text-gray-700">SME</th>
+                            <th className="px-3 py-2 text-left text-sm font-medium text-gray-700">Submit Time</th>
+                            <th className="px-3 py-2 text-left text-sm font-medium text-gray-700">Review Time</th>
+                            <th className="px-3 py-2 text-left text-sm font-medium text-gray-700">Result</th>
+                            <th className="px-3 py-2 text-left text-sm font-medium text-gray-700">Action</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                         {mockTasks.map((task) => (
                             <tr key={task.id} className="hover:bg-gray-50 transition-colors">
-                                <td className="px-3 py-2 font-mono text-xs text-gray-800">{task.id}</td>
-                                <td className="px-3 py-2 text-xs text-gray-800">{task.type}</td>
-                                <td className="px-3 py-2 text-xs text-gray-800">{language === 'zh' ? task.sme : smeTranslations[task.sme] || task.sme}</td>
-                                <td className="px-3 py-2 text-xs text-gray-800">{task.submitTime}</td>
-                                <td className="px-3 py-2 text-xs text-gray-800">{task.reviewTime}</td>
-                                <td className="px-3 py-2 text-xs">
+                                <td className="px-3 py-2 font-mono text-sm text-gray-800">{task.id}</td>
+                                <td className="px-3 py-2 text-sm text-gray-800">{task.type}</td>
+                                <td className="px-3 py-2 text-sm text-gray-800">{language === 'zh' ? task.sme : smeTranslations[task.sme] || task.sme}</td>
+                                <td className="px-3 py-2 text-sm text-gray-800">{task.submitTime}</td>
+                                <td className="px-3 py-2 text-sm text-gray-800">{task.reviewTime}</td>
+                                <td className="px-3 py-2 text-sm">
                                     <span
-                                        className={`px-2 py-1 rounded-full text-xs ${task.result === 'passed'
+                                        className={`px-2 py-1 rounded-full text-sm ${task.result === 'passed'
                                             ? 'bg-green-100 text-green-800'
                                             : 'bg-red-100 text-red-800'
                                             }`}
@@ -96,7 +96,7 @@ export default function HistoryList() {
                                 <td className="px-3 py-2">
                                     <button
                                         onClick={() => setSelectedTask(task)}
-                                        className="text-blue-600 hover:underline text-sm"
+                                        className="text-blue-600 hover:underline text-base"
                                     >
                                         {language === 'zh' ? '查看详情' : 'View Details'}
                                     </button>
@@ -117,10 +117,10 @@ export default function HistoryList() {
                         >
                             ✕
                         </button>
-                        <h4 className="text-lg font-semibold mb-4">
+                        <h4 className="text-xl font-semibold mb-4">
                             {language === 'zh' ? '任务详情' : 'Task Details'}
                         </h4>
-                        <div className="space-y-2 text-sm">
+                        <div className="space-y-2 text-base">
                             <p><strong>ID:</strong> {selectedTask.id}</p>
                             <p><strong>{language === 'zh' ? '类型' : 'Type'}:</strong> {selectedTask.type}</p>
                             <p><strong>{language === 'zh' ? 'SME' : 'SME'}:</strong> {selectedTask.sme}</p>

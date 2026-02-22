@@ -30,7 +30,7 @@ function MyLending({ loans, onViewDetail, onContact, onLiquidate }: MyLendingPro
         return 'bg-gray-100 text-gray-700 border-gray-200'
     }
   }
-  
+
   const getStatusText = (status: string) => {
     if (status === '正常') return language === 'zh' ? '正常' : 'Normal'
     if (status === '预警') return language === 'zh' ? '预警' : 'Warning'
@@ -38,15 +38,15 @@ function MyLending({ loans, onViewDetail, onContact, onLiquidate }: MyLendingPro
     return status
   }
 
-  const filteredLoans = statusFilter === 'all' 
-    ? loans 
+  const filteredLoans = statusFilter === 'all'
+    ? loans
     : loans.filter(loan => loan.status === statusFilter)
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-gray-800">
+          <h3 className="text-xl font-semibold text-gray-800">
             <i className="fas fa-list mr-2 text-blue-600"></i>
             {language === 'zh' ? '我的贷款管理' : 'My Loan Management'}
           </h3>
@@ -56,11 +56,10 @@ function MyLending({ loans, onViewDetail, onContact, onLiquidate }: MyLendingPro
               <button
                 key={filter}
                 onClick={() => setStatusFilter(filter)}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  statusFilter === filter
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-base font-medium transition-colors ${statusFilter === filter
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
               >
                 {filter === 'all' && (language === 'zh' ? '全部' : 'All')}
                 {filter === '正常' && (language === 'zh' ? '正常' : 'Normal')}
@@ -114,30 +113,30 @@ function MyLending({ loans, onViewDetail, onContact, onLiquidate }: MyLendingPro
               filteredLoans.map(loan => (
                 <tr key={loan.id} className="hover:bg-blue-50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900 font-mono">{loan.id}</div>
+                    <div className="text-base font-medium text-gray-900 font-mono">{loan.id}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{loan.borrower}</div>
+                    <div className="text-base text-gray-900">{loan.borrower}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-semibold text-gray-900 font-mono">
-                      HK$ 
+                    <div className="text-base font-bold text-gray-900 font-mono">
+                      HK$
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900 font-mono">
+                    <div className="text-base text-gray-900 font-mono">
                       <span className="font-semibold">{loan.interestRate}%</span>
                       <span className="text-gray-500 text-xs ml-1">{t('lending.annualized')}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{loan.issueDate}</div>
+                    <div className="text-base text-gray-900">{loan.issueDate}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{loan.dueDate}</div>
+                    <div className="text-base text-gray-900">{loan.dueDate}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(loan.status)}`}>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(loan.status)}`}>
                       {getStatusText(loan.status)}
                     </span>
                   </td>
@@ -157,7 +156,7 @@ function MyLending({ loans, onViewDetail, onContact, onLiquidate }: MyLendingPro
                       >
                         <i className="fas fa-comment"></i>
                       </button>
-                      {(loan.status === '逾期' || loan.status === 'Overdue' || loan.status === '预警' || loan.status === 'Warning') && (
+                      {((loan.status as any) === '逾期' || (loan.status as any) === 'Overdue' || (loan.status as any) === '预警' || (loan.status as any) === 'Warning') && (
                         <button
                           onClick={() => onLiquidate(loan)}
                           className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"

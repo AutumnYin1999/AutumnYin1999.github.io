@@ -87,7 +87,7 @@ function PurchaseModal({ token, onConfirm, onClose }: PurchaseModalProps) {
         {/* 头部 */}
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h3 className="text-xl font-bold text-gray-800">{t('marketTrading.purchaseModal.confirmPurchaseTitle')}</h3>
+            <h3 className="text-2xl font-bold text-gray-800">{t('marketTrading.purchaseModal.confirmPurchaseTitle')}</h3>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -139,7 +139,7 @@ function PurchaseModal({ token, onConfirm, onClose }: PurchaseModalProps) {
                 value={quantity}
                 onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
                 min="1"
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-center"
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-center text-lg font-semibold"
               />
               <button
                 onClick={() => setQuantity(quantity + 1)}
@@ -152,29 +152,29 @@ function PurchaseModal({ token, onConfirm, onClose }: PurchaseModalProps) {
 
           {/* 价格明细 */}
           <div className="border-t border-gray-200 pt-4 space-y-2">
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between text-base">
               <span className="text-gray-600">{t('marketTrading.purchaseModal.unitPrice')}</span>
               <span className="text-gray-800 font-medium">
                 {token.currentPrice.toLocaleString('en-US')} eHKD
               </span>
             </div>
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between text-base">
               <span className="text-gray-600">{t('marketTrading.purchaseModal.quantity')}</span>
               <span className="text-gray-800 font-medium">{quantity}</span>
             </div>
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between text-base">
               <span className="text-gray-600">{t('marketTrading.purchaseModal.subtotal')}</span>
               <span className="text-gray-800 font-medium">
                 {subtotal.toLocaleString('en-US')} eHKD
               </span>
             </div>
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between text-base">
               <span className="text-gray-600">{t('marketTrading.purchaseModal.platformFee')}</span>
               <span className="text-gray-800 font-medium">
                 {fee.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
               </span>
             </div>
-            <div className="flex items-center justify-between text-lg font-bold pt-2 border-t border-gray-200">
+            <div className="flex items-center justify-between text-xl font-bold pt-2 border-t border-gray-200">
               <span className="text-gray-800">{t('marketTrading.purchaseModal.total')}</span>
               <span className="text-blue-600">
                 {total.toLocaleString('en-US', { minimumFractionDigits: 2 })} eHKD
@@ -187,7 +187,7 @@ function PurchaseModal({ token, onConfirm, onClose }: PurchaseModalProps) {
         <div className="p-6 border-t border-gray-200 flex space-x-3">
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+            className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg text-base font-medium hover:bg-gray-50 transition-colors"
             disabled={isProcessing}
           >
             {t('marketTrading.purchaseModal.cancel')}
@@ -195,7 +195,7 @@ function PurchaseModal({ token, onConfirm, onClose }: PurchaseModalProps) {
           <button
             onClick={handleConfirm}
             disabled={isProcessing}
-            className="flex-1 bg-blue-600 text-white py-2.5 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 bg-blue-600 text-white py-2.5 px-4 rounded-lg text-base font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isProcessing ? (
               <>
